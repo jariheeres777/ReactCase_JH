@@ -15,6 +15,14 @@ const listReducer = (state = initialState, action: Actions) => {
         ...state,
         lists: action.payload.lists
       };
+      case ListActions.CREATE_LIST:
+      return {
+        ...state,
+        lists: [
+          ...state.lists,
+          action.payload.list
+        ]
+      };
     default:
       return state;
   }

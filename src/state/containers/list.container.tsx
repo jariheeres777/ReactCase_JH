@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { IList } from '../../model/interfaces/IList';
-import { deleteList, loadLists } from '../actions/list.actions';
+import { Addlist, deleteList, loadLists } from '../actions/list.actions';
 import { RootState } from '../reducers/root.reducers';
 
 export interface IListState {
@@ -11,6 +11,7 @@ export interface IListState {
 export interface IListActions {
   loadLists(): void;
   deleteList(listId: string): void;
+  Addlist(list: IList): void
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -19,10 +20,11 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps: IListActions = {
   loadLists,
-  deleteList
+  deleteList,
+  Addlist
 };
 
-interface IListProps extends IListState, IListActions {}
+interface IListProps extends IListState, IListActions { }
 
 export const withLists = () => (Component: React.ComponentType) => {
   class ListContainer extends React.PureComponent<IListProps> {
@@ -34,7 +36,7 @@ export const withLists = () => (Component: React.ComponentType) => {
     }
 
     public render() {
-      return <Component { ...this.props } />;
+      return <Component {...this.props} />;
     }
   }
 
