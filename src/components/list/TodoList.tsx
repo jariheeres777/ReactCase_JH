@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {compose} from 'recompose';
-import {IListActions, IListState, withLists} from '../../state/containers/list.container';
-import {Divider, ListItem, ListItemText, List, Button} from '@material-ui/core';
+import { compose } from 'recompose';
+import { IListActions, IListState, withLists } from '../../state/containers/list.container';
+import { Divider, ListItem, ListItemText, List, Button } from '@material-ui/core';
 import StyledTodoList from './styled/StyledTodoList';
-import {IList} from '../../model/interfaces/IList';
-import {v4 as uuid} from 'uuid';
-import {useState} from "react";
+import { IList } from '../../model/interfaces/IList';
+import { v4 as uuid } from 'uuid';
+import { useState } from "react";
 
 interface IProps extends IListState, IListActions {
 
@@ -13,7 +13,7 @@ interface IProps extends IListState, IListActions {
 }
 
 const TodoList = (props: IProps) => {
-    const {lists} = props;
+    const { lists } = props;
     const [listName, setListName] = useState('');
     const [listColor, setListColor] = useState('');
 
@@ -47,44 +47,49 @@ const TodoList = (props: IProps) => {
             }}
         >
             <ListItem className="list-item" button disabled>
-                <ListItemText primary="Lists"/>
+                <ListItemText primary="Lists" />
             </ListItem>
-            <Divider/>
+            <Divider />
             <List>
                 {lists.map((list) => (
                     <ListItem button key={list.id}>
-                        <ListItemText primary={list.name}/>
+                        <ListItemText primary={list.name} />
                         {list.name !== 'Inbox' &&
-                        <>
-                            <button>adjust</button>
-                            <button>delete</button>
-                        </>
+                            <>
+                                <button>adjust</button>
+                                <button onClick={(e) => {
+                                    e.preventDefault()
+                                    props.deleteList(list.id)
+                                }
+                                }>delete
+                                </button>
+                            </>
                         }
                     </ListItem>
                 ))}
 
             </List>
-            <Divider/>
-            <Divider/>
+            <Divider />
+            <Divider />
             <Button onClick={toggleChecked}>add lists</Button>
-            <Divider/>
+            <Divider />
             {check &&
-            <>
-                <label>
-                    name
-                </label>
-                <input id="name"
-                       value={listName}
-                       onChange={(event) => setListName(event.target.value)}
-                />
-                <label>
-                    color
-                </label>
-                <input id="color"
-                       value={listColor}
-                       onChange={(event) => setListColor(event.target.value)}/>
+                <>
+                    <label>
+                        name
+                    </label>
+                    <input id="name"
+                        value={listName}
+                        onChange={(event) => setListName(event.target.value)}
+                    />
+                    <label>
+                        color
+                    </label>
+                    <input id="color"
+                        value={listColor}
+                        onChange={(event) => setListColor(event.target.value)} />
 
-                <Button disabled={listColor === '' || listName === ''}
+                    <Button disabled={listColor === '' || listName === ''}
                         onClick={(e) => {
                             e.preventDefault()
                             const list: IList = {
@@ -96,20 +101,18 @@ const TodoList = (props: IProps) => {
                             };
                             props.Addlist(list)
                         }}>
-                    addlist
-                </Button>
-            </>
+                        addlist
+                    </Button>
+                </>
             }
 
 
         </StyledTodoList>
     );
 }
-;
+    ;
 
 export default compose
-<IProps, {
-}
->(
-withLists()
-)(TodoList);
+    <IProps, {}>
+    (withLists()
+    )(TodoList);

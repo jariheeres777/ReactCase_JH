@@ -1,31 +1,35 @@
-import { IListState } from "../containers/list.container";
+import {IListState} from "../containers/list.container";
 import * as ListActions from "../actions/list.actions";
-import { ActionType } from "typesafe-actions";
+import {ActionType} from "typesafe-actions";
 
 type Actions = ActionType<typeof ListActions>;
 
 const initialState: IListState = {
-  lists: []
+    lists: []
 };
 
 const listReducer = (state = initialState, action: Actions) => {
-  switch (action.type) {
-    case ListActions.LOAD_LISTS_SUCCESS:
-      return {
-        ...state,
-        lists: action.payload.lists
-      };
-      case ListActions.CREATE_LIST:
-      return {
-        ...state,
-        lists: [
-          ...state.lists,
-          action.payload.list
-        ]
-      };
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case ListActions.LOAD_LISTS_SUCCESS:
+            return {
+                ...state,
+                lists: action.payload.lists
+            };
+        case ListActions.CREATE_LIST:
+            return {
+                ...state,
+                lists: [
+                    ...state.lists,
+                    action.payload.list
+                ]
+            };
+        case ListActions.DELETE_LIST:
+            return {
+                lists: state.lists.filter((e) => e.id !== action.payload.listId)
+            };
+        default:
+            return state;
+    }
 };
 
 export default listReducer;

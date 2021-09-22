@@ -11,7 +11,7 @@ export interface IListState {
 export interface IListActions {
   loadLists(): void;
   deleteList(listId: string): void;
-  Addlist(list: IList): void
+  Addlist(list: IList): void,
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -21,7 +21,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps: IListActions = {
   loadLists,
   deleteList,
-  Addlist
+  Addlist,
 };
 
 interface IListProps extends IListState, IListActions { }
