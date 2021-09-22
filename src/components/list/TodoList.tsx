@@ -12,15 +12,24 @@ interface IProps extends IListState, IListActions {
 
 }
 
-
-
-const openAddList: boolean = true
-
 const TodoList = (props: IProps) => {
     const {lists} = props;
-
     const [listName, setListName] = useState('');
     const [listColor, setListColor] = useState('');
+
+    let check: boolean = true
+
+    function toggleChecked() {
+        if (check) {
+            check = false
+            console.log(check)
+            return
+        } else {
+            check = true
+            console.log(check)
+            return
+        }
+    }
 
     if (lists.length === 0) {
         return null;
@@ -45,42 +54,48 @@ const TodoList = (props: IProps) => {
                 {lists.map((list) => (
                     <ListItem button key={list.id}>
                         <ListItemText primary={list.name}/>
+                        {list.name !== 'Inbox' &&
+                        <>
+                            <button>adjust</button>
+                            <button>delete</button>
+                        </>
+                        }
                     </ListItem>
                 ))}
+
             </List>
             <Divider/>
             <Divider/>
-            <Button >
-                addlist
-            </Button>
-
+            <Button onClick={toggleChecked}>add lists</Button>
             <Divider/>
-            {openAddList &&
+            {check &&
             <>
                 <label>
                     name
                 </label>
                 <input id="name"
                        value={listName}
-                       onChange={(event)=> setListName(event.target.value)}
+                       onChange={(event) => setListName(event.target.value)}
                 />
                 <label>
                     color
                 </label>
                 <input id="color"
                        value={listColor}
-                       onChange={(event)=> setListColor(event.target.value)}/>
-                <Button onClick={(e) => {
-                    e.preventDefault()
-                    const list: IList = {
-                        color: listColor,
-                        default: false,
-                        id: uuid(),
-                        name: listName,
-                        order: 1
-                    };
-                    props.Addlist(list)
-                }}>
+                       onChange={(event) => setListColor(event.target.value)}/>
+
+                <Button disabled={listColor === '' || listName === ''}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            const list: IList = {
+                                color: listColor,
+                                default: false,
+                                id: uuid(),
+                                name: listName,
+                                order: 1
+                            };
+                            props.Addlist(list)
+                        }}>
                     addlist
                 </Button>
             </>
@@ -89,8 +104,12 @@ const TodoList = (props: IProps) => {
 
         </StyledTodoList>
     );
-};
+}
+;
 
-export default compose<IProps, {}>(
-    withLists()
+export default compose
+<IProps, {
+}
+>(
+withLists()
 )(TodoList);
