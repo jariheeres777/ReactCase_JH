@@ -12,6 +12,8 @@ const StyledDrawer = styled(Drawer)(({ theme }: WithTheme) => ({
   },
   '.drawer-paper': {
     width: drawerWidth
+  }, 'active':{
+    background: '#808080'
   }
 }));
 
