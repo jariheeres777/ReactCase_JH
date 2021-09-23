@@ -8,6 +8,7 @@ import {v4 as uuid} from 'uuid';
 import {useState} from "react";
 
 
+
 interface IProps extends IListState, IListActions {
 
 
@@ -45,10 +46,11 @@ const TodoList = (props: IProps) => {
                             />
                             {list.name !== 'Inbox' &&
                             <>
-                                <Button>
-                                  
-                                </Button>
                                 <button>
+                                    🡹
+                                </button>
+                                <button>
+                                    🡻
                                 </button>
                                 <button onClick={(e) => {
                                     e.preventDefault()
@@ -62,13 +64,13 @@ const TodoList = (props: IProps) => {
 
                                     props.updateList(updateList)
                                 }
-                                }>adjust
+                                }>✐
                                 </button>
                                 <button onClick={(e) => {
                                     e.preventDefault()
                                     props.deleteList(list.id)
                                 }
-                                }>x
+                                }>❌
                                 </button>
                             </>
                             }
