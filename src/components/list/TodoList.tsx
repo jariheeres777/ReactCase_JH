@@ -1,12 +1,11 @@
 import * as React from 'react';
 import {compose} from 'recompose';
 import {IListActions, IListState, withLists} from '../../state/containers/list.container';
-import {Divider, ListItem, ListItemText, List, Button} from '@material-ui/core';
+import {Divider, ListItem, ListItemText, List, Button, TextField, InputLabel} from '@material-ui/core';
 import StyledTodoList from './styled/StyledTodoList';
 import {IList} from '../../model/interfaces/IList';
 import {v4 as uuid} from 'uuid';
 import {useState} from "react";
-
 
 
 interface IProps extends IListState, IListActions {
@@ -19,6 +18,7 @@ const TodoList = (props: IProps) => {
         const {lists} = props;
         const [listName, setListName] = useState('');
         const [listColor, setListColor] = useState('');
+
 
         if (lists.length === 0) {
             return null;
@@ -40,16 +40,39 @@ const TodoList = (props: IProps) => {
                 </ListItem>
                 <Divider/>
                 <List>
-                    {lists.map((list) => (
+                    {lists.sort((a, b) => a.order > b.order ? 1 : -1).map((list) => (
                         <ListItem button key={list.id}>
                             <ListItemText primary={list.name}
+                                          color={list.color}
                             />
                             {list.name !== 'Inbox' &&
                             <>
-                                <button>
+                                <button disabled={list.order === 1}
+                                        onClick={(e) => {
+                                            const moveUp: IList = {
+                                                color: list.color,
+                                                default: false,
+                                                id: list.id,
+                                                name: list.name,
+                                                order: list.order
+                                            };
+
+                                            props.moveUpList(moveUp)
+                                        }}>
                                     🡹
                                 </button>
-                                <button>
+                                <button disabled={list.order === (lists.length - 1)}
+                                        onClick={(e) => {
+                                            const moveDown: IList = {
+                                                color: list.color,
+                                                default: false,
+                                                id: list.id,
+                                                name: list.name,
+                                                order: list.order
+                                            };
+
+                                            props.moveDownList(moveDown)
+                                        }}>
                                     🡻
                                 </button>
                                 <button onClick={(e) => {
@@ -76,26 +99,23 @@ const TodoList = (props: IProps) => {
                             }
                         </ListItem>
                     ))
-                        .sort((a, b) => a.props.order > b.props.order ? -1 : 1)
                     }
 
                 </List>
                 <Divider/>
-                <label>
-                    name
-                </label>
-                <input id="name"
-                       value={listName}
-                       onChange={(event) => setListName(event.target.value)}
-                />
-                <label>
-                    color
-                </label>
-                <input id="color"
-                       value={listColor}
-                       onChange={(event) => setListColor(event.target.value)}/>
-                <Divider/>
-                <br/>
+                <InputLabel margin='dense'>
+                    Name
+                    <TextField id="name" variant="outlined" margin='dense'
+                               value={listName}
+                               onChange={(event) => setListName(event.target.value)}
+                    />
+                </InputLabel>
+                <InputLabel margin='dense'>
+                    Color
+                    <TextField id="color" variant="outlined" margin='dense'
+                               value={listColor}
+                               onChange={(event) => setListColor(event.target.value)}/>
+                </InputLabel><br/><br/>
                 <Divider/>
 
                 <Button disabled={listColor === '' || listName === ''}
