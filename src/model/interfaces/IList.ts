@@ -4,4 +4,5 @@ export interface IList {
   color: string;
   order: number;
   default: boolean;
+  active:boolean;
 }

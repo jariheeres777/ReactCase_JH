@@ -6,7 +6,8 @@ const initialLists: IList[] = [
     color: 'blue',
     name: 'Inbox',
     default: true,
-    order: 0
+    order: 0,
+    active:false
   }
 ];
 

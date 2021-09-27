@@ -49,7 +49,8 @@ const listReducer = (state = initialState, action: Actions) => {
                             id: e.id,
                             name: e.name,
                             default: e.default,
-                            color: e.color
+                            color: e.color,
+                            active:e.active
                         }
 
                         return lists
@@ -60,7 +61,8 @@ const listReducer = (state = initialState, action: Actions) => {
                                 id: e.id,
                                 name: e.name,
                                 default: e.default,
-                                color: e.color
+                                color: e.color,
+                                active:e.active
                             }
                             return order
                         } else {
@@ -79,7 +81,8 @@ const listReducer = (state = initialState, action: Actions) => {
                             id: e.id,
                             name: e.name,
                             default: e.default,
-                            color: e.color
+                            color: e.color,
+                            active:e.active
                         }
                         console.log(lists)
                         return lists
@@ -90,7 +93,8 @@ const listReducer = (state = initialState, action: Actions) => {
                                 id: e.id,
                                 name: e.name,
                                 default: e.default,
-                                color: e.color
+                                color: e.color,
+                                active:e.active
                             }
                             console.log(order)
                             return order
