@@ -23,6 +23,10 @@ const TodoList = (props: IProps) => {
         const [activeList, setActiveList] = useState([])
         const [adjustListName, setAdjustListName] = useState('')
 
+        function setactive(e: string) {
+            console.log(e)
+        }
+
         function handleAdjust() {
             if (adjustVisible === '1') {
                 setAdjustvisible('0')
@@ -43,7 +47,6 @@ const TodoList = (props: IProps) => {
             return null;
         }
 
-        // @ts-ignore
         return (
             <StyledTodoList
                 variant="permanent"
@@ -54,13 +57,17 @@ const TodoList = (props: IProps) => {
                     }
                 }}
             >
-                <ListItem className="list-item" button disabled>
+                <ListItem className="list-item " button disabled>
                     <ListItemText primary="Lists"/>
                 </ListItem>
                 <Divider/>
                 <List>
                     {lists.sort((a, b) => a.order > b.order ? 1 : -1).map((list) => (
-                        <ListItem button key={list.id}>
+                        <ListItem button key={list.id}
+                                  className={list.active === true ? "active" : ''}
+                                  onClick={(e) => {
+                                      props.setActiveList(list.id)
+                                  }}>
                             <ListItemText primary={list.name}
                                           style={{color: list.color}}
                             />
@@ -74,9 +81,8 @@ const TodoList = (props: IProps) => {
                                                 id: list.id,
                                                 name: list.name,
                                                 order: list.order,
-                                                active:false
+                                                active: false
                                             };
-
                                             props.moveUpList(moveUp)
                                         }}>
                                     🡹
@@ -89,9 +95,8 @@ const TodoList = (props: IProps) => {
                                                 id: list.id,
                                                 name: list.name,
                                                 order: list.order,
-                                                active:false
+                                                active: false
                                             };
-
                                             props.moveDownList(moveDown)
                                         }}>
                                     🡻
@@ -113,104 +118,102 @@ const TodoList = (props: IProps) => {
                                 <button onClick={(e) => {
                                     e.preventDefault()
                                     props.deleteList(list.id)
-                                    if (adjustVisible === '1'){
+                                    if (adjustVisible === '1') {
                                         handleAdjust()
                                     }
                                 }
                                 }>❌
                                 </button>
-
                             </>
-
                             }
                         </ListItem>
-
                     ))
                     }
-                    <InputLabel style={{opacity: adjustVisible}}
-                                margin='dense'>
+                </List>
+                <Divider/>
+                {addVisible === '0' &&
+                <>
+                    <Button onClick={toggleAdd}>
+                        addlist
+                    </Button>
+                    <Divider/>
+                </>
+                }
+                {addVisible === '0' ? null :
+                    <>
+                        < InputLabel margin='dense'>
+                            Name
+                            <TextField id="name" variant="outlined"
+                                       margin='dense'
+                                       value={listName}
+                                       onChange={(event) => setListName(event.target.value)}
+                            />
+                        </InputLabel>
+                        <InputLabel margin='dense'>
+                            Color<br/><br/>
+                            <input type='color' id="color"
+                                   value={listColor}
+                                   onChange={(event) => setListColor(event.target.value)}/>
+                        </InputLabel><br/><br/>
+                        <Divider/>
+                        <Button disabled={listName === ''}
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setListColor('')
+                                    setListName('')
+                                    const list: IList = {
+                                        color: listColor,
+                                        default: false,
+                                        id: uuid(),
+                                        name: listName,
+                                        order: lists.length,
+                                        active: false
+                                    };
+                                    props.addlist(list)
+                                    toggleAdd()
+                                }}>
+                            confirm
+                        </Button>
+                        <Divider/>
+                        <Button onClick={toggleAdd}>
+                            cancel
+                        </Button>
+                    </>
+                }
+                <Divider/>
+                {adjustVisible === '1' &&
+                <>
+                    <InputLabel margin='dense'>
                         Name
                         <TextField id="name" variant="outlined"
-                                   disabled={adjustVisible === '0'}
                                    margin='dense'
                                    value={adjustListName}
                                    onChange={(event) => setAdjustListName(event.target.value)}
                         />
-                        <Button disabled={adjustVisible === '0'}
-                                onClick={(e) => {
-                                    e.preventDefault()
-
-
-                                    const updateList: IList = {
-                                        color: activeList[0],
-                                        default: activeList[1],
-                                        id: activeList[2],
-                                        // @ts-ignore
-                                        name: adjustListName,
-                                        order: activeList[4],
-                                        active:false
-                                    };
-                                    props.updateList(updateList)
-                                    handleAdjust()
-                                }
-                                }>✅</Button>
-                        <Button disabled={adjustVisible === '0'}
-                                onClick={handleAdjust}>❌</Button>
-                    </InputLabel><br/>
-
-                </List>
-                <Divider/>
-                <Button style={{opacity: (addVisible === '1' ? '0' : '1')}}
-                        onClick={toggleAdd}
-                        disabled={addVisible === '1'}
-
-                >
-                    addlist
-                </Button>
-                <Divider style={{opacity: (addVisible === '1' ? '0' : '1')}}/>
-                <InputLabel style={{opacity: addVisible}}
-                            margin='dense'>
-                    Name
-                    <TextField id="name" variant="outlined"
-                               margin='dense'
-                               value={listName}
-                               onChange={(event) => setListName(event.target.value)}
-                    />
-                </InputLabel>
-                <InputLabel style={{opacity: addVisible}}
-                            margin='dense'>
-                    Color<br/><br/>
-                    <input type='color' id="color"
-                           value={listColor}
-                           onChange={(event) => setListColor(event.target.value)}/>
-                </InputLabel><br/><br/>
-
-                <Divider style={{opacity: addVisible}}/>
-                <Button style={{opacity: addVisible}}
-                        disabled={listName === ''}
-                        onClick={(e) => {
-                            e.preventDefault()
-                            setListColor('')
-                            setListName('')
-                            const list: IList = {
-                                color: listColor,
-                                default: false,
-                                id: uuid(),
-                                name: listName,
-                                order: lists.length,
-                                active:false
-                            };
-                            props.addlist(list)
-                            toggleAdd()
-                        }}>
-                    addlist
-                </Button>
-                <Divider style={{opacity: addVisible}}/>
-                <Button style={{opacity: addVisible}}
-                        onClick={toggleAdd}>
-                    cancel
-                </Button>
-                <Divider style={{opacity: addVisible}}/>
+                    </InputLabel><br/><br/>
+                    <Button variant="outlined"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                const updateList: IList = {
+                                    color: activeList[0],
+                                    default: activeList[1],
+                                    id: activeList[2],
+                                    name: adjustListName,
+                                    order: activeList[4],
+                                    active: false
+                                };
+                                props.updateList(updateList)
+                                handleAdjust()
+                            }
+                            }>
+                        confirm
+                    </Button>
+                    <Button variant="outlined"
+                            onClick={handleAdjust}>
+                        cancel
+                    </Button>
+                </>
+                }
             </StyledTodoList>
         );
     }

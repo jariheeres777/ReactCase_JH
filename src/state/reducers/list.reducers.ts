@@ -84,7 +84,6 @@ const listReducer = (state = initialState, action: Actions) => {
                             color: e.color,
                             active:e.active
                         }
-                        console.log(lists)
                         return lists
                     } else {
                         if (e.order === (action.payload.list.order +1 )) {
@@ -96,13 +95,40 @@ const listReducer = (state = initialState, action: Actions) => {
                                 color: e.color,
                                 active:e.active
                             }
-                            console.log(order)
                             return order
                         } else {
                             return e;
                         }
                     }
                 })
+            }
+        case ListActions.SET_ACTIVE_LIST:
+            return {
+                ...state,
+                lists: state.lists.map((e)=>{
+                    if(e.id === action.payload.listId){
+                        const lists = {
+                            order: e.order,
+                            id: e.id,
+                            name: e.name,
+                            default: e.default,
+                            color: e.color,
+                            active:true
+                        }
+                        return lists
+                    }else{
+                        const lists = {
+                            order: e.order,
+                            id: e.id,
+                            name: e.name,
+                            default: e.default,
+                            color: e.color,
+                            active:false
+                        }
+                        return lists
+                    }
+                })
+
             }
         default:
             return state;

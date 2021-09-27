@@ -7,7 +7,7 @@ const initialLists: IList[] = [
     name: 'Inbox',
     default: true,
     order: 0,
-    active:false
+    active:true
   }
 ];
 
