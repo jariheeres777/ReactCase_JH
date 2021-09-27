@@ -9,7 +9,7 @@ const Main = () => {
     return (
         <StyledMain>
             <Typography paragraph>
-                {/*<TodoItems />*/}
+                <TodoItems />
             </Typography>
         </StyledMain>
     );

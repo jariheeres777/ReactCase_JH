@@ -1,14 +1,12 @@
-import {filter, map} from "rxjs/operators";
-import {loadTodos,loadTodoSuccess} from "../actions/Todo.action";
-import {Epic} from "redux-observable";
-import {RootState} from "../reducers/root.reducers";
-import {AnyAction} from "redux";
-import {isActionOf} from "typesafe-actions";
-import initialTodos from "../../data/todos";
+import { AnyAction } from 'redux';
+import { Epic } from 'redux-observable';
+import { filter, map } from 'rxjs/operators';
+import { isActionOf } from 'typesafe-actions';
+import { loadTodos,loadTodosSucces} from '../actions/Todo.action'
+import { RootState } from '../reducers/root.reducers';
+import initialTododos from '../../data/todos';
 
-
-
-export const loadTodo$: Epic<AnyAction, AnyAction, RootState> = (
+export const loadTodos$: Epic<AnyAction, AnyAction, RootState> = (
     action$,
     state$
 ) =>
@@ -16,10 +14,10 @@ export const loadTodo$: Epic<AnyAction, AnyAction, RootState> = (
         filter(isActionOf(loadTodos)),
         map((action: AnyAction) => {
             // Pretend we fetch the initial lists from a server, that's why we need an epic
-            return loadTodoSuccess(initialTodos);
+            return loadTodosSucces(initialTododos);
         })
     );
 
-const todoEpics = [loadTodo$];
+const todoEpics = [loadTodos$];
 
 export default todoEpics;

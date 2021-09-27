@@ -23,10 +23,6 @@ const TodoList = (props: IProps) => {
         const [activeList, setActiveList] = useState([])
         const [adjustListName, setAdjustListName] = useState('')
 
-        function setactive(e: string) {
-            console.log(e)
-        }
-
         function handleAdjust() {
             if (adjustVisible === '1') {
                 setAdjustvisible('0')
@@ -192,6 +188,7 @@ const TodoList = (props: IProps) => {
                         />
                     </InputLabel><br/><br/>
                     <Button variant="outlined"
+                            disabled={adjustListName === ''}
                             onClick={(e) => {
                                 e.preventDefault()
                                 const updateList: IList = {

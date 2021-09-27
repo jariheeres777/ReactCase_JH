@@ -1,4 +1,3 @@
-
 import { AnyAction } from 'redux';
 import { Epic } from 'redux-observable';
 import { filter, map } from 'rxjs/operators';

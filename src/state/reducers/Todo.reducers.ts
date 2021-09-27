@@ -1,8 +1,8 @@
-import {ActionType} from "typesafe-actions";
-import * as TodoActions from "../actions/Todo.action";
 import {ITodoState} from "../containers/Todo.container";
+import * as TodoActions from "../actions/Todo.action";
+import {ActionType} from "typesafe-actions";
 
-type Actions = ActionType<typeof TodoActions>;
+type Actions = ActionType<typeof TodoActions>
 
 const initialState: ITodoState = {
     todos: []
@@ -14,10 +14,10 @@ const todoReducer = (state = initialState, action: Actions) => {
             return {
                 ...state,
                 todos: action.payload.todos
-            };
+            }
         default:
             return state;
-    }
-};
 
+    }
+}
 export default todoReducer;

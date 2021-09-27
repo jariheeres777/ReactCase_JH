@@ -6,7 +6,7 @@ import todoReducer from "./Todo.reducers";
 
 export type RootState = {
   readonly lists: IListState;
-  readonly todo:ITodoState
+  readonly todos:ITodoState
 }
 
 export const rootReducers = combineReducers({
