@@ -15,6 +15,14 @@ const todoReducer = (state = initialState, action: Actions) => {
                 ...state,
                 todos: action.payload.todos
             }
+        case TodoActions.CREATE_TODO:
+            return {
+                ...state,
+                todos: [
+                    ...state.todos,
+                    action.payload.todos
+                ]
+            }
         default:
             return state;
 

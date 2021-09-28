@@ -13,7 +13,8 @@ const StyledDrawer = styled(Drawer)(({theme}: WithTheme) => ({
     '.drawer-paper': {
         width: drawerWidth
     }, '.active': {
-        backgroundColor: '#bab3b3'
+        backgroundColor: theme.palette.action.active,
+        color:theme.palette.getContrastText(theme.palette.action.active)
     }
 }));
 
