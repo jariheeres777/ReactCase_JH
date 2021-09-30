@@ -6,8 +6,7 @@ import {
     deleteList,
     loadLists,
     updateList,
-    moveUpList,
-    moveDownList,
+    moveList,
     setActiveList
 } from '../actions/list.actions';
 import {RootState} from '../reducers/root.reducers';
@@ -25,9 +24,7 @@ export interface IListActions {
 
     updateList(list: IList): void
 
-    moveUpList(list: IList): void
-
-    moveDownList(list: IList): void
+    moveList(list: IList, number: Number): void
 
     setActiveList(listId: string): void;
 }
@@ -41,8 +38,7 @@ const mapDispatchToProps: IListActions = {
     deleteList,
     addlist,
     updateList,
-    moveUpList,
-    moveDownList,
+    moveList,
     setActiveList
 };
 

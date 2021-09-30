@@ -6,6 +6,7 @@ type Actions = ActionType<typeof ListActions>;
 
 const initialState: IListState = {
     lists: []
+
 };
 
 const listReducer = (state = initialState, action: Actions) => {
@@ -26,12 +27,12 @@ const listReducer = (state = initialState, action: Actions) => {
         case ListActions.DELETE_LIST:
             return {
                 ...state,
-                lists: state.lists.filter((e) => e.id !== action.payload.listId)
+                lists: state.lists.filter((list) => list.id !== action.payload.listId)
             };
-        case ListActions.UPDATE_list:
+        case ListActions.UPDATE_LIST:
             return {
                 ...state,
-                lists: state.lists.map((e) => {
+                lists:  state.lists.map((e) => {
                     if (e.id === action.payload.list.id) {
                         return action.payload.list
                     } else {
@@ -39,65 +40,34 @@ const listReducer = (state = initialState, action: Actions) => {
                     }
                 })
             }
-        case ListActions.MOVE_UP_LIST:
+        case ListActions.MOVE_LIST:
             return {
                 ...state,
-                lists: state.lists.map((e) => {
-                    if (e.id === action.payload.list.id) {
+                lists: state.lists.map((list) => {
+                    console.log(action.payload.number.valueOf())
+                    if (list.id === action.payload.list.id) {
                         const lists = {
-                            order: action.payload.list.order - 1,
-                            id: e.id,
-                            name: e.name,
-                            default: e.default,
-                            color: e.color,
-                            active:e.active
-                        }
-
-                        return lists
-                    } else {
-                        if (e.order === (action.payload.list.order - 1)) {
-                            const order = {
-                                order: action.payload.list.order,
-                                id: e.id,
-                                name: e.name,
-                                default: e.default,
-                                color: e.color,
-                                active:e.active
-                            }
-                            return order
-                        } else {
-                            return e;
-                        }
-                    }
-                })
-            }
-        case ListActions.MOVE_DOWN_LIST:
-            return {
-                ...state,
-                lists: state.lists.map((e) => {
-                    if (e.id === action.payload.list.id) {
-                        const lists = {
-                            order: action.payload.list.order + 1,
-                            id: e.id,
-                            name: e.name,
-                            default: e.default,
-                            color: e.color,
-                            active:e.active
+                            order: action.payload.list.order + action.payload.number.valueOf(),
+                            id: list.id,
+                            name: list.name,
+                            default: list.default,
+                            color: list.color,
+                            active: list.active
                         }
                         return lists
                     } else {
-                        if (e.order === (action.payload.list.order +1 )) {
+                        if (list.order === (action.payload.list.order + action.payload.number.valueOf())) {
                             const order = {
                                 order: action.payload.list.order,
-                                id: e.id,
-                                name: e.name,
-                                default: e.default,
-                                color: e.color,
-                                active:e.active
+                                id: list.id,
+                                name: list.name,
+                                default: list.default,
+                                color: list.color,
+                                active: list.active
                             }
                             return order
                         } else {
-                            return e;
+                            return list;
                         }
                     }
                 })
@@ -105,30 +75,29 @@ const listReducer = (state = initialState, action: Actions) => {
         case ListActions.SET_ACTIVE_LIST:
             return {
                 ...state,
-                lists: state.lists.map((e)=>{
-                    if(e.id === action.payload.listId){
+                lists: state.lists.map((list) => {
+                    if (list.id === action.payload.listId) {
                         const lists = {
-                            order: e.order,
-                            id: e.id,
-                            name: e.name,
-                            default: e.default,
-                            color: e.color,
-                            active:true
+                            order: list.order,
+                            id: list.id,
+                            name: list.name,
+                            default: list.default,
+                            color: list.color,
+                            active: true
                         }
                         return lists
-                    }else{
-                        const lists = {
-                            order: e.order,
-                            id: e.id,
-                            name: e.name,
-                            default: e.default,
-                            color: e.color,
-                            active:false
+                    } else {
+                        const order = {
+                            order: list.order,
+                            id: list.id,
+                            name: list.name,
+                            default: list.default,
+                            color: list.color,
+                            active: false
                         }
-                        return lists
+                        return order
                     }
                 })
-
             }
         default:
             return state;
