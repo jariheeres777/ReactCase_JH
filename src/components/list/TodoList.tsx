@@ -9,10 +9,9 @@ import {useState} from "react";
 import AddTodoList from './AddTodolist'
 import ShowTodoList from './ShowTodoList';
 
-const TodoList = () => {
+class TodoList extends React.Component {
 
-
-
+    render() {
         return (
             <StyledTodoList
                 variant="permanent"
@@ -23,11 +22,11 @@ const TodoList = () => {
                     }
                 }}
             >
-                <ShowTodoList />
+                <ShowTodoList/>
                 <AddTodoList/>
             </StyledTodoList>
         );
     }
-;
+}
 
 export default TodoList;

@@ -6,6 +6,7 @@ type Actions = ActionType<typeof TodoActions>
 
 const initialState: ITodoState = {
     todos: []
+    
 };
 
 const todoReducer = (state = initialState, action: Actions) => {
@@ -22,6 +23,11 @@ const todoReducer = (state = initialState, action: Actions) => {
                     ...state.todos,
                     action.payload.todos
                 ]
+            }
+        case TodoActions.DELETE_TODO:
+            return {
+                ...state,
+                todos: state.todos.filter((todo) => todo.id !== action.payload.todoId)
             }
         default:
             return state;
