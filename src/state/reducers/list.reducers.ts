@@ -32,11 +32,11 @@ const listReducer = (state = initialState, action: Actions) => {
         case ListActions.UPDATE_LIST:
             return {
                 ...state,
-                lists:  state.lists.map((e) => {
-                    if (e.id === action.payload.list.id) {
+                lists:  state.lists.map((lists) => {
+                    if (lists.id === action.payload.list.id) {
                         return action.payload.list
                     } else {
-                        return e;
+                        return lists;
                     }
                 })
             }

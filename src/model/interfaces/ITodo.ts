@@ -10,5 +10,6 @@ export interface ITodo {
   priority: Priority;
   complete: boolean;
   completedOn?: Date;
+  order: number;
   // @todo, add tags to todo's
 }

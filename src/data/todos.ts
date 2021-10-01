@@ -7,7 +7,8 @@ const initialTodos: ITodo[] = [
         listId: 'default_list',
         title: 'Finish this app',
         priority: Priority.Normal,
-        complete: false
+        complete: false,
+        order: 1
     },
     {
         id: 'second_todo',
@@ -15,7 +16,8 @@ const initialTodos: ITodo[] = [
         title: 'Complete me',
         dueDate: new Date(),
         priority: Priority.Normal,
-        complete: false
+        complete: false,
+        order: 2
     }
 ];
 export default initialTodos;
