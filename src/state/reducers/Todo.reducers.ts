@@ -71,18 +71,41 @@ const todoReducer = (state = initialState, action: Actions) => {
         case TodoActions.UPDATE_TODO:
             return {
                 ...state,
-                todos: state.todos.map((todo =>{
-                    if(todo.id === action.payload.todos.id){
+                todos: state.todos.map((todo) => {
+                    if (todo.id === action.payload.todos.id) {
                         return action.payload.todos
-                    }else{
+                    } else {
                         return todo
                     }
-                }))
+                })
             }
+        case TodoActions.NEST_TODO_INTO:
+            return {
+                ...state,
+                todos: state.todos.map((todo) => {
+                    if (todo.id === action.payload.todo.id) {
+                        console.log(action.payload.todoIdChild)
 
+                        const newTodo: ITodo = {
+                            id: todo.id,
+                            listId: todo.listId,
+                            parentTodoId: todo.parentTodoId,
+                            title: todo.title,
+                            description: todo.description,
+                            dueDate: todo.dueDate,
+                            priority: todo.priority,
+                            complete: todo.complete,
+                            completedOn: todo.completedOn,
+                            order: action.payload.todo.order
+                        }
+                        return newTodo
+                    } else {
+                        return todo
+                    }
+                })
+            }
         default:
             return state;
-
     }
 }
 export default todoReducer;

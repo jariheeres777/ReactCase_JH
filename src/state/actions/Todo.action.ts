@@ -7,6 +7,7 @@ export const CREATE_TODO = '[todo] create'
 export const DELETE_TODO = '[todo] delete'
 export const MOVE_TODO = '[todo] move todo'
 export const UPDATE_TODO = '[todo] update todo'
+export const NEST_TODO_INTO = '[todo] nest into todo'
 
 export const loadTodos = createAction(LOAD_TODOS)
 
@@ -24,3 +25,6 @@ export const moveTodo = createAction(MOVE_TODO, action =>
 
 export const updateTodo = createAction(UPDATE_TODO,action=>
     (todos: ITodo) => action({todos}));
+
+export const nestTodoInto = createAction(NEST_TODO_INTO,action=>
+    (todo: ITodo,todoIdChild:string) => action({todo,todoIdChild}));

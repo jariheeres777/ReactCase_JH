@@ -3,7 +3,7 @@ import { Priority } from "../enums/priority";
 export interface ITodo {
   id: string;
   listId: string;
-  parentTodoId?: string;
+  parentTodoId?: [String];
   title: string;
   description?: string;
   dueDate?: Date;

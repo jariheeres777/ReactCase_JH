@@ -15,6 +15,7 @@ const initialTodos: ITodo[] = [
         listId: 'default_list',
         title: 'Complete me',
         dueDate: new Date(),
+        parentTodoId:["first_todo"],
         priority: Priority.Normal,
         complete: false,
         order: 2
