@@ -84,12 +84,10 @@ const todoReducer = (state = initialState, action: Actions) => {
                 ...state,
                 todos: state.todos.map((todo) => {
                     if (todo.id === action.payload.todo.id) {
-                        console.log(action.payload.todoIdChild)
-
                         const newTodo: ITodo = {
                             id: todo.id,
                             listId: todo.listId,
-                            parentTodoId: todo.parentTodoId,
+                            parentTodoId: action.payload.todoIdChild,
                             title: todo.title,
                             description: todo.description,
                             dueDate: todo.dueDate,

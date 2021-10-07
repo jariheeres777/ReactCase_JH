@@ -15,10 +15,27 @@ const initialTodos: ITodo[] = [
         listId: 'default_list',
         title: 'Complete me',
         dueDate: new Date(),
-        parentTodoId:["first_todo"],
         priority: Priority.Normal,
         complete: false,
         order: 2
+    },
+    {
+        id: 'third_todo',
+        listId: 'default_list',
+        title: 'sefsfe',
+        dueDate: new Date(),
+        priority: Priority.Normal,
+        complete: false,
+        order: 3
+    },
+    {
+        id: 'fourted_todo',
+        listId: 'default_list',
+        title: 'Cgsetfjjtfomplete me',
+        dueDate: new Date(),
+        priority: Priority.Normal,
+        complete: false,
+        order: 4
     }
 ];
 export default initialTodos;

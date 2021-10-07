@@ -21,7 +21,7 @@ export const deleteTodo = createAction(DELETE_TODO, action =>
     (todoId: string) => action({todoId}));
 
 export const moveTodo = createAction(MOVE_TODO, action =>
-    (todo: ITodo, number: Number) => action({todo, number}));
+    (todo: ITodo, number: number) => action({todo, number}));
 
 export const updateTodo = createAction(UPDATE_TODO,action=>
     (todos: ITodo) => action({todos}));
