@@ -24,7 +24,7 @@ export interface IListActions {
 
     updateList(list: IList): void
 
-    moveList(list: IList, number: Number): void
+    moveList(list: IList, number: number): void
 
     setActiveList(listId: string): void;
 }

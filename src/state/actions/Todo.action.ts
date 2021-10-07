@@ -23,8 +23,8 @@ export const deleteTodo = createAction(DELETE_TODO, action =>
 export const moveTodo = createAction(MOVE_TODO, action =>
     (todo: ITodo, number: number) => action({todo, number}));
 
-export const updateTodo = createAction(UPDATE_TODO,action=>
+export const updateTodo = createAction(UPDATE_TODO, action =>
     (todos: ITodo) => action({todos}));
 
-export const nestTodoInto = createAction(NEST_TODO_INTO,action=>
-    (todo: ITodo,todoIdChild:string) => action({todo,todoIdChild}));
+export const nestTodoInto = createAction(NEST_TODO_INTO, action =>
+    (todoIdParent: string, todoIdChild: string) => action({todoIdParent, todoIdChild}));

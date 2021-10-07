@@ -50,7 +50,8 @@ class ShowTodoList extends React.Component<IProps, IState> {
                             <ListItem button key={list.id}
                                       className={list.active ? "active" : ''}
                                       onClick={(event) => {
-                                          this.setActiveList(event)
+                                          this.setActiveList(list.id)
+                                          event.preventDefault()
                                       }}>
                                 <ListItemText primary={list.name}/>
                                 {!list.default &&
@@ -58,12 +59,14 @@ class ShowTodoList extends React.Component<IProps, IState> {
                                     <button disabled={list.order === 1}
                                             onClick={(event) => {
                                                 this.moveUpList(list)
+                                                event.preventDefault()
                                             }}>
                                         🡹
                                     </button>
                                     <button disabled={list.order === (lists.length - 1)}
                                             onClick={(event) => {
                                                 this.moveDownList(list)
+                                                event.preventDefault()
                                             }}>
                                         🡻
                                     </button>
@@ -119,7 +122,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
 
     private setActiveList(event: any) {
         if (event !== undefined) {
-            this.props.setActiveList(event.id)
+            this.props.setActiveList(event)
         }
     }
 
@@ -134,6 +137,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
         };
         const moveSpots: number = -1
         this.props.moveList(moveUp, moveSpots)
+        this.handleAdjust()
     }
 
     private moveDownList(event: any) {
@@ -147,6 +151,8 @@ class ShowTodoList extends React.Component<IProps, IState> {
         };
         const moveSpots: number = 1
         this.props.moveList(moveDown, moveSpots)
+        this.handleAdjust()
+
     }
 
     private openAdjustList(event: any) {

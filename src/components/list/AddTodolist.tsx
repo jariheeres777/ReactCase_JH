@@ -22,13 +22,14 @@ class AddTodolist extends React.Component<IProps, IState> {
         listName: '',
         listColor: '#000000'
     }
+
     render() {
         return (
             <>
                 {!this.state.addVisible &&
                 <>
                     <Divider/>
-                    <Button onClick={()=> {
+                    <Button onClick={() => {
                         this.toggleAdd()
                     }}>
                         addlist
@@ -54,12 +55,13 @@ class AddTodolist extends React.Component<IProps, IState> {
                         <input type='color' id="color"
                                value={this.state.listColor}
                                onChange={(event) => {
-                                   this.listColor(event)}
+                                   this.listColor(event)
+                               }
                                }/>
                     </InputLabel><br/><br/>
                     <Divider/>
                     <Button disabled={this.state.listName === ''}
-                            onClick={(event)=>{
+                            onClick={(event) => {
                                 this.addList(event)
                             }
                             }>
@@ -80,12 +82,13 @@ class AddTodolist extends React.Component<IProps, IState> {
     private addList(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         event.preventDefault()
         const {lists} = this.props;
+        const listarrayorder = lists.sort((a, b) => a.order < b.order ? 1 : -1)
         const list: IList = {
             color: this.state.listColor,
             default: false,
             id: uuid(),
             name: this.state.listName,
-            order: lists.length,
+            order: listarrayorder[0].order + 1,
             active: false
         };
         this.props.addlist(list)
@@ -95,10 +98,12 @@ class AddTodolist extends React.Component<IProps, IState> {
         })
         this.setState({addVisible: !this.state.addVisible})
     }
-    private listText(event:any){
+
+    private listText(event: any) {
         this.setState({listName: event.target.value})
     }
-    private listColor(event:any){
+
+    private listColor(event: any) {
         this.setState({listColor: event.target.value})
     }
 }

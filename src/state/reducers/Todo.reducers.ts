@@ -30,77 +30,66 @@ const todoReducer = (state = initialState, action: Actions) => {
                 todos: state.todos.filter((todo) => todo.id !== action.payload.todoId)
             }
         case TodoActions.MOVE_TODO:
+            const moveList = state.todos
+            const moveFromIndex = moveList.findIndex(todo => todo.id === action.payload.todo.id)
+            if (moveFromIndex === -1) {
+                return state
+            }
+            const moveToIndex = moveList.findIndex(todo => todo.order === (action.payload.todo.order + action.payload.number))
+            if (moveToIndex === -1) {
+                return state
+            }
+            const newOrder = {
+                id: action.payload.todo.id,
+                listId: action.payload.todo.listId,
+                title: action.payload.todo.title,
+                description: action.payload.todo.description,
+                dueDate: action.payload.todo.dueDate,
+                priority: action.payload.todo.priority,
+                complete: action.payload.todo.complete,
+                completedOn: action.payload.todo.completedOn,
+                order: moveList[moveToIndex].order
+            }
+            const oldOrder = {
+                id: moveList[moveToIndex].id,
+                listId: moveList[moveToIndex].listId,
+                title: moveList[moveToIndex].title,
+                description: moveList[moveToIndex].description,
+                dueDate: moveList[moveToIndex].dueDate,
+                priority:moveList[moveToIndex].priority,
+                complete: moveList[moveToIndex].complete,
+                completedOn: moveList[moveToIndex].completedOn,
+                order: action.payload.todo.order,
+            }
+            moveList[moveFromIndex] = newOrder
+            moveList[moveToIndex] = oldOrder
             return {
                 ...state,
-                todos: state.todos.map((todo) => {
-                    if (todo.id === action.payload.todo.id) {
-                        const newTodo: ITodo = {
-                            id: todo.id,
-                            listId: todo.listId,
-                            title: todo.title,
-                            description: todo.description,
-                            dueDate: todo.dueDate,
-                            priority: todo.priority,
-                            complete: todo.complete,
-                            completedOn: todo.completedOn,
-                            order: action.payload.todo.order + action.payload.number.valueOf()
-                        }
-                        console.log(newTodo)
-                        return newTodo
-                    } else {
-                        if (todo.order === (action.payload.todo.order + action.payload.number.valueOf())) {
-                            const newTodo: ITodo = {
-                                id: todo.id,
-                                listId: todo.listId,
-                                title: todo.title,
-                                description: todo.description,
-                                dueDate: todo.dueDate,
-                                priority: todo.priority,
-                                complete: todo.complete,
-                                completedOn: todo.completedOn,
-                                order: action.payload.todo.order
-                            }
-                            console.log(newTodo)
-                            return newTodo
-                        } else {
-                            return todo
-                        }
-                    }
-                })
+                lists: moveList
             }
         case TodoActions.UPDATE_TODO:
+            const updatedList = state.todos
+            const index = updatedList.findIndex(todo => todo.id === action.payload.todos.id)
+            if (index === -1) {
+                return state
+            }
+            updatedList[index] = action.payload.todos
             return {
                 ...state,
-                todos: state.todos.map((todo) => {
-                    if (todo.id === action.payload.todos.id) {
-                        return action.payload.todos
-                    } else {
-                        return todo
-                    }
-                })
+                todos: updatedList
             }
         case TodoActions.NEST_TODO_INTO:
+            const nestIn = state.todos
+            const I = nestIn.findIndex(todo => todo.id === action.payload.todoIdChild)
+            console.log(I)
+            if (I === -1) {
+                return state
+            }
+            nestIn[I].parentTodoId = action.payload.todoIdParent
+            console.log(nestIn)
             return {
                 ...state,
-                todos: state.todos.map((todo) => {
-                    if (todo.id === action.payload.todo.id) {
-                        const newTodo: ITodo = {
-                            id: todo.id,
-                            listId: todo.listId,
-                            parentTodoId: action.payload.todoIdChild,
-                            title: todo.title,
-                            description: todo.description,
-                            dueDate: todo.dueDate,
-                            priority: todo.priority,
-                            complete: todo.complete,
-                            completedOn: todo.completedOn,
-                            order: action.payload.todo.order
-                        }
-                        return newTodo
-                    } else {
-                        return todo
-                    }
-                })
+                todos: nestIn
             }
         default:
             return state;

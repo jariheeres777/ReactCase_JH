@@ -27,7 +27,7 @@ export const updateList = createAction(UPDATE_LIST, action =>
     (list: IList) => action({list})
 );
 export const moveList = createAction(MOVE_LIST, action =>
-    (list: IList, number: Number) => action({list, number})
+    (list: IList, number: number) => action({list, number})
 );
 export const setActiveList = createAction(SET_ACTIVE_LIST, action =>
     (listId: string) => action({listId})
