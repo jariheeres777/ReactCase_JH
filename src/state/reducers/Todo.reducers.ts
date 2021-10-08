@@ -1,7 +1,6 @@
 import {ITodoState} from "../containers/Todo.container";
 import * as TodoActions from "../actions/Todo.action";
 import {ActionType} from "typesafe-actions";
-import {ITodo} from "../../model/interfaces/ITodo";
 
 type Actions = ActionType<typeof TodoActions>
 
@@ -39,30 +38,8 @@ const todoReducer = (state = initialState, action: Actions) => {
             if (moveToIndex === -1) {
                 return state
             }
-            const newOrder = {
-                id: action.payload.todo.id,
-                listId: action.payload.todo.listId,
-                title: action.payload.todo.title,
-                description: action.payload.todo.description,
-                dueDate: action.payload.todo.dueDate,
-                priority: action.payload.todo.priority,
-                complete: action.payload.todo.complete,
-                completedOn: action.payload.todo.completedOn,
-                order: moveList[moveToIndex].order
-            }
-            const oldOrder = {
-                id: moveList[moveToIndex].id,
-                listId: moveList[moveToIndex].listId,
-                title: moveList[moveToIndex].title,
-                description: moveList[moveToIndex].description,
-                dueDate: moveList[moveToIndex].dueDate,
-                priority:moveList[moveToIndex].priority,
-                complete: moveList[moveToIndex].complete,
-                completedOn: moveList[moveToIndex].completedOn,
-                order: action.payload.todo.order,
-            }
-            moveList[moveFromIndex] = newOrder
-            moveList[moveToIndex] = oldOrder
+            moveList[moveFromIndex].order = moveList[moveToIndex].order
+            moveList[moveToIndex].order = action.payload.todo.order
             return {
                 ...state,
                 lists: moveList
@@ -81,16 +58,27 @@ const todoReducer = (state = initialState, action: Actions) => {
         case TodoActions.NEST_TODO_INTO:
             const nestIn = state.todos
             const I = nestIn.findIndex(todo => todo.id === action.payload.todoIdChild)
-            console.log(I)
             if (I === -1) {
                 return state
             }
             nestIn[I].parentTodoId = action.payload.todoIdParent
-            console.log(nestIn)
             return {
                 ...state,
                 todos: nestIn
             }
+        case TodoActions.NEST_TODO_OUT:
+            const nestOut = state.todos
+            const Index = nestOut.findIndex(todo => todo.id === action.payload.todoId)
+            if (Index === -1) {
+                return state
+            }
+
+            nestOut[Index].parentTodoId = undefined
+            return {
+                ...state,
+                todos: nestOut
+            }
+
         default:
             return state;
     }

@@ -58,15 +58,18 @@ class ShowTodoList extends React.Component<IProps, IState> {
                                 <>
                                     <button disabled={list.order === 1}
                                             onClick={(event) => {
-                                                this.moveUpList(list)
                                                 event.preventDefault()
+                                                event.stopPropagation()
+                                                this.moveUpList(list)
+
                                             }}>
                                         🡹
                                     </button>
                                     <button disabled={list.order === (lists.length - 1)}
                                             onClick={(event) => {
-                                                this.moveDownList(list)
                                                 event.preventDefault()
+                                                event.stopPropagation()
+                                                this.moveDownList(list)
                                             }}>
                                         🡻
                                     </button>
@@ -137,7 +140,6 @@ class ShowTodoList extends React.Component<IProps, IState> {
         };
         const moveSpots: number = -1
         this.props.moveList(moveUp, moveSpots)
-        this.handleAdjust()
     }
 
     private moveDownList(event: any) {
@@ -151,8 +153,6 @@ class ShowTodoList extends React.Component<IProps, IState> {
         };
         const moveSpots: number = 1
         this.props.moveList(moveDown, moveSpots)
-        this.handleAdjust()
-
     }
 
     private openAdjustList(event: any) {
