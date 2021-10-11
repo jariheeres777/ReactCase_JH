@@ -6,15 +6,15 @@ type Actions = ActionType<typeof TodoActions>
 
 const initialState: ITodoState = {
     todos: []
-
 };
-const todoReducer = (state = initialState, action: Actions) => {
+
+const todoReducer = (state = initialState, action: Actions): ITodoState => {
     switch (action.type) {
         case TodoActions.LOAD_TODOS_SUCCESS:
             return {
                 ...state,
                 todos: action.payload.todos
-            }
+            };
         case TodoActions.CREATE_TODO:
             return {
                 ...state,
@@ -22,30 +22,14 @@ const todoReducer = (state = initialState, action: Actions) => {
                     ...state.todos,
                     action.payload.todos
                 ]
-            }
+            };
         case TodoActions.DELETE_TODO:
             return {
                 ...state,
                 todos: state.todos.filter((todo) => todo.id !== action.payload.todoId)
-            }
-        case TodoActions.MOVE_TODO:
-            const moveList = state.todos
-            const moveFromIndex = moveList.findIndex(todo => todo.id === action.payload.todo.id)
-            if (moveFromIndex === -1) {
-                return state
-            }
-            const moveToIndex = moveList.findIndex(todo => todo.order === (action.payload.todo.order + action.payload.number))
-            if (moveToIndex === -1) {
-                return state
-            }
-            moveList[moveFromIndex].order = moveList[moveToIndex].order
-            moveList[moveToIndex].order = action.payload.todo.order
-            return {
-                ...state,
-                lists: moveList
-            }
+            };
         case TodoActions.UPDATE_TODO:
-            const updatedList = state.todos
+            const updatedList = [...state.todos]
             const index = updatedList.findIndex(todo => todo.id === action.payload.todos.id)
             if (index === -1) {
                 return state
@@ -54,31 +38,49 @@ const todoReducer = (state = initialState, action: Actions) => {
             return {
                 ...state,
                 todos: updatedList
-            }
-        case TodoActions.NEST_TODO_INTO:
-            const nestIn = state.todos
+            };
+        case TodoActions.NEST_TODO:
+            let parentState
+            const nestIn = [...state.todos]
             const I = nestIn.findIndex(todo => todo.id === action.payload.todoIdChild)
             if (I === -1) {
                 return state
             }
-            nestIn[I].parentTodoId = action.payload.todoIdParent
+            if (action.payload.todoIdParent === '') {
+                parentState = undefined
+            } else {
+                parentState = action.payload.todoIdParent
+            }
+            nestIn[I].parentTodoId = parentState
             return {
                 ...state,
                 todos: nestIn
-            }
-        case TodoActions.NEST_TODO_OUT:
-            const nestOut = state.todos
-            const Index = nestOut.findIndex(todo => todo.id === action.payload.todoId)
-            if (Index === -1) {
+            };
+        case TodoActions.MOVE_TODO:
+            const newTodos = [...state.todos]
+
+            const moveFromIndex = newTodos.findIndex(todo => todo.id === action.payload.todo.id)
+            if (moveFromIndex === -1) {
                 return state
             }
-
-            nestOut[Index].parentTodoId = undefined
+            const moveToIndex = moveFromIndex + action.payload.number;
+            newTodos[moveFromIndex].order = newTodos[moveToIndex].order
+            newTodos[moveToIndex].order = action.payload.todo.order
             return {
                 ...state,
-                todos: nestOut
+                todos: newTodos
+            };
+        case TodoActions.COMPLETED_TODO:
+            const completed = [...state.todos]
+            const completedIndex = completed.findIndex(todo => todo.id === action.payload.todoId)
+            if(completedIndex === -1){
+                return state
             }
-
+            completed[completedIndex].complete = !completed[completedIndex].complete
+            return {
+                ...state,
+                todos: completed
+            }
         default:
             return state;
     }

@@ -11,7 +11,7 @@ import {ITodoState, ITodoActions, withTodos} from "../../state/containers/Todo.c
 import {ITodo} from "../../model/interfaces/ITodo";
 import {IListActions, IListState, withLists} from "../../state/containers/list.container";
 import todos from "../../data/todos";
-
+import lists from "../../data/lists";
 
 interface Iouterprops {
     todo: ITodo
@@ -36,17 +36,16 @@ class ContentTodo extends React.Component<IProps, IState> {
 
     render() {
         const {todos} = this.props
-        const {lists} = this.props
         const {todo} = this.props
         if (todos.length === 0) {
             return null;
         }
-        const activeListId = lists.filter(list => list.active ? list.id : null)
+        const filteredList = lists.filter(list => list.active ? list.id : null)
+        const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id)
+        const listarrayorder = Math.max.apply(Math, filterdTodos.map(function(todo) { return todo.order }))
         return (
             <>
-                <ListItem button key={todo.id}
-                          onClick={(event) => {
-                          }}>
+                <ListItem button key={todo.id}>
                     {todo.parentTodoId !== undefined &&
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                          fill="currentColor" className="bi bi-arrow-return-right"
@@ -55,7 +54,8 @@ class ContentTodo extends React.Component<IProps, IState> {
                               d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
                     </svg>
                     }
-                    <Checkbox value={todo.complete}/>
+                    <Checkbox value={todo.complete}
+                              onClick={this.handleCompleteTodo.bind(this, todo.id)}/>
                     {this.state.currentTodoAdjust !== todo.id &&
                     <>
                         <div style={{width: "300px"}}>
@@ -64,7 +64,7 @@ class ContentTodo extends React.Component<IProps, IState> {
                         </div>
                         {todo.parentTodoId === undefined &&
                         <Button variant="contained"
-                                disabled={false}
+                                disabled={todo.order === 1}
                                 onClick={(event) => {
                                     this.nestInto(todo)
                                 }
@@ -83,34 +83,28 @@ class ContentTodo extends React.Component<IProps, IState> {
                         </Button>
                         }
                         <Button variant="contained"
+                                disabled={todo.order === 1}
                                 onClick={(event) => {
-                                    event.preventDefault()
-                                    event.stopPropagation()
                                     this.moveDownTodo(todo)
                                 }
                                 }>
                             🡹
                         </Button>
                         <Button variant="contained"
+                                disabled={todo.order === listarrayorder}
                                 onClick={(event) => {
-                                    event.preventDefault()
-                                    event.stopPropagation()
                                     this.moveUpTodo(todo)
                                 }}>
                             🡻
                         </Button>
                         <Button variant="contained"
                                 onClick={(event) => {
-                                    event.preventDefault()
-                                    event.stopPropagation()
                                     this.inUpdateTodo(todo.id)
                                 }
                                 }>✐
                         </Button>
                         <Button variant="contained"
                                 onClick={(event) => {
-                                    event.preventDefault()
-                                    event.stopPropagation()
                                     this.deleteTodo(todo.id)
                                 }
                                 }>❌
@@ -129,8 +123,6 @@ class ContentTodo extends React.Component<IProps, IState> {
                         </div>
                         <Button variant="contained"
                                 onClick={(event) => {
-                                    event.preventDefault()
-                                    event.stopPropagation()
                                     this.updateTodo(todo)
                                 }
                                 }>confirm
@@ -148,21 +140,36 @@ class ContentTodo extends React.Component<IProps, IState> {
         )
     }
 
-    public toggleUpdate() {
-        this.setState({inUpdate: this.state.inUpdate})
+    private toggleUpdate() {
+
+        this.setState({
+            inUpdate: this.state.inUpdate,
+            newTodoName: ''
+        })
     }
 
-    public nestInto(event: any) {
-        const index = todos.findIndex(todo => todo.id === event.id)
-        const todoId = todos[index - 1].id
-        this.props.nestTodoInto(todoId, event.id)
+    private handleCompleteTodo(listid: string) {
+        this.props.completedTodo(listid)
     }
 
-    public nestOut(event: any) {
-        this.props.nestTodoOut(event)
+    private nestInto(event: any) {
+
+        const activeList = lists.filter(list => list.active ? list.id : null)
+        const activeTodos = todos.filter(todo => todo.listId === activeList[0].id)
+        const listNotnested = activeTodos.filter(todo => todo.parentTodoId === undefined ? todo.id : null)
+        const index = listNotnested.findIndex(todo => todo.id === event.id)
+        if (index < 1) {
+            return
+        }
+        const todoId = listNotnested[index - 1].id
+        this.props.nestTodo(todoId, event.id)
     }
 
-    public moveDownTodo(event: any) {
+    private nestOut(event: any) {
+        this.props.nestTodo('', event)
+    }
+
+    private moveDownTodo(event: any) {
         const newTodo: ITodo = {
             id: event.id,
             listId: event.listId,
@@ -178,7 +185,7 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.props.moveTodo(newTodo, number)
     }
 
-    public moveUpTodo(event: any) {
+    private moveUpTodo(event: any) {
         const newTodo: ITodo = {
             id: event.id,
             listId: event.listId,
@@ -194,20 +201,20 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.props.moveTodo(newTodo, number)
     }
 
-    public inUpdateTodo(event: any) {
+    private inUpdateTodo(event: any) {
         this.toggleUpdate()
         this.setState({currentTodoAdjust: event})
     }
 
-    public deleteTodo(event: any) {
+    private deleteTodo(event: any) {
         this.props.deleteTodo(event)
     }
 
-    public nameTodo(event: any) {
+    private nameTodo(event: any) {
         this.setState({newTodoName: event.target.value})
     }
 
-    public updateTodo(event: any) {
+    private updateTodo(event: any) {
         const newTodo: ITodo = {
             id: event.id,
             listId: event.listId,
@@ -224,13 +231,12 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.toggleUpdate()
     }
 
-    public cancelUpdateTodo(event: any) {
+    private cancelUpdateTodo(event: any) {
         event.stopPropagation()
         event.preventDefault()
         this.setState({currentTodoAdjust: ''})
         this.toggleUpdate()
     }
-
 }
 
 export default compose<IProps, Iouterprops>

@@ -3,8 +3,6 @@ import * as React from 'react';
 import StyledMain from "./styled/StyledMain";
 import TodoItems from "../todo/TodoItems";
 
-
-
 const Main = () => {
     return (
         <StyledMain>

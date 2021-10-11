@@ -17,15 +17,10 @@ export interface IListState {
 
 export interface IListActions {
     loadLists(): void;
-
     deleteList(listId: string): void;
-
     addlist(list: IList): void,
-
     updateList(list: IList): void
-
     moveList(list: IList, number: number): void
-
     setActiveList(listId: string): void;
 }
 
@@ -53,12 +48,10 @@ export const withLists = () => (Component: React.ComponentType) => {
                 props.loadLists();
             }
         }
-
         public render() {
             return <Component {...this.props} />;
         }
     }
-
     return connect(mapStateToProps, mapDispatchToProps)(ListContainer);
 };
 

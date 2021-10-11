@@ -6,10 +6,10 @@ export interface ITodo {
     parentTodoId?: string;
     title: string;
     description?: string;
-    dueDate?: Date;
+    dueDate?: string;
     priority: Priority;
     complete: boolean;
-    completedOn?: Date;
+    completedOn?: string;
     order: number;
     // @todo, add tags to todo's
 }

@@ -13,8 +13,6 @@ interface IProps extends ITodoState, ITodoActions, IListState, IListActions {
 }
 
 class ShowTodoItem extends React.Component<IProps> {
-
-
     render() {
         const {todos} = this.props
         const {lists} = this.props
@@ -22,6 +20,9 @@ class ShowTodoItem extends React.Component<IProps> {
             return null;
         }
         const activeListId = lists.filter(list => list.active ? list.id : null)
+        if (activeListId.length === 0 ){
+            return null
+        }
         return (
             <>
                 <List>

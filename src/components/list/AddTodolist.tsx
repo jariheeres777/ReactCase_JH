@@ -5,7 +5,6 @@ import {IList} from '../../model/interfaces/IList';
 import {IListState, IListActions, withLists} from '../../state/containers/list.container';
 import {compose} from 'recompose';
 
-
 interface IProps extends IListState, IListActions {
 
 }
@@ -46,7 +45,7 @@ class AddTodolist extends React.Component<IProps, IState> {
                                    margin='dense'
                                    value={this.state.listName}
                                    onChange={(event) => {
-                                       this.listText(event)
+                                       this.handListText(event)
                                    }}
                         />
                     </InputLabel>
@@ -55,20 +54,24 @@ class AddTodolist extends React.Component<IProps, IState> {
                         <input type='color' id="color"
                                value={this.state.listColor}
                                onChange={(event) => {
-                                   this.listColor(event)
+                                   this.handLeListColor(event)
                                }
                                }/>
                     </InputLabel><br/><br/>
                     <Divider/>
                     <Button disabled={this.state.listName === ''}
                             onClick={(event) => {
-                                this.addList(event)
+                                this.handLeAddList(event)
                             }
                             }>
                         confirm
                     </Button>
                     <Divider/>
-
+                    <Button onClick={() => {
+                        this.toggleAdd()
+                    }}>
+                        cancel
+                    </Button>
                 </>
                 }
             </>
@@ -76,34 +79,38 @@ class AddTodolist extends React.Component<IProps, IState> {
     }
 
     private toggleAdd() {
+        this.setState({
+                listColor: '#000000',
+                listName: ''
+            }
+        )
         this.setState({addVisible: !this.state.addVisible})
     }
 
-    private addList(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    private handLeAddList(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         event.preventDefault()
         const {lists} = this.props;
-        const listarrayorder = lists.sort((a, b) => a.order < b.order ? 1 : -1)
+        const listarrayorder = Math.max.apply(Math, lists.map(function (list) {
+            return list.order;
+        }))
+        const order = listarrayorder + 1
         const list: IList = {
             color: this.state.listColor,
             default: false,
             id: uuid(),
             name: this.state.listName,
-            order: listarrayorder[0].order + 1,
+            order: order,
             active: false
         };
         this.props.addlist(list)
-        this.setState({
-            listColor: '#000000',
-            listName: '',
-        })
-        this.setState({addVisible: !this.state.addVisible})
+        this.toggleAdd()
     }
 
-    private listText(event: any) {
+    private handListText(event: any) {
         this.setState({listName: event.target.value})
     }
 
-    private listColor(event: any) {
+    private handLeListColor(event: any) {
         this.setState({listColor: event.target.value})
     }
 }

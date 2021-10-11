@@ -30,50 +30,34 @@ const listReducer = (state = initialState, action: Actions) => {
                 lists: state.lists.filter((list) => list.id !== action.payload.listId)
             };
         case ListActions.UPDATE_LIST:
-            const updatedList = state.lists
+            const updatedList = [...state.lists]
             const index = updatedList.findIndex(list => list.id === action.payload.list.id)
             if (index === -1) {
                 return state
-            }
+            };
             updatedList[index] = action.payload.list
             return {
                 ...state,
                 lists: updatedList
-            }
+            };
         case ListActions.MOVE_LIST:
-            const moveList = state.lists
+            const moveList = [...state.lists]
             const moveFromIndex = moveList.findIndex(list => list.id === action.payload.list.id)
             if (moveFromIndex === -1) {
                 return state
-            }
+            };
             const moveToIndex = moveList.findIndex(list => list.order === (action.payload.list.order + action.payload.number))
             if (moveToIndex === -1) {
                 return state
             }
-            const newOrder = {
-                color: action.payload.list.color,
-                default: action.payload.list.default,
-                id: action.payload.list.id,
-                name: action.payload.list.name,
-                order: moveList[moveToIndex].order,
-                active: action.payload.list.active,
-            }
-            const oldOrder = {
-                color: moveList[moveToIndex].color,
-                default: moveList[moveToIndex].default,
-                id: moveList[moveToIndex].id,
-                name: moveList[moveToIndex].name,
-                order: action.payload.list.order,
-                active: moveList[moveToIndex].active,
-            }
-            moveList[moveFromIndex] = newOrder
-            moveList[moveToIndex] = oldOrder
+            moveList[moveFromIndex].order = moveList[moveToIndex].order
+            moveList[moveToIndex].order = action.payload.list.order
             return {
                 ...state,
                 lists: moveList
-            }
+            };
         case ListActions.SET_ACTIVE_LIST:
-            const activeList = state.lists
+            const activeList = [...state.lists]
             const I = activeList.findIndex(list => list.id === action.payload.listId)
             const ID = activeList.findIndex(list => list.active)
             if (I === -1) {
@@ -87,7 +71,7 @@ const listReducer = (state = initialState, action: Actions) => {
             return {
                 ...state,
                 lists: activeList
-            }
+            };
         default:
             return state;
     }

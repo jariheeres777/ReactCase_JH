@@ -3,8 +3,6 @@ import StyledTodoList from './styled/StyledTodoList';
 import AddTodoList from './AddTodolist'
 import ShowTodoList from './ShowTodoList';
 
-
-
 class TodoList extends React.Component {
 
     render() {
@@ -16,8 +14,7 @@ class TodoList extends React.Component {
                     classes: {
                         root: 'drawer-paper'
                     }
-                }}
-            >
+                }}>
                 <ShowTodoList/>
                 <AddTodoList/>
             </StyledTodoList>

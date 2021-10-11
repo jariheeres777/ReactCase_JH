@@ -23,7 +23,6 @@ class AddTodoItem extends React.Component<IProps, IState> {
         title: '',
         description: ''
     }
-
     render() {
         return (
             <>
@@ -33,7 +32,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
                         margin='dense'
                         placeholder="title"
                         value={this.state.title}
-                        onChange={(event) => {
+                        onChange={(event)=>{
                             this.titleList(event)
                         }}
                     />
@@ -48,31 +47,26 @@ class AddTodoItem extends React.Component<IProps, IState> {
                         margin='dense'
                         placeholder="description"
                         value={this.state.description}
-                        onChange={(event) => {
+                        onChange={(event)=>{
                             this.descriptionList(event)
-                        }}
-                    />
+                        }}/>
                 </>
                 <br/>
                 <br/>
                 <Input type="Date"
                        value={this.state.date}
-                       onChange={(event) => {
+                       onChange={(event)=>{
                            this.dateList(event)
                        }}/>
                 <br/>
                 <br/>
                 <>
                     <Button variant="outlined"
-                            onClick={() => {
-                                this.addList()
-                            }}>
+                            onClick={this.addList}>
                         confirm
                     </Button>
                     <Button variant="outlined"
-                            onClick={()=>{
-                                this.cancelList()
-                            }}>
+                            onClick={this.cancelList}>
                         cancel
                     </Button>
                 </>
@@ -80,22 +74,23 @@ class AddTodoItem extends React.Component<IProps, IState> {
         )
     }
 
-    public titleList(event: any) {
+    private titleList(event: any) {
         this.setState({title: event.target.value})
     }
 
-    public descriptionList(event: any) {
+    private descriptionList(event: any) {
         this.setState({description: event.target.value})
     }
 
-    public dateList(event: any) {
+    private dateList(event: any) {
         this.setState({date: event.target.value})
     }
 
-    public addList() {
-        const {todos,createTodo} = this.props;
-        const {lists} = this.props;
+    private addList() {
+        const {todos,lists} = this.props;
         const filteredList = lists.filter(list => list.active ? list.id : null)
+        const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id)
+        const listarrayorder = Math.max.apply(Math, filterdTodos.map(function(todo) { return todo.order }))
         let dateTime;
         if (this.state.date === '') {
             const dateTime = Date
@@ -109,22 +104,21 @@ class AddTodoItem extends React.Component<IProps, IState> {
             priority: Priority.Normal,
             complete: false,
             completedOn: undefined,
-            order: todos.length + 1
+            order: listarrayorder + 1
         }
-        createTodo(newTodo)
+        console.log(listarrayorder)
+        this.props.createTodo(newTodo)
         this.cancelList()
     }
 
-    public cancelList() {
+    private cancelList() {
         this.setState({
                 date: '',
                 title: '',
                 description: ''
             }
         )
-
     }
-
 }
 
 export default compose<IProps, {}>

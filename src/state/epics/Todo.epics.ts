@@ -19,5 +19,4 @@ export const loadTodos$: Epic<AnyAction, AnyAction, RootState> = (
     );
 
 const todoEpics = [loadTodos$];
-
 export default todoEpics;

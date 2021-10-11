@@ -12,23 +12,19 @@ export const SET_ACTIVE_LIST = '[LIST] active'
 export const loadLists = createAction(LOAD_LISTS);
 
 export const loadListsSuccess = createAction(LOAD_LISTS_SUCCESS, action =>
-    (lists: IList[]) => action({lists})
-);
+    (lists: IList[]) => action({lists}));
 
 export const deleteList = createAction(DELETE_LIST, action =>
-    (listId: string) => action({listId})
-);
+    (listId: string) => action({listId}));
 
 export const addlist = createAction(CREATE_LIST, action =>
-    (list: IList) => action({list})
-);
+    (list: IList) => action({list}));
 
 export const updateList = createAction(UPDATE_LIST, action =>
-    (list: IList) => action({list})
-);
+    (list: IList) => action({list}));
+
 export const moveList = createAction(MOVE_LIST, action =>
-    (list: IList, number: number) => action({list, number})
-);
+    (list: IList, number: number) => action({list, number}));
+
 export const setActiveList = createAction(SET_ACTIVE_LIST, action =>
-    (listId: string) => action({listId})
-);
+    (listId: string) => action({listId}));
