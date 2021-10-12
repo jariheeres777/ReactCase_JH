@@ -11,5 +11,5 @@ export interface ITodo {
     complete: boolean;
     completedOn?: string;
     order: number;
-    // @todo, add tags to todo's
+    tags?: [];
 }

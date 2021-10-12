@@ -76,7 +76,14 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             if(completedIndex === -1){
                 return state
             }
+            if(completed[completedIndex].complete){
+                completed[completedIndex].completedOn = undefined
+            }else{
+                completed[completedIndex].completedOn = new Date().toString()
+            }
             completed[completedIndex].complete = !completed[completedIndex].complete
+
+
             return {
                 ...state,
                 todos: completed
