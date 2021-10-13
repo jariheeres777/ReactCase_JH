@@ -11,5 +11,5 @@ export interface ITodo {
     complete: boolean;
     completedOn?: string;
     order: number;
-    tags?: [];
+    tags?: string[];
 }

@@ -46,24 +46,20 @@ class AddTodolist extends React.Component<IProps, IState> {
                                    value={this.state.listName}
                                    onChange={(event) => {
                                        this.handListText(event)
-                                   }}
-                        />
+                                   }}/>
                     </InputLabel>
                     <InputLabel margin='dense'>
                         Color<br/><br/>
                         <input type='color' id="color"
-                               value={this.state.listColor}
                                onChange={(event) => {
                                    this.handLeListColor(event)
-                               }
-                               }/>
+                               }}/>
                     </InputLabel><br/><br/>
                     <Divider/>
                     <Button disabled={this.state.listName === ''}
                             onClick={(event) => {
                                 this.handLeAddList(event)
-                            }
-                            }>
+                            }}>
                         confirm
                     </Button>
                     <Divider/>
@@ -72,6 +68,7 @@ class AddTodolist extends React.Component<IProps, IState> {
                     }}>
                         cancel
                     </Button>
+                    <Divider/>
                 </>
                 }
             </>
@@ -114,7 +111,6 @@ class AddTodolist extends React.Component<IProps, IState> {
         this.setState({listColor: event.target.value})
     }
 }
-
 
 export default compose<IProps, {}>
 (withLists())

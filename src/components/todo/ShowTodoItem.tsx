@@ -1,14 +1,15 @@
 import {
     List,
-    Divider
+    Divider, Button
 } from "@material-ui/core";
 import React from "react";
 import {compose} from "recompose";
 import {ITodoState, ITodoActions, withTodos} from "../../state/containers/Todo.container";
 import {IListActions, IListState, withLists} from "../../state/containers/list.container";
 import ContentTodo from "./ContentTodo";
+import {ITagActions, ITagState} from "../../state/containers/Tag.container";
 
-interface IProps extends ITodoState, ITodoActions, IListState, IListActions {
+interface IProps extends ITodoState, ITodoActions, IListState, IListActions , ITagState, ITagActions{
 
 }
 

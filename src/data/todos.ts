@@ -14,16 +14,17 @@ const initialTodos: ITodo[] = [
         id: 'second_todo',
         listId: 'default_list',
         title: 'Complete me',
-        dueDate: new Date(),
+        dueDate: new Date().toLocaleString().split(',')[0],
         priority: Priority.Normal,
         complete: false,
-        order: 2
+        order: 2,
+        tags:['default']
     },
     {
         id: 'third_todo',
         listId: 'default_list',
         title: 'sefsfe',
-        dueDate: new Date(),
+        dueDate: new Date().toLocaleString().split(',')[0],
         priority: Priority.Normal,
         complete: false,
         order: 3
@@ -32,7 +33,7 @@ const initialTodos: ITodo[] = [
         id: 'fourted_todo',
         listId: 'default_list',
         title: 'Cgsetfjjtfomplete me',
-        dueDate: new Date(),
+        dueDate: new Date().toLocaleString().split(',')[0],
         priority: Priority.Normal,
         complete: false,
         order: 4

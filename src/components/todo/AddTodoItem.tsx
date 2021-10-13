@@ -28,7 +28,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
             <>
                 <>
                     <Input
-                        style={{width: "300px"}}
+                        className='todoText'
                         margin='dense'
                         placeholder="title"
                         value={this.state.title}
@@ -41,7 +41,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
                 <br/>
                 <>
                     <Input
-                        style={{width: "300px"}}
+                        className='todoText'
                         multiline={true}
                         rows={5}
                         margin='dense'
@@ -83,7 +83,8 @@ class AddTodoItem extends React.Component<IProps, IState> {
     }
 
     private dateList(event: any) {
-        this.setState({date: event.target.value})
+        const date = event.target.value.toLocaleString().split(',')[0]
+        this.setState({date: date})
     }
 
     private addList() {
@@ -91,20 +92,17 @@ class AddTodoItem extends React.Component<IProps, IState> {
         const filteredList = lists.filter(list => list.active ? list.id : null)
         const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id)
         const listarrayorder = Math.max.apply(Math, filterdTodos.map(function(todo) { return todo.order }))
-        let dateTime;
-        if (this.state.date === '') {
-            const dateTime = Date
-        }
         const newTodo: ITodo = {
             id: uuid(),
             listId: filteredList[0].id,
             title: this.state.title,
             description: this.state.description,
-            dueDate: dateTime,
+            dueDate: this.state.date,
             priority: Priority.Normal,
             complete: false,
             completedOn: undefined,
-            order: listarrayorder + 1
+            order: listarrayorder + 1,
+            tags:[]
         }
         console.log(listarrayorder)
         this.props.createTodo(newTodo)

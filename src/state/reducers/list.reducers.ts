@@ -34,7 +34,7 @@ const listReducer = (state = initialState, action: Actions) => {
             const index = updatedList.findIndex(list => list.id === action.payload.list.id)
             if (index === -1) {
                 return state
-            };
+            }
             updatedList[index] = action.payload.list
             return {
                 ...state,
@@ -45,7 +45,7 @@ const listReducer = (state = initialState, action: Actions) => {
             const moveFromIndex = moveList.findIndex(list => list.id === action.payload.list.id)
             if (moveFromIndex === -1) {
                 return state
-            };
+            }
             const moveToIndex = moveList.findIndex(list => list.order === (action.payload.list.order + action.payload.number))
             if (moveToIndex === -1) {
                 return state

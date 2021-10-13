@@ -3,7 +3,6 @@ import React from 'react';
 import {compose} from 'recompose';
 import {IList} from '../../model/interfaces/IList';
 import {IListState, IListActions, withLists} from '../../state/containers/list.container';
-import todos from "../../data/todos";
 import lists from "../../data/lists";
 
 interface IProps extends IListState, IListActions {
@@ -51,7 +50,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
                         .map((list) => (
                             <ListItem button key={list.id}
                                       className={list.active ? "active" : ''}
-                                      onClick={this.handleSetActiveList.bind(this, list.id)}>
+                                      onClick={this.handleSetActiveList.bind(this, list)}>
                                 <ListItemText primary={list.name}/>
                                 {!list.default &&
                                 <>
@@ -109,8 +108,8 @@ class ShowTodoList extends React.Component<IProps, IState> {
         this.setState({adjustVisible: !this.state.adjustVisible})
     }
 
-    private handleSetActiveList = (id: string, event: any) => {
-        this.props.setActiveList(id)
+    private handleSetActiveList = (list: any, event: any) => {
+        this.props.setActiveList(list.id)
     }
 
     private handleMoveUpList(list: IList) {

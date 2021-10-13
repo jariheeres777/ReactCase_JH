@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import {compose} from 'recompose';
 import Drawer, {DrawerProps} from '@material-ui/core/Drawer';
 
+
 export const drawerWidth = 240;
 
 const StyledDrawer = styled(Drawer)(({theme}: WithTheme) => ({
@@ -12,10 +13,11 @@ const StyledDrawer = styled(Drawer)(({theme}: WithTheme) => ({
     },
     '.drawer-paper': {
         width: drawerWidth
-    }, '.active': {
+    },'.active': {
         backgroundColor: theme.palette.action.active,
-        color:theme.palette.getContrastText(theme.palette.action.active)
-    }
+        color:theme.palette.getContrastText(theme.palette.action.active),
+
+    },
 }));
 
 export default compose<WithTheme, DrawerProps>(
