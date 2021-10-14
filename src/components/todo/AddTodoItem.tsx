@@ -104,7 +104,6 @@ class AddTodoItem extends React.Component<IProps, IState> {
             order: listarrayorder + 1,
             tags:[]
         }
-        console.log(listarrayorder)
         this.props.createTodo(newTodo)
         this.cancelList()
     }

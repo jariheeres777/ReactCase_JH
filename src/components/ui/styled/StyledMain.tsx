@@ -17,7 +17,15 @@ const StyledMain = styled('main')(({theme}: WithTheme) => ({
     }, '.addTag': {
         fontSize: "30px",
         color: 'limegreen',
+    }, '.container-todo': {
+        display:'flex',
+        margin:'3px'
+    }, '.box': {
+        width:'20%',
+        border:'5px solid red',
+
     },
+
 }));
 
 export default compose<WithTheme, {}>(

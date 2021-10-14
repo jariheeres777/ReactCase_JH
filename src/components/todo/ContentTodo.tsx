@@ -4,7 +4,6 @@ import {
     Input,
     ListItem,
     ListItemText,
-    Select,
 } from "@material-ui/core";
 import React from "react";
 import {compose} from "recompose";
@@ -136,24 +135,29 @@ class ContentTodo extends React.Component<IProps, IState> {
                             )}
                         {!this.state.updateTag &&
                         <Button className="addTag"
-                                onClick={this.toggleTag}>
+                                onClick= {()=>{
+                                    this.toggleTag()
+                                }}>
                             +
                         </Button>
                         }
-                        {!this.state.updateTag &&
-                        <select onChange={this.addTagTodo.bind(this, todo.id)}>
-                            <option selected={true} disabled={true}>
-                                select your tag
-                            </option>
-                            {tags
-                                .filter(tag => !todo.tags?.includes(tag.id))
-                                .map((tag) => (
-                                    <option>
-                                        {tag.name}
-                                    </option>
-                                ))
-                            }
-                        </select>
+                        {this.state.updateTag &&
+                        <>
+                            <select onChange={this.addTagTodo.bind(this, todo.id)}>
+                                <option selected={true} disabled={true}>
+                                    select your tag
+                                </option>
+                                {tags
+                                    .filter(tag => !todo.tags?.includes(tag.id))
+                                    .map((tag) => (
+                                        <option>
+                                            {tag.name}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+
+                        </>
                         }
                     </>
                     }
@@ -166,15 +170,12 @@ class ContentTodo extends React.Component<IProps, IState> {
                                    }}/>
                         </div>
                         <Button variant="contained"
-                                onClick={(event) => {
-                                    this.updateTodo(todo)
-                                }
+                                onClick={this.updateTodo.bind(this,todo)
                                 }>confirm
                         </Button>
                         <Button variant="contained"
-                                onClick={(event) => {
-                                    this.cancelUpdateTodo(event)
-                                }}>cancel
+                                onClick={this.cancelUpdateTodo}>
+                            cancel
                         </Button>
                     </>
                     }
@@ -183,18 +184,18 @@ class ContentTodo extends React.Component<IProps, IState> {
         )
     }
 
-    private toggleUpdate() {
+    public toggleUpdate() {
         this.setState({
             inUpdate: !this.state.inUpdate,
             newTodoName: ''
         })
     };
 
-    private handleCompleteTodo(listid: string) {
+    public handleCompleteTodo(listid: string) {
         this.props.completedTodo(listid)
     };
 
-    private nestInto(event: any) {
+    public nestInto(event: any) {
 
         const activeList = lists.filter(list => list.active ? list.id : null)
         const activeTodos = todos.filter(todo => todo.listId === activeList[0].id)
@@ -207,11 +208,11 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.props.nestTodo(todoId, event.id)
     };
 
-    private nestOut(event: any) {
+    public nestOut(event: any) {
         this.props.nestTodo('', event)
     };
 
-    private moveDownTodo(event: any) {
+    public moveDownTodo(event: any) {
         const newTodo: ITodo = {
             id: event.id,
             listId: event.listId,
@@ -228,7 +229,7 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.props.moveTodo(newTodo, number)
     };
 
-    private moveUpTodo(event: any) {
+    public moveUpTodo(event: any) {
         const newTodo: ITodo = {
             id: event.id,
             listId: event.listId,
@@ -245,12 +246,12 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.props.moveTodo(newTodo, number)
     };
 
-    private inUpdateTodo(event: any) {
+    public inUpdateTodo(event: any) {
         this.toggleUpdate()
         this.setState({currentTodoAdjust: event})
     };
 
-    private deleteTodo(event: any) {
+    public deleteTodo(event: any) {
         this.props.deleteTodo(event)
     };
 
@@ -262,13 +263,14 @@ class ContentTodo extends React.Component<IProps, IState> {
         const {tags} = this.props
         const tag = tags.filter(tag => tag.name === event.target.value ? tag.id : null)
         this.props.addTagTodo(todo, tag[0].id)
+        this.toggleTag()
     };
 
-    private nameTodo(event: any) {
+    public nameTodo(event: any) {
         this.setState({newTodoName: event.target.value})
     };
 
-    private updateTodo(event: any) {
+    public updateTodo(event: any) {
         const newTodo: ITodo = {
             id: event.id,
             listId: event.listId,
@@ -286,7 +288,7 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.toggleUpdate()
     };
 
-    private cancelUpdateTodo(event: any) {
+    public cancelUpdateTodo(event: any) {
         event.stopPropagation()
         event.preventDefault()
         this.setState({currentTodoAdjust: ''})

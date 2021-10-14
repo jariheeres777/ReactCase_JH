@@ -101,15 +101,15 @@ class AddTodolist extends React.Component<IProps, IState> {
         };
         this.props.addlist(list)
         this.toggleAdd()
-    }
+    };
 
     private handListText(event: any) {
         this.setState({listName: event.target.value})
-    }
+    };
 
     private handLeListColor(event: any) {
         this.setState({listColor: event.target.value})
-    }
+    };
 }
 
 export default compose<IProps, {}>
