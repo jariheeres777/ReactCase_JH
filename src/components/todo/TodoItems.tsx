@@ -1,8 +1,8 @@
 import React from 'react';
 import AddTodoItem from './AddTodoItem';
 import ShowTodoItem from './ShowTodoItem';
-import AddTagItem from './AddTagItem';
-import DeleteOrUpdateTag from "./DeleteOrUpdateTag";
+import AddTagItem from '../tag/AddTagItem';
+import DeleteOrUpdateTag from "../tag/DeleteOrUpdateTag";
 
 class TodoItems extends React.Component {
     render() {
@@ -10,8 +10,7 @@ class TodoItems extends React.Component {
             <>
                 <ShowTodoItem/>
                 <div className='container'>
-                    <div className='box'
-                         style={{margin:'0'}}>
+                    <div className='box'>
                     <h2>
                         Add Todo
                     </h2>
@@ -24,14 +23,17 @@ class TodoItems extends React.Component {
                         <AddTagItem/>
                     </div>
                     <div className='box'>
+                        <h2>
+                            update/delete Tag
+                        </h2>
                         <DeleteOrUpdateTag/>
                     </div>
                 </div>
 
 
             </>
-        )
-    }
+        );
+    };
 }
 
 export default TodoItems

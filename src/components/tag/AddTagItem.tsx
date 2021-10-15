@@ -18,7 +18,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
     public state = {
         tagName: '',
         tagColor: '#000000'
-    }
+    };
 
     render() {
         return (
@@ -31,8 +31,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
                         value={this.state.tagName}
                         onChange={(event) => {
                             this.handleSetTagName(event)
-                        }}
-                    />
+                        }}/>
                 </>
                 <br/>
                 <>
@@ -47,7 +46,8 @@ class AddTodoItem extends React.Component<IProps, IState> {
                 </>
                 <>
                     <Button variant="outlined"
-                            onClick={(event)=>{
+                            disabled={this.state.tagName === ''}
+                            onClick={(event) => {
                                 this.handleAddTag(event)
                             }}>
                         confirm
@@ -57,7 +57,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
                     </Button>
                 </>
             </>
-        )
+        );
     };
 
     public handleSetTagName(event: any) {
@@ -70,7 +70,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
         console.log(this.state.tagColor)
     };
 
-    private handleAddTag(event:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    private handleAddTag(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         event.preventDefault()
         console.log(this.state.tagName + ' ' + this.state.tagColor)
         const newTag: ITag = {

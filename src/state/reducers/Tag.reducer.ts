@@ -2,7 +2,6 @@ import {ActionType} from "typesafe-actions";
 import * as TagActions from "../actions/Tag.action";
 import {ITagState} from '../containers/Tag.container'
 
-
 type Actions = ActionType<typeof TagActions>
 
 const initialState: ITagState = {
@@ -39,9 +38,9 @@ const tagReducer = (state = initialState, action: Actions): ITagState => {
             return {
                 ...state,
                 tags:updateTag
-            }
+            };
         default:
             return state;
     }
-}
+};
 export default tagReducer;

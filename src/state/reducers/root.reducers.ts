@@ -10,7 +10,7 @@ export type RootState = {
     readonly lists: IListState;
     readonly todos: ITodoState;
     readonly tags: ITagState
-}
+};
 
 export const rootReducers = combineReducers({
     lists: listReducer,

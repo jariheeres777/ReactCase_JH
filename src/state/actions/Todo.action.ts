@@ -1,5 +1,6 @@
-import { createAction} from "typesafe-actions";
+import {action, createAction} from "typesafe-actions";
 import {ITodo} from '../../model/interfaces/ITodo'
+
 export const LOAD_TODOS = '[todo] load';
 export const LOAD_TODOS_SUCCESS = '[todo] load success'
 export const CREATE_TODO = '[todo] create'
@@ -10,6 +11,8 @@ export const NEST_TODO = '[todo] nest in/out todo'
 export const COMPLETED_TODO = '[todo] complete todo'
 export const DELETE_TAG_TODO = '[todo] delete tag todo'
 export const ADD_TAG_TODO = '[todo] add tag todo'
+export const DELETE_TAG_ALL_TODO = '[todo] delete all tag todo'
+export const DELETE_ALL_TODO_LIST ='[todo] delete all todos from activelist'
 
 export const loadTodos = createAction(LOAD_TODOS)
 
@@ -34,8 +37,14 @@ export const nestTodo = createAction(NEST_TODO, action =>
 export const completedTodo = createAction(COMPLETED_TODO, action =>
     (todoId: string) => action({todoId}));
 
-export const deleteTagTodo = createAction(DELETE_TAG_TODO,action =>
-    (todoId: string,tagId : string) => action({todoId,tagId}));
+export const deleteTagTodo = createAction(DELETE_TAG_TODO, action =>
+    (todoId: string, tagId: string) => action({todoId, tagId}));
 
-export const addTagTodo = createAction(ADD_TAG_TODO , action =>
-    (todoId: string,tagId : string) => action({todoId,tagId}));
+export const addTagTodo = createAction(ADD_TAG_TODO, action =>
+    (todoId: string, tagId: string) => action({todoId, tagId}));
+
+export const deleteTagAllTodo = createAction(DELETE_TAG_ALL_TODO, action =>
+    (tagId: string) => action({tagId}));
+
+export const deleteAllTodoList = createAction(DELETE_ALL_TODO_LIST, action=>
+    (listid: string) => action({listid}));

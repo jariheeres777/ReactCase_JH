@@ -10,20 +10,25 @@ const StyledMain = styled('main')(({theme}: WithTheme) => ({
     marginTop: theme.spacing(8),
     '.todoText': {
         width: 'fit-content(20em)',
-    }, '.todoDate': {
+    },
+    '.todoDate': {
         width: 'fit-content(20em)',
         marginLeft: '10',
         border: '1px solid black'
-    }, '.addTag': {
+    },
+    '.addTag': {
         fontSize: "30px",
         color: 'limegreen',
-    }, '.container-todo': {
+    },
+    '.container': {
         display:'flex',
-        margin:'3px'
-    }, '.box': {
+        margin:'3px',
+        alignItems: 'flex-start',
+        justifyContent:'space-around'
+    },
+    '.box': {
         width:'20%',
-        border:'5px solid red',
-
+        display: 'inline-block',
     },
 
 }));

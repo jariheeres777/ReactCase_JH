@@ -1,11 +1,12 @@
 import React from "react";
 import {compose} from "recompose";
 import {ITagActions, ITagState, withTags} from "../../state/containers/Tag.container";
-import {Button, Input, InputLabel} from "@material-ui/core";
+import {Button, IconButton, Input, InputLabel} from "@material-ui/core";
 import {ITag} from "../../model/interfaces/ITag";
-import {v4 as uuid} from "uuid";
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import {ITodoActions, ITodoState, withTodos} from "../../state/containers/Todo.container";
 
-interface IProps extends ITagState, ITagActions {
+interface IProps extends ITagState, ITagActions, ITodoActions, ITodoState {
 
 }
 
@@ -26,20 +27,17 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
         inDelete: false,
         inupdate: false,
         showSelected: false
-    }
+    };
 
     render() {
         const {tags} = this.props
         if (tags.length === 0) {
             return null;
         }
-        console.log(this.state.tagId)
         return (
             <>
                 <>
-                    <h2>
-                        update/delete Tag
-                    </h2>
+
                     <Button onClick={() => {
                         this.toggleAdjust()
                     }}>
@@ -64,13 +62,16 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
                         }
                     </select>
                     }
+                    <br/>
+                    <br/>
                     {this.state.inDelete &&
-                    <Button
+                    <IconButton
+                        disabled={this.state.tagId === ''}
                         onClick={(event) => {
                             this.deletetag()
                         }}>
-                        ❌
-                    </Button>
+                        <DeleteOutlinedIcon/>
+                    </IconButton>
                     }
                     {this.state.inupdate &&
                     <>
@@ -82,8 +83,7 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
                                 value={this.state.tagName}
                                 onChange={(event) => {
                                     this.handleSetTagName(event)
-                                }}
-                            />
+                                }}/>
                         </>
                         <br/>
                         <br/>
@@ -93,12 +93,12 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
                                 <input type='color' id="color"
                                        onChange={(event) => {
                                            this.handleSetTagColor(event)
-                                       }}
-                                />
+                                       }}/>
                             </InputLabel><br/><br/>
                         </>
                         <>
                             <Button variant="outlined"
+                                    disabled={this.state.tagName === '' || this.state.tagId === ''}
                                     onClick={(event) => {
                                         this.handleAddTag(event)
                                     }}>
@@ -112,7 +112,7 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
                     }
                 </>
             </>
-        )
+        );
     };
 
     public toggleAdjust() {
@@ -130,24 +130,22 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
     };
 
     public deletetag() {
+        this.props.deleteTagAllTodo(this.state.tagId)
         this.props.deleteTag(this.state.tagId)
         this.setState(
-            {inupdate: !this.state.inupdate, inDelete: false, showSelected: false})
+            {inupdate: false, inDelete: false, showSelected: false})
     };
 
     public handleSetTagName(event: any) {
         this.setState({tagName: event.target.value})
-        console.log(this.state.tagName)
     };
 
     public handleSetTagColor(event: any) {
         this.setState({tagColor: event.target.value})
-        console.log(this.state.tagColor)
     };
 
     private handleAddTag(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         event.preventDefault()
-        console.log(this.state.tagName + ' ' + this.state.tagColor)
         const newTag: ITag = {
             id: this.state.tagId,
             name: this.state.tagName,
@@ -166,5 +164,5 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
 }
 
 export default compose<IProps, {}>
-(withTags())
+(withTags(), withTodos())
 (DeleteOrUpdateTag);

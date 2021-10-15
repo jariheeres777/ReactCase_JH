@@ -20,7 +20,7 @@ class App extends React.PureComponent {
                 </React.Fragment>
             </Provider>
         );
-    }
+    };
 }
 
 export default App;

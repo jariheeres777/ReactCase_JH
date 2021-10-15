@@ -8,7 +8,8 @@ const initialTodos: ITodo[] = [
         title: 'Finish this app',
         priority: Priority.Normal,
         complete: false,
-        order: 1
+        order: 1,
+        tags:[]
     },
     {
         id: 'second_todo',
@@ -18,7 +19,7 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 2,
-        tags:['default']
+        tags:['default','default2']
     },
     {
         id: 'third_todo',
@@ -27,7 +28,8 @@ const initialTodos: ITodo[] = [
         dueDate: new Date().toLocaleString().split(',')[0],
         priority: Priority.Normal,
         complete: false,
-        order: 3
+        order: 3,
+        tags:['default']
     },
     {
         id: 'fourted_todo',
@@ -36,7 +38,8 @@ const initialTodos: ITodo[] = [
         dueDate: new Date().toLocaleString().split(',')[0],
         priority: Priority.Normal,
         complete: false,
-        order: 4
+        order: 4,
+        tags:[]
     }
 ];
 export default initialTodos;

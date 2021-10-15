@@ -1,11 +1,12 @@
-import {Divider, ListItem, ListItemText, List, Button, TextField, InputLabel} from '@material-ui/core';
+import {Divider, ListItem, ListItemText, List, Button, TextField, InputLabel, IconButton} from '@material-ui/core';
 import React from 'react';
 import {compose} from 'recompose';
 import {IList} from '../../model/interfaces/IList';
 import {IListState, IListActions, withLists} from '../../state/containers/list.container';
 import lists from "../../data/lists";
+import {ITodoActions, ITodoState, withTodos} from "../../state/containers/Todo.container";
 
-interface IProps extends IListState, IListActions {
+interface IProps extends IListState, IListActions, ITodoActions, ITodoState {
 
 }
 
@@ -19,7 +20,7 @@ interface IState {
         name: string,
         order: number,
         active: boolean
-    }
+    };
 }
 
 class ShowTodoList extends React.Component<IProps, IState> {
@@ -34,10 +35,11 @@ class ShowTodoList extends React.Component<IProps, IState> {
             order: 0,
             active: false
         }
-    }
+    };
 
     render() {
         const {lists} = this.props
+        const {todos} = this.props
         return (
             <>
                 <ListItem className="list-item " button disabled>
@@ -49,6 +51,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
                         .sort((a, b) => a.order > b.order ? 1 : -1)
                         .map((list) => (
                             <ListItem button key={list.id}
+                                      style={list.active ? {borderLeft: `5px solid ${list.color}`} : undefined}
                                       className={list.active ? "active" : ''}
                                       onClick={this.handleSetActiveList.bind(this, list)}>
                                 <ListItemText primary={list.name}/>
@@ -86,13 +89,13 @@ class ShowTodoList extends React.Component<IProps, IState> {
                         </InputLabel><br/><br/>
                         <Button variant="outlined"
                                 disabled={this.state.adjustListName === ''}
-                                onClick={(event)=>{
+                                onClick={(event) => {
                                     this.handleUpdateList()
                                 }}>
                             confirm
                         </Button>
                         <Button variant="outlined"
-                                onClick={(event)=>{
+                                onClick={(event) => {
                                     this.handleAdjust()
                                 }}>
                             cancel
@@ -101,16 +104,16 @@ class ShowTodoList extends React.Component<IProps, IState> {
                     }
                 </List>
             </>
-        )
-    }
+        );
+    };
 
     private handleAdjust() {
         this.setState({adjustVisible: !this.state.adjustVisible})
-    }
+    };
 
     private handleSetActiveList = (list: any, event: any) => {
         this.props.setActiveList(list.id)
-    }
+    };
 
     private handleMoveUpList(list: IList) {
         const moveUp: IList = {
@@ -123,7 +126,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
         };
         const moveSpots: number = -1
         this.props.moveList(moveUp, moveSpots)
-    }
+    };
 
     private handleMoveDownList(list: IList) {
         const moveDown: IList = {
@@ -136,7 +139,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
         };
         const moveSpots: number = 1
         this.props.moveList(moveDown, moveSpots)
-    }
+    };
 
     private handleOpenAdjustList(list: IList) {
         const listId = {
@@ -146,24 +149,28 @@ class ShowTodoList extends React.Component<IProps, IState> {
             name: list.name,
             order: list.order,
             active: list.active
-        }
+        };
         this.handleAdjust()
         this.setState({
             currentModifiedList: listId,
             adjustListName: ''
         })
-    }
+    };
 
-    private handleDeleteList(event: any) {
-        if(event === (lists.filter(list => list.active ? list.id : null))){
+    private handleDeleteList(listid: string, event: any) {
+        event.stopPropagation()
+        const {lists} = this.props
+        const filterd = lists.filter(list => list.active)
+        console.log(filterd[0].id)
+        if (listid === filterd[0].id) {
             this.props.setActiveList('default_list')
         }
-        this.props.deleteList(event)
-    }
-
+        this.props.deleteAllTodoList(listid)
+        this.props.deleteList(listid)
+    };
     private handleTextList(event: any) {
-        this.setState({adjustListName:event})
-    }
+        this.setState({adjustListName: event})
+    };
 
     private handleUpdateList() {
         const updateList: IList = {
@@ -176,11 +183,11 @@ class ShowTodoList extends React.Component<IProps, IState> {
         };
         this.props.updateList(updateList)
         this.handleAdjust()
-    }
+    };
 }
 
 export default compose<IProps, {}>
-(withLists())
+(withLists(), withTodos())
 (ShowTodoList);
 
 

@@ -9,7 +9,7 @@ import {IListActions, IListState, withLists} from "../../state/containers/list.c
 import ContentTodo from "./ContentTodo";
 import {ITagActions, ITagState} from "../../state/containers/Tag.container";
 
-interface IProps extends ITodoState, ITodoActions, IListState, IListActions , ITagState, ITagActions{
+interface IProps extends ITodoState, ITodoActions, IListState, IListActions, ITagState, ITagActions {
 
 }
 
@@ -17,13 +17,7 @@ class ShowTodoItem extends React.Component<IProps> {
     render() {
         const {todos} = this.props
         const {lists} = this.props
-        if (todos.length === 0) {
-            return null;
-        }
         const activeListId = lists.filter(list => list.active ? list.id : null)
-        if (activeListId.length === 0 ){
-            return null
-        }
         return (
             <>
                 <List>
@@ -49,8 +43,8 @@ class ShowTodoItem extends React.Component<IProps> {
                     <Divider/><br/>
                 </List>
             </>
-        )
-    }
+        );
+    };
 }
 
 export default compose<IProps, {}>

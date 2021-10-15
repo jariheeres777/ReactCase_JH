@@ -10,7 +10,7 @@ import {
 } from "../actions/Tag.action";
 
 export interface ITagState {
-    tags: ITag[]
+    tags: ITag[];
 }
 
 export interface ITagActions {
@@ -44,11 +44,11 @@ export const withTags = () => (Component: React.ComponentType) => {
             if (props.tags.length === 0) {
                 props.loadTags()
             }
-        }
+        };
 
         public render() {
             return <Component {...this.props} />;
-        }
+        };
     }
 
     return connect(mapStateToProps, mapDispatchToProps)(TagContainer);

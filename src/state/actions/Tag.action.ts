@@ -1,4 +1,4 @@
-import {action, createAction} from "typesafe-actions";
+import {createAction} from "typesafe-actions";
 import {ITag} from "../../model/interfaces/ITag";
 
 export const LOAD_TAGS = '[tag] load'

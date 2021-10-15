@@ -12,7 +12,7 @@ const initialTags: ITag[] = [
         name: 'important',
         color: 'blue',
     }
-]
+];
 
 
 export default initialTags;

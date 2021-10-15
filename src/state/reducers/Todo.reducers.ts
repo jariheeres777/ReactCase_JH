@@ -1,6 +1,6 @@
 import {ITodoState} from "../containers/Todo.container";
 import * as TodoActions from "../actions/Todo.action";
-import {ActionType} from "typesafe-actions";
+import {ActionType, createAction} from "typesafe-actions";
 import {ADD_TAG_TODO} from "../actions/Todo.action";
 
 type Actions = ActionType<typeof TodoActions>
@@ -31,11 +31,11 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             };
         case TodoActions.UPDATE_TODO:
             const updatedList = [...state.todos]
-            const index = updatedList.findIndex(todo => todo.id === action.payload.todos.id)
-            if (index === -1) {
+            const updateIndex = updatedList.findIndex(todo => todo.id === action.payload.todos.id)
+            if (updateIndex === -1) {
                 return state
             }
-            updatedList[index] = action.payload.todos
+            updatedList[updateIndex] = action.payload.todos
             return {
                 ...state,
                 todos: updatedList
@@ -43,8 +43,8 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
         case TodoActions.NEST_TODO:
             let parentState
             const nestIn = [...state.todos]
-            const I = nestIn.findIndex(todo => todo.id === action.payload.todoIdChild)
-            if (I === -1) {
+            const nestIndex = nestIn.findIndex(todo => todo.id === action.payload.todoIdChild)
+            if (nestIndex === -1) {
                 return state
             }
             if (action.payload.todoIdParent === '') {
@@ -52,7 +52,7 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             } else {
                 parentState = action.payload.todoIdParent
             }
-            nestIn[I].parentTodoId = parentState
+            nestIn[nestIndex].parentTodoId = parentState
             return {
                 ...state,
                 todos: nestIn
@@ -114,20 +114,33 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
         case TodoActions.ADD_TAG_TODO:
             const addTagTodo = [...state.todos]
             const addTagTodoIndex = addTagTodo.findIndex(todo => todo.id === action.payload.todoId)
-            if(addTagTodoIndex === -1){
+            if (addTagTodoIndex === -1) {
                 return state
             }
-            if (addTagTodo[addTagTodoIndex].tags === undefined){
-                addTagTodo[addTagTodoIndex].tags = [action.payload.tagId]
-            }else{
-                addTagTodo[addTagTodoIndex].tags?.push(action.payload.tagId)
-            }
+            addTagTodo[addTagTodoIndex].tags?.push(action.payload.tagId)
             return {
                 ...state,
                 todos: addTagTodo
             };
+        case TodoActions.DELETE_TAG_ALL_TODO:
+            const deleteAllTagTodo = [...state.todos]
+            const tf = deleteAllTagTodo.map(todo => todo.tags?.filter(tag => tag !== action.payload.tagId))
+            for (let i = 0; i < tf.length; i++) {
+                deleteAllTagTodo[i].tags = tf[i]
+            }
+            console.log(deleteAllTagTodo)
+            return {
+                ...state,
+                todos: deleteAllTagTodo
+            }
+        case TodoActions.DELETE_ALL_TODO_LIST:{
+            return {
+                ...state,
+                todos: state.todos.filter((todo) => todo.listId !== action.payload.listid)
+            };
+        }
         default:
             return state;
     }
-}
+};
 export default todoReducer;

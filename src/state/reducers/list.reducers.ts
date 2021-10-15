@@ -31,11 +31,11 @@ const listReducer = (state = initialState, action: Actions) => {
             };
         case ListActions.UPDATE_LIST:
             const updatedList = [...state.lists]
-            const index = updatedList.findIndex(list => list.id === action.payload.list.id)
-            if (index === -1) {
+            const updatedindex = updatedList.findIndex(list => list.id === action.payload.list.id)
+            if (updatedindex === -1) {
                 return state
             }
-            updatedList[index] = action.payload.list
+            updatedList[updatedindex] = action.payload.list
             return {
                 ...state,
                 lists: updatedList
@@ -58,16 +58,16 @@ const listReducer = (state = initialState, action: Actions) => {
             };
         case ListActions.SET_ACTIVE_LIST:
             const activeList = [...state.lists]
-            const I = activeList.findIndex(list => list.id === action.payload.listId)
+            const activeIndex = activeList.findIndex(list => list.id === action.payload.listId)
             const ID = activeList.findIndex(list => list.active)
-            if (I === -1) {
+            if (activeIndex === -1) {
                 return state
             }
             if (ID === -1) {
                 return state
             }
             activeList[ID].active = false
-            activeList[I].active = true
+            activeList[activeIndex].active = true
             return {
                 ...state,
                 lists: activeList

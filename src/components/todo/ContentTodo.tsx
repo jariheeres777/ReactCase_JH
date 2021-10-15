@@ -4,6 +4,7 @@ import {
     Input,
     ListItem,
     ListItemText,
+    IconButton,
 } from "@material-ui/core";
 import React from "react";
 import {compose} from "recompose";
@@ -13,8 +14,15 @@ import {IListActions, IListState, withLists} from "../../state/containers/list.c
 import todos from "../../data/todos";
 import lists from "../../data/lists";
 import {ITagActions, ITagState, withTags} from "../../state/containers/Tag.container";
-import TagsTodo from "./TagsTodo";
-
+import TagsTodo from "../tag/TagsTodo";
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowbackIcon from '@material-ui/icons/ArrowBack';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import CreateIcon from '@material-ui/icons/Create';
+import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface Iouterprops {
     todo: ITodo
@@ -42,17 +50,20 @@ class ContentTodo extends React.Component<IProps, IState> {
         currentTodoAdjust: '',
         newTodoName: '',
         updateTag: false,
-    }
+    };
 
     render() {
         const {todos} = this.props
         const {todo} = this.props
         const {tags} = this.props
-        if (todos.length === 0) {
+        const filteredList = lists.filter(list => list.active ? list.id : null)
+        if (filteredList.length === 0) {
             return null;
         }
-        const filteredList = lists.filter(list => list.active ? list.id : null)
         const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id)
+        if (filterdTodos.length === 0) {
+            return null;
+        }
         const listarrayorder = Math.max.apply(Math, filterdTodos.map(function (todo) {
             return todo.order
         }))
@@ -73,58 +84,56 @@ class ContentTodo extends React.Component<IProps, IState> {
                     {this.state.currentTodoAdjust !== todo.id &&
                     <>
                         <div className='todoText'>
-                            <ListItemText primary={todo.title}
-                            />
+                            <ListItemText primary={todo.title}/>
                         </div>
                         {todo.dueDate !== undefined &&
                         <div className='todoDate'>
-                            <ListItemText primary={todo.dueDate}
-                            />
+                            <ListItemText primary={todo.dueDate}/>
                         </div>
                         }
                         {todo.parentTodoId === undefined &&
-                        <Button
+                        <IconButton
                             disabled={todo.order === 1 || hasNestedId.includes(todo.id)}
                             onClick={(event) => {
                                 this.nestInto(todo)
                             }}>
-                            🡺|
-                        </Button>
+                            <ArrowForwardIcon/>|
+                        </IconButton>
                         }
                         {todo.parentTodoId !== undefined &&
-                        <Button
+                        <IconButton
                             onClick={(event) => {
                                 this.nestOut(todo.id)
                             }}>
-                            |🡸
-                        </Button>
+                            |<ArrowbackIcon/>
+                        </IconButton>
                         }
-                        <Button
+                        <IconButton
                             disabled={todo.order === 1}
                             onClick={(event) => {
                                 this.moveDownTodo(todo)
                             }}>
-                            🡹
-                        </Button>
-                        <Button
+                           <ArrowUpwardIcon/>
+                        </IconButton>
+                        <IconButton
                             disabled={todo.order === listarrayorder}
                             onClick={(event) => {
                                 this.moveUpTodo(todo)
                             }}>
-                            🡻
-                        </Button>
-                        <Button
+                            <ArrowDownwardIcon/>
+                        </IconButton>
+                        <IconButton
                             onClick={(event) => {
                                 this.inUpdateTodo(todo.id)
-                            }
-                            }>✐
-                        </Button>
-                        <Button
+                            }}>
+                            <CreateIcon/>
+                        </IconButton>
+                        <IconButton
                             onClick={(event) => {
                                 this.deleteTodo(todo.id)
-                            }
-                            }>❌
-                        </Button>
+                            }}>
+                            <DeleteOutlinedIcon/>
+                        </IconButton>
                         {tags
                             .filter(tag => todo.tags?.includes(tag.id))
                             .map((tag) => (
@@ -134,12 +143,12 @@ class ContentTodo extends React.Component<IProps, IState> {
                                 )
                             )}
                         {!this.state.updateTag &&
-                        <Button className="addTag"
-                                onClick= {()=>{
+                        <IconButton
+                                onClick={() => {
                                     this.toggleTag()
                                 }}>
-                            +
-                        </Button>
+                            <AddIcon/>
+                        </IconButton>
                         }
                         {this.state.updateTag &&
                         <>
@@ -153,10 +162,13 @@ class ContentTodo extends React.Component<IProps, IState> {
                                         <option>
                                             {tag.name}
                                         </option>
-                                    ))
-                                }
+                                    ))}
                             </select>
-
+                            <IconButton  onClick={() => {
+                                this.toggleTag()
+                            }}>
+                                <CloseIcon/>
+                            </IconButton>
                         </>
                         }
                     </>
@@ -166,23 +178,24 @@ class ContentTodo extends React.Component<IProps, IState> {
                         <div className='todoText'>
                             <Input value={this.state.newTodoName}
                                    onChange={(event) => {
-                                       this.nameTodo(event)
-                                   }}/>
+                                       this.nameTodo(event)}}/>
                         </div>
                         <Button variant="contained"
-                                onClick={this.updateTodo.bind(this,todo)
+                                onClick={this.updateTodo.bind(this, todo)
                                 }>confirm
                         </Button>
                         <Button variant="contained"
-                                onClick={this.cancelUpdateTodo}>
+                                onClick={(event)=>{
+                                    this.cancelUpdateTodo()
+                                }}>
                             cancel
                         </Button>
                     </>
                     }
                 </ListItem>
             </>
-        )
-    }
+        );
+    };
 
     public toggleUpdate() {
         this.setState({
@@ -196,7 +209,6 @@ class ContentTodo extends React.Component<IProps, IState> {
     };
 
     public nestInto(event: any) {
-
         const activeList = lists.filter(list => list.active ? list.id : null)
         const activeTodos = todos.filter(todo => todo.listId === activeList[0].id)
         const listNotnested = activeTodos.filter(todo => todo.parentTodoId === undefined ? todo.id : null)
@@ -282,15 +294,13 @@ class ContentTodo extends React.Component<IProps, IState> {
             completedOn: event.completedOn,
             order: event.order,
             tags: event.tags
-        }
+        };
         this.props.updateTodo(newTodo)
         this.setState({currentTodoAdjust: ''})
         this.toggleUpdate()
     };
 
-    public cancelUpdateTodo(event: any) {
-        event.stopPropagation()
-        event.preventDefault()
+    public cancelUpdateTodo() {
         this.setState({currentTodoAdjust: ''})
         this.toggleUpdate()
     };

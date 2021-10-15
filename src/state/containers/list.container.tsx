@@ -47,10 +47,10 @@ export const withLists = () => (Component: React.ComponentType) => {
             if (props.lists.length === 0) {
                 props.loadLists();
             }
-        }
+        };
         public render() {
             return <Component {...this.props} />;
-        }
+        };
     }
     return connect(mapStateToProps, mapDispatchToProps)(ListContainer);
 };

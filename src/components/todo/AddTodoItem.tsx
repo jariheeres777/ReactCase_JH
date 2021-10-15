@@ -22,7 +22,8 @@ class AddTodoItem extends React.Component<IProps, IState> {
         date: '',
         title: '',
         description: ''
-    }
+    };
+
     render() {
         return (
             <>
@@ -32,10 +33,9 @@ class AddTodoItem extends React.Component<IProps, IState> {
                         margin='dense'
                         placeholder="title"
                         value={this.state.title}
-                        onChange={(event)=>{
+                        onChange={(event) => {
                             this.titleList(event)
-                        }}
-                    />
+                        }}/>
                 </>
                 <br/>
                 <br/>
@@ -47,22 +47,26 @@ class AddTodoItem extends React.Component<IProps, IState> {
                         margin='dense'
                         placeholder="description"
                         value={this.state.description}
-                        onChange={(event)=>{
+                        onChange={(event) => {
                             this.descriptionList(event)
                         }}/>
                 </>
                 <br/>
                 <br/>
                 <Input type="Date"
+                       placeholder="dd-mm-yyyy"
                        value={this.state.date}
-                       onChange={(event)=>{
+                       onChange={(event) => {
                            this.dateList(event)
                        }}/>
                 <br/>
                 <br/>
                 <>
                     <Button variant="outlined"
-                            onClick={this.addList}>
+                            disabled={this.state.title === '' || this.state.description === ''}
+                            onClick={() => {
+                                this.addList()
+                            }}>
                         confirm
                     </Button>
                     <Button variant="outlined"
@@ -71,42 +75,59 @@ class AddTodoItem extends React.Component<IProps, IState> {
                     </Button>
                 </>
             </>
-        )
-    }
+        );
+    };
 
     private titleList(event: any) {
         this.setState({title: event.target.value})
-    }
+    };
 
     private descriptionList(event: any) {
         this.setState({description: event.target.value})
-    }
+    };
 
     private dateList(event: any) {
-        const date = event.target.value.toLocaleString().split(',')[0]
+        const rifdrg = event.target.value
+        const date = rifdrg
         this.setState({date: date})
-    }
+    };
 
     private addList() {
-        const {todos,lists} = this.props;
+        const {todos, lists} = this.props;
         const filteredList = lists.filter(list => list.active ? list.id : null)
         const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id)
-        const listarrayorder = Math.max.apply(Math, filterdTodos.map(function(todo) { return todo.order }))
+        console.log(filterdTodos)
+        let order;
+        if(filterdTodos === []){
+            order = 1
+        }else{
+            order = filterdTodos.length +1
+        }
+
+
+        let date
+        if (this.state.date === '') {
+            date = undefined
+        } else {
+            date = this.state.date
+        }
+
+
         const newTodo: ITodo = {
             id: uuid(),
             listId: filteredList[0].id,
             title: this.state.title,
             description: this.state.description,
-            dueDate: this.state.date,
+            dueDate: date,
             priority: Priority.Normal,
             complete: false,
             completedOn: undefined,
-            order: listarrayorder + 1,
-            tags:[]
-        }
+            order: order,
+            tags: []
+        };
         this.props.createTodo(newTodo)
         this.cancelList()
-    }
+    };
 
     private cancelList() {
         this.setState({
@@ -114,8 +135,8 @@ class AddTodoItem extends React.Component<IProps, IState> {
                 title: '',
                 description: ''
             }
-        )
-    }
+        );
+    };
 }
 
 export default compose<IProps, {}>

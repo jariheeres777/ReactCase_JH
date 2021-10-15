@@ -7,19 +7,21 @@ class TodoList extends React.Component {
 
     render() {
         return (
-            <StyledTodoList
-                variant="permanent"
-                anchor="left"
-                PaperProps={{
-                    classes: {
-                        root: 'drawer-paper'
-                    }
-                }}>
-                <ShowTodoList/>
-                <AddTodoList/>
-            </StyledTodoList>
+            <div data-testid='list-1'>
+                <StyledTodoList
+                    variant="permanent"
+                    anchor="left"
+                    PaperProps={{
+                        classes: {
+                            root: 'drawer-paper'
+                        }
+                    }}>
+                    <ShowTodoList/>
+                    <AddTodoList/>
+                </StyledTodoList>
+            </div>
         );
-    }
+    };
 }
 
 export default TodoList;

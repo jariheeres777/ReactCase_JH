@@ -32,12 +32,11 @@ class tsxTagsTodo extends React.Component<IProps, IState> {
                     variant="outlined"
                 />
             </>
-        )
-    }
-
+        );
+    };
     public handleDeleteTag(todoid: string, tagid: string) {
         this.props.deleteTagTodo(todoid, tagid)
-    }
+    };
 }
 
 export default compose<IProps, Iouterprops>
