@@ -128,7 +128,6 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             for (let i = 0; i < tf.length; i++) {
                 deleteAllTagTodo[i].tags = tf[i]
             }
-            console.log(deleteAllTagTodo)
             return {
                 ...state,
                 todos: deleteAllTagTodo

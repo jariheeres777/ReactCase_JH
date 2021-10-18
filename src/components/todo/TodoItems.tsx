@@ -3,17 +3,27 @@ import AddTodoItem from './AddTodoItem';
 import ShowTodoItem from './ShowTodoItem';
 import AddTagItem from '../tag/AddTagItem';
 import DeleteOrUpdateTag from "../tag/DeleteOrUpdateTag";
+import {IListActions, IListState, withLists} from "../../state/containers/list.container";
+import {ITagActions, ITagState} from "../../state/containers/Tag.container";
+import {compose} from "recompose";
 
-class TodoItems extends React.Component {
+interface IProps extends IListState, IListActions, ITagState, ITagActions {
+
+}
+
+class TodoItems extends React.Component<IProps> {
     render() {
+        const {lists} = this.props
+        const activeListId = lists.filter(list => list.active ? list.id : null)
         return (
             <>
                 <ShowTodoItem/>
+                {activeListId[0].id !== 'default_list_upcoming' &&
                 <div className='container'>
                     <div className='box'>
-                    <h2>
-                        Add Todo
-                    </h2>
+                        <h2>
+                            Add Todo
+                        </h2>
                         <AddTodoItem/>
                     </div>
                     <div className='box'>
@@ -29,12 +39,13 @@ class TodoItems extends React.Component {
                         <DeleteOrUpdateTag/>
                     </div>
                 </div>
-
-
+                }
             </>
         );
     };
 }
 
-export default TodoItems
+export default compose<IProps, {}>
+(withLists())
+(TodoItems);
 

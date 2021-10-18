@@ -161,7 +161,6 @@ class ShowTodoList extends React.Component<IProps, IState> {
         event.stopPropagation()
         const {lists} = this.props
         const filterd = lists.filter(list => list.active)
-        console.log(filterd[0].id)
         if (listid === filterd[0].id) {
             this.props.setActiveList('default_list')
         }

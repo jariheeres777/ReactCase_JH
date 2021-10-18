@@ -1,6 +1,12 @@
 import {ITodo} from "../model/interfaces/ITodo";
 import {Priority} from "../model/enums/priority";
 
+let today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+let yyyy = today.getFullYear();
+const date = dd + '/' + mm + '/' + yyyy;
+
 const initialTodos: ITodo[] = [
     {
         id: 'first_todo',
@@ -15,7 +21,7 @@ const initialTodos: ITodo[] = [
         id: 'second_todo',
         listId: 'default_list',
         title: 'Complete me',
-        dueDate: new Date().toLocaleString().split(',')[0],
+        dueDate: date,
         priority: Priority.Normal,
         complete: false,
         order: 2,
@@ -25,7 +31,7 @@ const initialTodos: ITodo[] = [
         id: 'third_todo',
         listId: 'default_list',
         title: 'sefsfe',
-        dueDate: new Date().toLocaleString().split(',')[0],
+        dueDate: date,
         priority: Priority.Normal,
         complete: false,
         order: 3,
@@ -35,7 +41,7 @@ const initialTodos: ITodo[] = [
         id: 'fourted_todo',
         listId: 'default_list',
         title: 'Cgsetfjjtfomplete me',
-        dueDate: new Date().toLocaleString().split(',')[0],
+        dueDate: '10/10/2021',
         priority: Priority.Normal,
         complete: false,
         order: 4,

@@ -7,6 +7,14 @@ const initialLists: IList[] = [
         name: 'Inbox',
         default: true,
         order: 0,
+        active: false
+    },
+    {
+        id: 'default_list_upcoming',
+        color: 'blue',
+        name: 'upcoming',
+        default: true,
+        order: 1,
         active: true
     }
 ];

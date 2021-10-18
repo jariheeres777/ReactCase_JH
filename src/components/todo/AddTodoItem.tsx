@@ -88,7 +88,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
 
     private dateList(event: any) {
         const rifdrg = event.target.value
-        const date = rifdrg
+        const date = rifdrg.toString().split("-").reverse().join("/");
         this.setState({date: date})
     };
 
@@ -96,15 +96,12 @@ class AddTodoItem extends React.Component<IProps, IState> {
         const {todos, lists} = this.props;
         const filteredList = lists.filter(list => list.active ? list.id : null)
         const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id)
-        console.log(filterdTodos)
         let order;
         if(filterdTodos === []){
             order = 1
         }else{
             order = filterdTodos.length +1
         }
-
-
         let date
         if (this.state.date === '') {
             date = undefined

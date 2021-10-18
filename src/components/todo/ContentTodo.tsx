@@ -56,17 +56,7 @@ class ContentTodo extends React.Component<IProps, IState> {
         const {todos} = this.props
         const {todo} = this.props
         const {tags} = this.props
-        const filteredList = lists.filter(list => list.active ? list.id : null)
-        if (filteredList.length === 0) {
-            return null;
-        }
-        const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id)
-        if (filterdTodos.length === 0) {
-            return null;
-        }
-        const listarrayorder = Math.max.apply(Math, filterdTodos.map(function (todo) {
-            return todo.order
-        }))
+        const activeListId = lists.filter(list => list.active ? list.id : null)
         const hasNestedId = todos.filter(todo => todo.parentTodoId !== undefined ? todo.parentTodoId : null).map(todo => todo.parentTodoId)
         return (
             <>
@@ -83,6 +73,7 @@ class ContentTodo extends React.Component<IProps, IState> {
                               onClick={this.handleCompleteTodo.bind(this, todo.id)}/>
                     {this.state.currentTodoAdjust !== todo.id &&
                     <>
+
                         <div className='todoText'>
                             <ListItemText primary={todo.title}/>
                         </div>
@@ -91,37 +82,38 @@ class ContentTodo extends React.Component<IProps, IState> {
                             <ListItemText primary={todo.dueDate}/>
                         </div>
                         }
-                        {todo.parentTodoId === undefined &&
-                        <IconButton
-                            disabled={todo.order === 1 || hasNestedId.includes(todo.id)}
-                            onClick={(event) => {
-                                this.nestInto(todo)
-                            }}>
-                            <ArrowForwardIcon/>|
-                        </IconButton>
-                        }
-                        {todo.parentTodoId !== undefined &&
-                        <IconButton
-                            onClick={(event) => {
-                                this.nestOut(todo.id)
-                            }}>
-                            |<ArrowbackIcon/>
-                        </IconButton>
-                        }
-                        <IconButton
-                            disabled={todo.order === 1}
-                            onClick={(event) => {
-                                this.moveDownTodo(todo)
-                            }}>
-                           <ArrowUpwardIcon/>
-                        </IconButton>
-                        <IconButton
-                            disabled={todo.order === listarrayorder}
-                            onClick={(event) => {
-                                this.moveUpTodo(todo)
-                            }}>
-                            <ArrowDownwardIcon/>
-                        </IconButton>
+                        {activeListId[0].id !== 'default_list_upcoming' &&
+                        <>
+                            {todo.parentTodoId === undefined &&
+                            <IconButton
+                                disabled={todo.order === 1 || hasNestedId.includes(todo.id)}
+                                onClick={(event) => {
+                                    this.nestInto(todo)
+                                }}>
+                                <ArrowForwardIcon/>|
+                            </IconButton>
+                            }
+                            {todo.parentTodoId !== undefined &&
+                            <IconButton
+                                onClick={(event) => {
+                                    this.nestOut(todo.id)
+                                }}>
+                                |<ArrowbackIcon/>
+                            </IconButton>
+                            }
+                            <IconButton
+                                onClick={(event) => {
+                                    this.moveDownTodo(todo)
+                                }}>
+                                <ArrowUpwardIcon/>
+                            </IconButton>
+                            <IconButton
+                                onClick={(event) => {
+                                    this.moveUpTodo(todo)
+                                }}>
+                                <ArrowDownwardIcon/>
+                            </IconButton>
+                        </>}
                         <IconButton
                             onClick={(event) => {
                                 this.inUpdateTodo(todo.id)
@@ -144,9 +136,9 @@ class ContentTodo extends React.Component<IProps, IState> {
                             )}
                         {!this.state.updateTag &&
                         <IconButton
-                                onClick={() => {
-                                    this.toggleTag()
-                                }}>
+                            onClick={() => {
+                                this.toggleTag()
+                            }}>
                             <AddIcon/>
                         </IconButton>
                         }
@@ -164,7 +156,7 @@ class ContentTodo extends React.Component<IProps, IState> {
                                         </option>
                                     ))}
                             </select>
-                            <IconButton  onClick={() => {
+                            <IconButton onClick={() => {
                                 this.toggleTag()
                             }}>
                                 <CloseIcon/>
@@ -178,14 +170,15 @@ class ContentTodo extends React.Component<IProps, IState> {
                         <div className='todoText'>
                             <Input value={this.state.newTodoName}
                                    onChange={(event) => {
-                                       this.nameTodo(event)}}/>
+                                       this.nameTodo(event)
+                                   }}/>
                         </div>
                         <Button variant="contained"
                                 onClick={this.updateTodo.bind(this, todo)
                                 }>confirm
                         </Button>
                         <Button variant="contained"
-                                onClick={(event)=>{
+                                onClick={(event) => {
                                     this.cancelUpdateTodo()
                                 }}>
                             cancel
