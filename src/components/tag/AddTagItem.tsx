@@ -62,17 +62,14 @@ class AddTodoItem extends React.Component<IProps, IState> {
 
     public handleSetTagName(event: any) {
         this.setState({tagName: event.target.value})
-        console.log(this.state.tagName)
     };
 
     public handleSetTagColor(event: any) {
         this.setState({tagColor: event.target.value})
-        console.log(this.state.tagColor)
     };
 
     private handleAddTag(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         event.preventDefault()
-        console.log(this.state.tagName + ' ' + this.state.tagColor)
         const newTag: ITag = {
             id: uuid(),
             name: this.state.tagName,

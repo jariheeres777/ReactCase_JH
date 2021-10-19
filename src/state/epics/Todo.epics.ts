@@ -4,7 +4,7 @@ import { filter, map } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { loadTodos,loadTodosSucces} from '../actions/Todo.action'
 import { RootState } from '../reducers/root.reducers';
-import initialTododos from '../../data/todos';
+import initialTodos from "../../data/todos";
 
 export const loadTodos$: Epic<AnyAction, AnyAction, RootState> = (
     action$,
@@ -13,8 +13,17 @@ export const loadTodos$: Epic<AnyAction, AnyAction, RootState> = (
     action$.pipe(
         filter(isActionOf(loadTodos)),
         map((action: AnyAction) => {
-            // Pretend we fetch the initial lists from a server, that's why we need an epic
-            return loadTodosSucces(initialTododos);
+            let localstoragestring =   localStorage.getItem('todo')
+            if(localstoragestring === null){
+                localStorage.setItem('todo', JSON.stringify(initialTodos));
+            }
+            localstoragestring = localStorage.getItem('todo')
+            if(localstoragestring === null){
+                return loadTodosSucces(initialTodos);
+            }
+            let todo = JSON.parse(localstoragestring)
+            console.log(todo)
+            return loadTodosSucces(todo);
         })
     );
 

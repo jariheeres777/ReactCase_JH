@@ -85,13 +85,12 @@ class AddTodolist extends React.Component<IProps, IState> {
         const listarrayorder = Math.max.apply(Math, lists.map(function (list) {
             return list.order;
         }))
-        const order = listarrayorder + 1
         const list: IList = {
             color: this.state.listColor,
             default: false,
             id: uuid(),
             name: this.state.listName,
-            order: order,
+            order: listarrayorder,
             active: false
         };
         this.props.addlist(list)

@@ -3,7 +3,6 @@ import React from 'react';
 import {compose} from 'recompose';
 import {IList} from '../../model/interfaces/IList';
 import {IListState, IListActions, withLists} from '../../state/containers/list.container';
-import lists from "../../data/lists";
 import {ITodoActions, ITodoState, withTodos} from "../../state/containers/Todo.container";
 
 interface IProps extends IListState, IListActions, ITodoActions, ITodoState {
@@ -36,10 +35,8 @@ class ShowTodoList extends React.Component<IProps, IState> {
             active: false
         }
     };
-
     render() {
         const {lists} = this.props
-        const {todos} = this.props
         return (
             <>
                 <ListItem className="list-item " button disabled>
@@ -57,7 +54,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
                                 <ListItemText primary={list.name}/>
                                 {!list.default &&
                                 <>
-                                    <button disabled={list.order === 1}
+                                    <button disabled={list.order === 2}
                                             onClick={this.handleMoveUpList.bind(this, list)}>
                                         🡹
                                     </button>

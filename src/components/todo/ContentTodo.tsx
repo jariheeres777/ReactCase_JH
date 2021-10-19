@@ -51,7 +51,6 @@ class ContentTodo extends React.Component<IProps, IState> {
         newTodoName: '',
         updateTag: false,
     };
-
     render() {
         const {todos} = this.props
         const {todo} = this.props
@@ -69,7 +68,7 @@ class ContentTodo extends React.Component<IProps, IState> {
                             d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
                     </svg>
                     }
-                    <Checkbox value={todo.complete}
+                    <Checkbox checked={todo.complete}
                               onClick={this.handleCompleteTodo.bind(this, todo.id)}/>
                     {this.state.currentTodoAdjust !== todo.id &&
                     <>
@@ -77,9 +76,14 @@ class ContentTodo extends React.Component<IProps, IState> {
                         <div className='todoText'>
                             <ListItemText primary={todo.title}/>
                         </div>
-                        {todo.dueDate !== undefined &&
+                        {todo.dueDate !== undefined && todo.completedOn === undefined &&
                         <div className='todoDate'>
                             <ListItemText primary={todo.dueDate}/>
+                        </div>
+                        }
+                        {todo.completedOn !== undefined &&
+                        <div className='todoDate'>
+                            <ListItemText primary={todo.completedOn}/>
                         </div>
                         }
                         {activeListId[0].id !== 'default_list_upcoming' &&
@@ -189,7 +193,6 @@ class ContentTodo extends React.Component<IProps, IState> {
             </>
         );
     };
-
     public toggleUpdate() {
         this.setState({
             inUpdate: !this.state.inUpdate,

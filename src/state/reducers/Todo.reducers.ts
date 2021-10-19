@@ -1,7 +1,7 @@
 import {ITodoState} from "../containers/Todo.container";
 import * as TodoActions from "../actions/Todo.action";
 import {ActionType, createAction} from "typesafe-actions";
-import {ADD_TAG_TODO} from "../actions/Todo.action";
+
 
 type Actions = ActionType<typeof TodoActions>
 
@@ -80,6 +80,11 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             };
         case TodoActions.COMPLETED_TODO:
             const completed = [...state.todos]
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            const date = dd + '/' + mm + '/' + yyyy;
             const completedIndex = completed.findIndex(todo => todo.id === action.payload.todoId)
             if (completedIndex === -1) {
                 return state
@@ -87,7 +92,7 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             if (completed[completedIndex].complete) {
                 completed[completedIndex].completedOn = undefined
             } else {
-                completed[completedIndex].completedOn = new Date().toString()
+                completed[completedIndex].completedOn = date
             }
             completed[completedIndex].complete = !completed[completedIndex].complete
             return {

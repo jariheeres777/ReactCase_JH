@@ -7,7 +7,7 @@ const initialLists: IList[] = [
         name: 'Inbox',
         default: true,
         order: 0,
-        active: false
+        active: true
     },
     {
         id: 'default_list_upcoming',
@@ -15,7 +15,7 @@ const initialLists: IList[] = [
         name: 'upcoming',
         default: true,
         order: 1,
-        active: true
+        active: false
     }
 ];
 

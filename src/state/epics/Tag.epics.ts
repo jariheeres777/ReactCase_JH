@@ -5,6 +5,7 @@ import {isActionOf} from 'typesafe-actions';
 import {RootState} from '../reducers/root.reducers';
 import initialTags from '../../data/InitialTags'
 import {loadTags, loadTagsSuccess} from "../actions/Tag.action";
+import initialLists from "../../data/lists";
 
 export const loadTags$: Epic<AnyAction, AnyAction, RootState> = (
     action$,
@@ -13,8 +14,17 @@ export const loadTags$: Epic<AnyAction, AnyAction, RootState> = (
     action$.pipe(
         filter(isActionOf(loadTags)),
         map((action: AnyAction) => {
-            // Pretend we fetch the initial lists from a server, that's why we need an epic
-            return loadTagsSuccess(initialTags);
+            let localstoragestring =   localStorage.getItem('tag')
+            if(localstoragestring === null){
+                localStorage.setItem('tag', JSON.stringify(initialTags));
+            }
+            localstoragestring =   localStorage.getItem('list')
+            if(localstoragestring === null){
+                return loadTagsSuccess(initialLists);
+            }
+            let tags = JSON.parse(localstoragestring)
+            console.log(tags)
+            return loadTagsSuccess(tags);
         })
     );
 

@@ -13,8 +13,17 @@ export const loadLists$: Epic<AnyAction, AnyAction, RootState> = (
   action$.pipe(
     filter(isActionOf(loadLists)),
     map((action: AnyAction) => {
-      // Pretend we fetch the initial lists from a server, that's why we need an epic
-      return loadListsSuccess(initialLists);
+        let localstoragestring =   localStorage.getItem('list')
+        if(localstoragestring === null){
+            localStorage.setItem('list', JSON.stringify(initialLists));
+        }
+        localstoragestring =   localStorage.getItem('list')
+        if(localstoragestring === null){
+            return loadListsSuccess(initialLists);
+        }
+        let lists = JSON.parse(localstoragestring)
+        console.log(lists)
+        return loadListsSuccess(lists);
     })
   );
 
