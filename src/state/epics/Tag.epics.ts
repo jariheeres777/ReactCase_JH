@@ -14,11 +14,11 @@ export const loadTags$: Epic<AnyAction, AnyAction, RootState> = (
     action$.pipe(
         filter(isActionOf(loadTags)),
         map((action: AnyAction) => {
-            let localstoragestring =   localStorage.getItem('tag')
+            let localstoragestring =   localStorage.getItem('tags')
             if(localstoragestring === null){
-                localStorage.setItem('tag', JSON.stringify(initialTags));
+                localStorage.setItem('tags', JSON.stringify(initialTags));
             }
-            localstoragestring =   localStorage.getItem('list')
+            localstoragestring =   localStorage.getItem('tags')
             if(localstoragestring === null){
                 return loadTagsSuccess(initialLists);
             }

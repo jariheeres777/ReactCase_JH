@@ -16,6 +16,8 @@ const tagReducer = (state = initialState, action: Actions): ITagState => {
                 tags: action.payload.tags
             };
         case TagActions.CREATE_TAG:
+            const newTagsArray = [...state.tags, action.payload.tags]
+            localStorage.setItem('tags', JSON.stringify(newTagsArray));
             return {
                 ...state,
                 tags: [
@@ -24,6 +26,7 @@ const tagReducer = (state = initialState, action: Actions): ITagState => {
                 ]
             };
         case TagActions.DELETE_TAG:
+            localStorage.setItem('tags', JSON.stringify(state.tags.filter((tag)=> tag.id !== action.payload.tagid)));
             return {
                 ...state,
                 tags: state.tags.filter((tag)=> tag.id !== action.payload.tagid)
@@ -35,6 +38,7 @@ const tagReducer = (state = initialState, action: Actions): ITagState => {
                 return state
             }
             updateTag[updateIndex] = action.payload.tags
+            localStorage.setItem('tags', JSON.stringify(updateTag));
             return {
                 ...state,
                 tags:updateTag

@@ -90,7 +90,7 @@ class AddTodolist extends React.Component<IProps, IState> {
             default: false,
             id: uuid(),
             name: this.state.listName,
-            order: listarrayorder,
+            order: listarrayorder +1,
             active: false
         };
         this.props.addlist(list)

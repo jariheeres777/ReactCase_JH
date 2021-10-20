@@ -1,12 +1,12 @@
 import {ITodoState} from "../containers/Todo.container";
 import * as TodoActions from "../actions/Todo.action";
-import {ActionType, createAction} from "typesafe-actions";
+import {ActionType} from "typesafe-actions";
 
 
 type Actions = ActionType<typeof TodoActions>
 
 const initialState: ITodoState = {
-    todos: []
+    todos: [],
 };
 
 const todoReducer = (state = initialState, action: Actions): ITodoState => {
@@ -17,6 +17,8 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
                 todos: action.payload.todos
             };
         case TodoActions.CREATE_TODO:
+            const newTodoArray = [...state.todos, action.payload.todos]
+            localStorage.setItem('todos', JSON.stringify(newTodoArray));
             return {
                 ...state,
                 todos: [
@@ -25,6 +27,7 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
                 ]
             };
         case TodoActions.DELETE_TODO:
+            localStorage.setItem('todos', JSON.stringify(state.todos.filter((todo) => todo.id !== action.payload.todoId)));
             return {
                 ...state,
                 todos: state.todos.filter((todo) => todo.id !== action.payload.todoId)
@@ -36,6 +39,7 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
                 return state
             }
             updatedList[updateIndex] = action.payload.todos
+            localStorage.setItem('todos', JSON.stringify(updatedList));
             return {
                 ...state,
                 todos: updatedList
@@ -53,6 +57,7 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
                 parentState = action.payload.todoIdParent
             }
             nestIn[nestIndex].parentTodoId = parentState
+            localStorage.setItem('todos', JSON.stringify(nestIn));
             return {
                 ...state,
                 todos: nestIn
@@ -74,6 +79,7 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             }
             newTodos[moveFromIndex].order = newTodos[moveToIndex].order
             newTodos[moveToIndex].order = action.payload.todo.order
+            localStorage.setItem('todos', JSON.stringify(newTodos));
             return {
                 ...state,
                 todos: newTodos
@@ -95,6 +101,8 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
                 completed[completedIndex].completedOn = date
             }
             completed[completedIndex].complete = !completed[completedIndex].complete
+
+            localStorage.setItem('todos', JSON.stringify(completed));
             return {
                 ...state,
                 todos: completed
@@ -109,9 +117,10 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             if (romoveIndex === -1) {
                 return state
             }
-            if (romoveIndex != null) {
+            if (romoveIndex !== undefined) {
                 deletedTagTodo[DeleteTagTodoIndex].tags?.splice(romoveIndex, 1)
             }
+            localStorage.setItem('todos', JSON.stringify(deletedTagTodo));
             return {
                 ...state,
                 todos: deletedTagTodo
@@ -123,6 +132,7 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
                 return state
             }
             addTagTodo[addTagTodoIndex].tags?.push(action.payload.tagId)
+            localStorage.setItem('todos', JSON.stringify(addTagTodo));
             return {
                 ...state,
                 todos: addTagTodo
@@ -133,11 +143,13 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             for (let i = 0; i < tf.length; i++) {
                 deleteAllTagTodo[i].tags = tf[i]
             }
+            localStorage.setItem('todos', JSON.stringify(deleteAllTagTodo));
             return {
                 ...state,
                 todos: deleteAllTagTodo
             }
         case TodoActions.DELETE_ALL_TODO_LIST:{
+            localStorage.setItem('todos', JSON.stringify(state.todos.filter((todo) => todo.listId !== action.payload.listid)));
             return {
                 ...state,
                 todos: state.todos.filter((todo) => todo.listId !== action.payload.listid)

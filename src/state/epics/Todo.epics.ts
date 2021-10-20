@@ -13,17 +13,16 @@ export const loadTodos$: Epic<AnyAction, AnyAction, RootState> = (
     action$.pipe(
         filter(isActionOf(loadTodos)),
         map((action: AnyAction) => {
-            let localstoragestring =   localStorage.getItem('todo')
+            let localstoragestring =   localStorage.getItem('todos')
             if(localstoragestring === null){
-                localStorage.setItem('todo', JSON.stringify(initialTodos));
+                localStorage.setItem('todos', JSON.stringify(initialTodos));
             }
-            localstoragestring = localStorage.getItem('todo')
+            localstoragestring = localStorage.getItem('todos')
             if(localstoragestring === null){
                 return loadTodosSucces(initialTodos);
             }
-            let todo = JSON.parse(localstoragestring)
-            console.log(todo)
-            return loadTodosSucces(todo);
+            let todos = JSON.parse(localstoragestring)
+            return loadTodosSucces(todos);
         })
     );
 

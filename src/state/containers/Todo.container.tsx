@@ -63,6 +63,7 @@ const mapDispatchToProps: ITodoActions = {
 };
 
 interface ITodoProps extends ITodoState, ITodoActions {
+    
 }
 
 export const withTodos = () => (Component: React.ComponentType) => {

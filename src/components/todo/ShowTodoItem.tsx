@@ -23,6 +23,7 @@ class ShowTodoItem extends React.Component<IProps, IState> {
     public state = {
         searched: '',
     }
+
     render() {
         const {todos} = this.props
         const {lists} = this.props
@@ -32,6 +33,7 @@ class ShowTodoItem extends React.Component<IProps, IState> {
         }else{
             todosFilter = todos.filter((todo)=> todo.title.includes(this.state.searched))
         }
+
         const activeListId = lists.filter(list => list.active ? list.id : null)
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0');

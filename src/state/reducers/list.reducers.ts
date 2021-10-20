@@ -17,6 +17,8 @@ const listReducer = (state = initialState, action: Actions) => {
                 lists: action.payload.lists
             };
         case ListActions.CREATE_LIST:
+            const newlistArray = [...state.lists, action.payload.list]
+            localStorage.setItem('lists', JSON.stringify(newlistArray));
             return {
                 ...state,
                 lists: [
@@ -25,6 +27,7 @@ const listReducer = (state = initialState, action: Actions) => {
                 ]
             };
         case ListActions.DELETE_LIST:
+            localStorage.setItem('lists', JSON.stringify(state.lists.filter((list) => list.id !== action.payload.listId)));
             return {
                 ...state,
                 lists: state.lists.filter((list) => list.id !== action.payload.listId)
@@ -36,6 +39,7 @@ const listReducer = (state = initialState, action: Actions) => {
                 return state
             }
             updatedList[updatedindex] = action.payload.list
+            localStorage.setItem('lists', JSON.stringify(updatedList));
             return {
                 ...state,
                 lists: updatedList
@@ -52,6 +56,7 @@ const listReducer = (state = initialState, action: Actions) => {
             }
             moveList[moveFromIndex].order = moveList[moveToIndex].order
             moveList[moveToIndex].order = action.payload.list.order
+            localStorage.setItem('lists', JSON.stringify(moveList));
             return {
                 ...state,
                 lists: moveList
@@ -68,6 +73,7 @@ const listReducer = (state = initialState, action: Actions) => {
             }
             activeList[ID].active = false
             activeList[activeIndex].active = true
+            localStorage.setItem('lists', JSON.stringify(activeList));
             return {
                 ...state,
                 lists: activeList

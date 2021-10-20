@@ -13,11 +13,11 @@ export const loadLists$: Epic<AnyAction, AnyAction, RootState> = (
   action$.pipe(
     filter(isActionOf(loadLists)),
     map((action: AnyAction) => {
-        let localstoragestring =   localStorage.getItem('list')
+        let localstoragestring =   localStorage.getItem('lists')
         if(localstoragestring === null){
-            localStorage.setItem('list', JSON.stringify(initialLists));
+            localStorage.setItem('lists', JSON.stringify(initialLists));
         }
-        localstoragestring =   localStorage.getItem('list')
+        localstoragestring =   localStorage.getItem('lists')
         if(localstoragestring === null){
             return loadListsSuccess(initialLists);
         }
