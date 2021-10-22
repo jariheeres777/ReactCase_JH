@@ -7,6 +7,7 @@ import {IListActions, IListState, withLists} from "../../state/containers/list.c
 import {ITagActions, ITagState} from "../../state/containers/Tag.container";
 import {compose} from "recompose";
 
+
 interface IProps extends IListState, IListActions, ITagState, ITagActions {
 
 }
@@ -14,6 +15,7 @@ interface IProps extends IListState, IListActions, ITagState, ITagActions {
 class TodoItems extends React.Component<IProps> {
     render() {
         const {lists} = this.props
+
         const activeListId = lists.filter(list => list.active ? list.id : null)
         return (
             <>

@@ -15,7 +15,7 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 1,
-        tags:[]
+        tags:[],
     },
     {
         id: 'second_todo',
@@ -25,7 +25,7 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 2,
-        tags:['default','default2']
+        tags:['default','default2'],
     },
     {
         id: 'third_todo',
@@ -35,7 +35,7 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 3,
-        tags:['default']
+        tags:['default'],
     },
     {
         id: 'fourted_todo',
@@ -45,7 +45,7 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 4,
-        tags:[]
+        tags:[],
     }
 ];
 export default initialTodos;

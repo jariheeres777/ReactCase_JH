@@ -27,11 +27,11 @@ class ShowTodoItem extends React.Component<IProps, IState> {
     render() {
         const {todos} = this.props
         const {lists} = this.props
-        let todosFilter:ITodo[];
-        if (this.state.searched === ''){
+        let todosFilter: ITodo[];
+        if (this.state.searched === '') {
             todosFilter = todos
-        }else{
-            todosFilter = todos.filter((todo)=> todo.title.includes(this.state.searched))
+        } else {
+            todosFilter = todos.filter((todo) => todo.title.includes(this.state.searched))
         }
 
         const activeListId = lists.filter(list => list.active ? list.id : null)
@@ -128,8 +128,8 @@ class ShowTodoItem extends React.Component<IProps, IState> {
         );
     };
 
-    public searched(event:any) {
-       this.setState({searched: event.target.value})
+    public searched(event: any) {
+        this.setState({searched: event.target.value})
     }
 }
 

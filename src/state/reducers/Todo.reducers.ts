@@ -2,7 +2,6 @@ import {ITodoState} from "../containers/Todo.container";
 import * as TodoActions from "../actions/Todo.action";
 import {ActionType} from "typesafe-actions";
 
-
 type Actions = ActionType<typeof TodoActions>
 
 const initialState: ITodoState = {

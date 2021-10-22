@@ -5,6 +5,7 @@ import {
     ListItem,
     ListItemText,
     IconButton,
+    Typography,
 } from "@material-ui/core";
 import React from "react";
 import {compose} from "recompose";
@@ -23,6 +24,15 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import CreateIcon from '@material-ui/icons/Create';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ShowComments from '../comments/ShowComments'
+import ChatIcon from '@material-ui/icons/Chat';
+import {ICommentActions, ICommentState, withComments} from "../../state/containers/Comments.container";
+import {IComments} from "../../model/interfaces/IComments";
+import {v4 as uuid} from "uuid";
 
 interface Iouterprops {
     todo: ITodo
@@ -34,7 +44,9 @@ interface IProps extends ITodoState
     , IListActions
     , Iouterprops
     , ITagState
-    , ITagActions {
+    , ITagActions
+    , ICommentActions
+    , ICommentState {
 }
 
 interface IState {
@@ -42,6 +54,9 @@ interface IState {
     currentTodoAdjust: string
     newTodoName: string
     updateTag: boolean
+    addComent: boolean
+    commentText: string
+    parentComment:string
 }
 
 class ContentTodo extends React.Component<IProps, IState> {
@@ -50,149 +65,227 @@ class ContentTodo extends React.Component<IProps, IState> {
         currentTodoAdjust: '',
         newTodoName: '',
         updateTag: false,
+        addComent: false,
+        commentText: '',
+        parentComment:''
     };
     render() {
         const {todos} = this.props
         const {todo} = this.props
         const {tags} = this.props
+        const {comments} = this.props
         const activeListId = lists.filter(list => list.active ? list.id : null)
         const hasNestedId = todos.filter(todo => todo.parentTodoId !== undefined ? todo.parentTodoId : null).map(todo => todo.parentTodoId)
         return (
             <>
-                <ListItem button key={todo.id}>
-                    {todo.parentTodoId !== undefined &&
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                         fill="currentColor" className="bi bi-arrow-return-right"
-                         viewBox="0 0 16 16">
-                        <path
-                            d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-                    </svg>
-                    }
-                    <Checkbox checked={todo.complete}
-                              onClick={this.handleCompleteTodo.bind(this, todo.id)}/>
-                    {this.state.currentTodoAdjust !== todo.id &&
-                    <>
-
-                        <div className='todoText'>
-                            <ListItemText primary={todo.title}/>
-                        </div>
-                        {todo.dueDate !== undefined && todo.completedOn === undefined &&
-                        <div className='todoDate'>
-                            <ListItemText primary={todo.dueDate}/>
-                        </div>
-                        }
-                        {todo.completedOn !== undefined &&
-                        <div className='todoDate'>
-                            <ListItemText primary={todo.completedOn}/>
-                        </div>
-                        }
-                        {activeListId[0].id !== 'default_list_upcoming' &&
-                        <>
-                            {todo.parentTodoId === undefined &&
-                            <IconButton
-                                disabled={todo.order === 1 || hasNestedId.includes(todo.id)}
-                                onClick={(event) => {
-                                    this.nestInto(todo)
-                                }}>
-                                <ArrowForwardIcon/>|
-                            </IconButton>
-                            }
+                <Accordion>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header">
+                        <ListItem button key={todo.id}
+                                  onClick={(event) => {
+                                      event.stopPropagation()
+                                  }}
+                        >
                             {todo.parentTodoId !== undefined &&
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" className="bi bi-arrow-return-right"
+                                 viewBox="0 0 16 16">
+                                <path
+                                    d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+                            </svg>
+                            }
+                            <Checkbox checked={todo.complete}
+                                      onClick={this.handleCompleteTodo.bind(this, todo.id)}/>
+                            {this.state.currentTodoAdjust !== todo.id &&
+                            <>
+
+                                <div className='todoText'>
+                                    <ListItemText primary={todo.title}/>
+                                </div>
+                                {todo.dueDate !== undefined && todo.completedOn === undefined &&
+                                <div className='todoDate'>
+                                    <ListItemText primary={todo.dueDate}/>
+                                </div>
+                                }
+                                {todo.completedOn !== undefined &&
+                                <div className='todoDate'>
+                                    <ListItemText primary={todo.completedOn}/>
+                                </div>
+                                }
+                                {activeListId[0].id !== 'default_list_upcoming' &&
+                                <>
+                                    {todo.parentTodoId === undefined &&
+                                    <IconButton
+                                        disabled={todo.order === 1 || hasNestedId.includes(todo.id)}
+                                        onClick={(event) => {
+                                            this.nestInto(todo)
+                                        }}>
+                                        <ArrowForwardIcon/>|
+                                    </IconButton>
+                                    }
+                                    {todo.parentTodoId !== undefined &&
+                                    <IconButton
+                                        onClick={(event) => {
+                                            this.nestOut(todo.id)
+                                        }}>
+                                        |<ArrowbackIcon/>
+                                    </IconButton>
+                                    }
+                                    <IconButton
+                                        onClick={(event) => {
+                                            this.moveDownTodo(todo)
+                                        }}>
+                                        <ArrowUpwardIcon/>
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={(event) => {
+                                            this.moveUpTodo(todo)
+                                        }}>
+                                        <ArrowDownwardIcon/>
+                                    </IconButton>
+                                </>}
+                                <IconButton
+                                    onClick={(event) => {
+                                        this.inUpdateTodo(todo.id)
+                                    }}>
+                                    <CreateIcon/>
+                                </IconButton>
+                                <IconButton
+                                    onClick={(event) => {
+                                        this.deleteTodo(todo.id)
+                                    }}>
+                                    <DeleteOutlinedIcon/>
+                                </IconButton>
+                                {tags
+                                    .filter(tag => todo.tags?.includes(tag.id))
+                                    .map((tag) => (
+                                            <>
+                                                <TagsTodo tag={tag} todo={todo}/>
+                                            </>
+                                        )
+                                    )}
+                                {!this.state.updateTag &&
+                                <IconButton
+                                    onClick={() => {
+                                        this.toggleTag()
+                                    }}>
+                                    <AddIcon/>
+                                </IconButton>
+                                }
+                                {this.state.updateTag &&
+                                <>
+                                    <select onChange={this.addTagTodo.bind(this, todo.id)}>
+                                        <option selected={true} disabled={true}>
+                                            select your tag
+                                        </option>
+                                        {tags
+                                            .filter(tag => !todo.tags?.includes(tag.id))
+                                            .map((tag) => (
+                                                <option>
+                                                    {tag.name}
+                                                </option>
+                                            ))}
+                                    </select>
+                                    <IconButton onClick={() => {
+                                        this.toggleTag()
+                                    }}>
+                                        <CloseIcon/>
+                                    </IconButton>
+                                </>
+                                }
+                            </>
+                            }
+                            {this.state.currentTodoAdjust === todo.id &&
+                            <>
+                                <div className='todoText'>
+                                    <Input value={this.state.newTodoName}
+                                           onChange={(event) => {
+                                               this.nameTodo(event)
+                                           }}/>
+                                </div>
+                                <Button variant="contained"
+                                        onClick={this.updateTodo.bind(this, todo)
+                                        }>confirm
+                                </Button>
+                                <Button variant="contained"
+                                        onClick={(event) => {
+                                            this.cancelUpdateTodo()
+                                        }}>
+                                    cancel
+                                </Button>
+                            </>
+                            }
+                        </ListItem>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography>
+                            {todo.description}
+                            <>
+                                {comments
+                                    .filter((comment) => comment.parentCommentId === undefined)
+                                    .filter((comment) => comment.todoId === todo.id)
+                                    .map((comment) => (
+                                        <div className='todoDate'>
+                                            <ShowComments comment={comment}/>
+                                            {!this.state.addComent &&
+                                            <IconButton
+                                                onClick={() => {
+                                                    this.toggleAdd(comment.id)
+                                                }}>
+                                                <ChatIcon/>
+                                            </IconButton>
+                                            }
+                                            {comments
+                                                .filter((commentR) => commentR.parentCommentId === comment.id)
+                                                .filter((comment) => comment.parentCommentId !== undefined)
+                                                .filter((comment) => comment.todoId === todo.id)
+                                                .map((comment) => (
+                                                    <div style={{paddingLeft: '60px'}}>
+                                                        <ShowComments comment={comment}/>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    ))
+                                }
+                            </><br/>
+                            {!this.state.addComent &&
                             <IconButton
-                                onClick={(event) => {
-                                    this.nestOut(todo.id)
+                                onClick={() => {
+                                    this.toggleAdd('')
                                 }}>
-                                |<ArrowbackIcon/>
+                                <AddIcon/>
                             </IconButton>
                             }
-                            <IconButton
-                                onClick={(event) => {
-                                    this.moveDownTodo(todo)
-                                }}>
-                                <ArrowUpwardIcon/>
-                            </IconButton>
-                            <IconButton
-                                onClick={(event) => {
-                                    this.moveUpTodo(todo)
-                                }}>
-                                <ArrowDownwardIcon/>
-                            </IconButton>
-                        </>}
-                        <IconButton
-                            onClick={(event) => {
-                                this.inUpdateTodo(todo.id)
-                            }}>
-                            <CreateIcon/>
-                        </IconButton>
-                        <IconButton
-                            onClick={(event) => {
-                                this.deleteTodo(todo.id)
-                            }}>
-                            <DeleteOutlinedIcon/>
-                        </IconButton>
-                        {tags
-                            .filter(tag => todo.tags?.includes(tag.id))
-                            .map((tag) => (
-                                    <>
-                                        <TagsTodo tag={tag} todo={todo}/>
-                                    </>
-                                )
-                            )}
-                        {!this.state.updateTag &&
-                        <IconButton
-                            onClick={() => {
-                                this.toggleTag()
-                            }}>
-                            <AddIcon/>
-                        </IconButton>
-                        }
-                        {this.state.updateTag &&
-                        <>
-                            <select onChange={this.addTagTodo.bind(this, todo.id)}>
-                                <option selected={true} disabled={true}>
-                                    select your tag
-                                </option>
-                                {tags
-                                    .filter(tag => !todo.tags?.includes(tag.id))
-                                    .map((tag) => (
-                                        <option>
-                                            {tag.name}
-                                        </option>
-                                    ))}
-                            </select>
-                            <IconButton onClick={() => {
-                                this.toggleTag()
-                            }}>
-                                <CloseIcon/>
-                            </IconButton>
-                        </>
-                        }
-                    </>
-                    }
-                    {this.state.currentTodoAdjust === todo.id &&
-                    <>
-                        <div className='todoText'>
-                            <Input value={this.state.newTodoName}
-                                   onChange={(event) => {
-                                       this.nameTodo(event)
-                                   }}/>
-                        </div>
-                        <Button variant="contained"
-                                onClick={this.updateTodo.bind(this, todo)
-                                }>confirm
-                        </Button>
-                        <Button variant="contained"
-                                onClick={(event) => {
-                                    this.cancelUpdateTodo()
-                                }}>
-                            cancel
-                        </Button>
-                    </>
-                    }
-                </ListItem>
+                            {this.state.addComent &&
+                            <>
+                                <div className='todoText'>
+                                    <Input value={this.state.commentText}
+                                           onChange={(event) => {
+                                               this.nameComment(event)
+                                           }}/>
+                                </div>
+                                <Button variant="contained"
+                                        onClick={this.updateComment.bind(this, todo.id)}>
+                                    confirm
+                                </Button>
+                                <Button variant="contained"
+                                        onClick={(event) => {
+                                            this.toggleAdd('')
+                                        }}>
+                                    cancel
+                                </Button>
+                            </>
+                            }
+                        </Typography>
+                    </AccordionDetails>
+                </Accordion>
             </>
         );
     };
+
     public toggleUpdate() {
         this.setState({
             inUpdate: !this.state.inUpdate,
@@ -231,7 +324,7 @@ class ContentTodo extends React.Component<IProps, IState> {
             complete: event.complete,
             completedOn: event.completedOn,
             order: event.order,
-            tags: event.tags
+            tags: event.tags,
         }
         const number = -1
         this.props.moveTodo(newTodo, number)
@@ -248,7 +341,7 @@ class ContentTodo extends React.Component<IProps, IState> {
             complete: event.complete,
             completedOn: event.completedOn,
             order: event.order,
-            tags: event.tags
+            tags: event.tags,
         }
         const number = 1
         this.props.moveTodo(newTodo, number)
@@ -289,7 +382,7 @@ class ContentTodo extends React.Component<IProps, IState> {
             complete: event.complete,
             completedOn: event.completedOn,
             order: event.order,
-            tags: event.tags
+            tags: event.tags,
         };
         this.props.updateTodo(newTodo)
         this.setState({currentTodoAdjust: ''})
@@ -300,8 +393,49 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.setState({currentTodoAdjust: ''})
         this.toggleUpdate()
     };
+
+    public toggleAdd(comment:string) {
+        this.setState({
+            addComent: !this.state.addComent,
+            commentText: ''
+        })
+        if(comment !== ''){
+        this.setState({parentComment:comment})
+        }else{
+            this.setState({parentComment:''})
+        }
+
+    }
+
+    public updateComment(todo: string) {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        const date = dd + '/' + mm + '/' + yyyy;
+        console.log(todo)
+        console.log(this.state.commentText)
+        console.log(date)
+        let parent: undefined| string = this.state.parentComment
+        if(parent === ''){
+            parent = undefined
+        }
+        const newComment: IComments = {
+            id: uuid(),
+            todoId: todo,
+            parentCommentId: parent,
+            comment: this.state.commentText,
+            date: date,
+        }
+        this.props.createComment(newComment)
+        this.toggleAdd('')
+    }
+
+    public nameComment(event: any) {
+        this.setState({commentText: event.target.value})
+    };
 }
 
 export default compose<IProps, Iouterprops>
-(withTodos(), withLists(), withTags())
+(withTodos(), withLists(), withTags(), withComments())
 (ContentTodo);

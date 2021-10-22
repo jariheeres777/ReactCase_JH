@@ -12,7 +12,7 @@ import {
     deleteTagTodo,
     addTagTodo,
     deleteTagAllTodo,
-    deleteAllTodoList
+    deleteAllTodoList,
 } from '../actions/Todo.action'
 import {RootState} from '../reducers/root.reducers';
 
@@ -42,6 +42,7 @@ export interface ITodoActions {
     deleteTagAllTodo(tagId: string):void;
 
     deleteAllTodoList(listid: string):void;
+
 }
 
 function mapStateToProps(state: RootState) {
@@ -59,7 +60,7 @@ const mapDispatchToProps: ITodoActions = {
     deleteTagTodo,
     addTagTodo,
     deleteTagAllTodo,
-    deleteAllTodoList
+    deleteAllTodoList,
 };
 
 interface ITodoProps extends ITodoState, ITodoActions {

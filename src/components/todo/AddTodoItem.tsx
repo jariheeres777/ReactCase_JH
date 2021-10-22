@@ -120,7 +120,8 @@ class AddTodoItem extends React.Component<IProps, IState> {
             complete: false,
             completedOn: undefined,
             order: order,
-            tags: []
+            tags: [],
+
         };
         this.props.createTodo(newTodo)
         this.cancelList()
