@@ -12,6 +12,7 @@ const initialComments: IComments[] =[
         todoId: 'first_todo',
         comment: 'good',
         date: date,
+        user:''
     },
     {
         id: 'first_nested_comment',
@@ -19,6 +20,7 @@ const initialComments: IComments[] =[
         parentCommentId:'first_comment',
         comment: 'thanks',
         date: date,
+        user:''
     }
 ];
 

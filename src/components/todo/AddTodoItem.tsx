@@ -23,7 +23,6 @@ class AddTodoItem extends React.Component<IProps, IState> {
         title: '',
         description: ''
     };
-
     render() {
         return (
             <>
@@ -108,8 +107,10 @@ class AddTodoItem extends React.Component<IProps, IState> {
         } else {
             date = this.state.date
         }
-
-
+        const loggedInUser = localStorage.getItem('user')
+        if(loggedInUser === null){
+            return
+        }
         const newTodo: ITodo = {
             id: uuid(),
             listId: filteredList[0].id,
@@ -121,7 +122,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
             completedOn: undefined,
             order: order,
             tags: [],
-
+            user:loggedInUser
         };
         this.props.createTodo(newTodo)
         this.cancelList()

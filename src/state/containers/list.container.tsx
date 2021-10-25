@@ -7,7 +7,8 @@ import {
     loadLists,
     updateList,
     moveList,
-    setActiveList
+    setActiveList,
+    setPublicList
 } from '../actions/list.actions';
 import {RootState} from '../reducers/root.reducers';
 
@@ -17,11 +18,18 @@ export interface IListState {
 
 export interface IListActions {
     loadLists(): void;
+
     deleteList(listId: string): void;
+
     addlist(list: IList): void,
+
     updateList(list: IList): void
+
     moveList(list: IList, number: number): void
+
     setActiveList(listId: string): void;
+
+    setPublicList(listId: string): void;
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -34,7 +42,8 @@ const mapDispatchToProps: IListActions = {
     addlist,
     updateList,
     moveList,
-    setActiveList
+    setActiveList,
+    setPublicList
 };
 
 interface IListProps extends IListState, IListActions {
@@ -48,10 +57,12 @@ export const withLists = () => (Component: React.ComponentType) => {
                 props.loadLists();
             }
         };
+
         public render() {
             return <Component {...this.props} />;
         };
     }
+
     return connect(mapStateToProps, mapDispatchToProps)(ListContainer);
 };
 

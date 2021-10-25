@@ -27,7 +27,6 @@ class AddTodolist extends React.Component<IProps, IState> {
             <>
                 {!this.state.addVisible &&
                 <>
-                    <Divider/>
                     <Button onClick={() => {
                         this.toggleAdd()}}>
                         addlist
@@ -37,8 +36,7 @@ class AddTodolist extends React.Component<IProps, IState> {
                 }
                 {this.state.addVisible &&
                 <>
-                    <Divider/>
-                    < InputLabel margin='dense'>
+                    <InputLabel margin='dense'>
                         Name
                         <TextField id="name" variant="outlined"
                                    margin='dense'
@@ -85,13 +83,18 @@ class AddTodolist extends React.Component<IProps, IState> {
         const listarrayorder = Math.max.apply(Math, lists.map(function (list) {
             return list.order;
         }))
+        const loggedInUser = localStorage.getItem('user')
+        console.log(loggedInUser)
         const list: IList = {
             color: this.state.listColor,
             default: false,
             id: uuid(),
             name: this.state.listName,
             order: listarrayorder +1,
-            active: false
+            active: false,
+            private:true,
+            // @ts-ignore
+            user:loggedInUser
         };
         this.props.addlist(list)
         this.toggleAdd()

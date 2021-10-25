@@ -1,24 +1,39 @@
-import {Divider, ListItem, ListItemText, List, Button, TextField, InputLabel, IconButton} from '@material-ui/core';
+import {
+    Divider,
+    ListItem,
+    ListItemText,
+    List,
+    Button,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import React from 'react';
 import {compose} from 'recompose';
 import {IList} from '../../model/interfaces/IList';
 import {IListState, IListActions, withLists} from '../../state/containers/list.container';
 import {ITodoActions, ITodoState, withTodos} from "../../state/containers/Todo.container";
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import PublicIcon from '@material-ui/icons/Public';
 
 interface IProps extends IListState, IListActions, ITodoActions, ITodoState {
 
 }
 
 interface IState {
-    adjustListName: string
-    adjustVisible: boolean
+    adjustListName: string;
+    adjustVisible: boolean;
     currentModifiedList: {
-        color: string,
-        default: boolean,
-        id: string,
-        name: string,
-        order: number,
-        active: boolean
+        color: string;
+        default: boolean;
+        id: string;
+        name: string;
+        order: number;
+        active: boolean;
+        private: boolean;
+        user: string;
     };
 }
 
@@ -32,11 +47,27 @@ class ShowTodoList extends React.Component<IProps, IState> {
             id: ' ',
             name: ' ',
             order: 0,
-            active: false
+            active: false,
+            private: true,
+            user: ''
         }
     };
+
     render() {
         const {lists} = this.props
+        const listNotPrivate = lists.filter((list) => !list.private)
+        const user = localStorage.getItem('user')
+        const listPrivate = lists.filter((list) => list.user === user)
+        let arrayOfNotPrivateLists: string[] = []
+        for (let i = 0; i < listNotPrivate.length; i++) {
+            arrayOfNotPrivateLists.push(listNotPrivate[i].id)
+        }
+        let arrayOfPrivateLists: string[] = []
+        for (let i = 0; i < listPrivate.length; i++) {
+            arrayOfPrivateLists.push(listPrivate[i].id)
+        }
+        const filterLists = [...arrayOfNotPrivateLists, ...arrayOfPrivateLists]
+        console.log(filterLists)
         return (
             <>
                 <ListItem className="list-item " button disabled>
@@ -45,59 +76,90 @@ class ShowTodoList extends React.Component<IProps, IState> {
                 <Divider/>
                 <List>
                     {lists
+                        .filter((list) => filterLists.includes(list.id))
                         .sort((a, b) => a.order > b.order ? 1 : -1)
                         .map((list) => (
-                            <ListItem button key={list.id}
-                                      style={list.active ? {borderLeft: `5px solid ${list.color}`} : undefined}
-                                      className={list.active ? "active" : ''}
-                                      onClick={this.handleSetActiveList.bind(this, list)}>
-                                <ListItemText primary={list.name}/>
-                                {!list.default &&
-                                <>
-                                    <button disabled={list.order === 2}
-                                            onClick={this.handleMoveUpList.bind(this, list)}>
-                                        🡹
-                                    </button>
-                                    <button disabled={list.order === (lists.length - 1)}
-                                            onClick={this.handleMoveDownList.bind(this, list)}>
-                                        🡻
-                                    </button>
-                                    <button onClick={this.handleOpenAdjustList.bind(this, list)}>
-                                        ✐
-                                    </button>
-                                    <button onClick={this.handleDeleteList.bind(this, list.id)}>
-                                        ❌
-                                    </button>
-                                </>
+                            <>
+                                {list.default &&
+                                <ListItem button key={list.id}
+                                          style={list.active ? {borderLeft: `5px solid ${list.color}`} : undefined}
+                                          className={list.active ? "active" : ''}
+                                          onClick={this.handleSetActiveList.bind(this, list)}>
+                                    <ListItemText primary={list.name}/>
+                                </ListItem>
                                 }
-                            </ListItem>
+                                {!list.default &&
+                                <Accordion>
+                                    <ListItem button key={list.id}
+                                              style={list.active ? {borderLeft: `5px solid ${list.color}`} : undefined}
+                                              className={list.active ? "active" : ''}
+                                              onClick={this.handleSetActiveList.bind(this, list)}>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon/>}
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header">
+                                            {!this.state.adjustVisible &&
+                                            <ListItemText primary={list.name}/>
+                                            }
+                                            {this.state.adjustVisible &&
+                                            <TextField id="name" variant="outlined"
+                                                       margin='dense'
+                                                       value={this.state.adjustListName}
+                                                       onChange={(event) => {
+                                                           event.stopPropagation()
+                                                           this.handleTextList(event.target.value)
+                                                       }}/>
+                                            }
+                                        </AccordionSummary>
+                                    </ListItem>
+                                    <AccordionDetails>
+                                        <Typography>
+                                            {!this.state.adjustVisible &&
+                                            <>
+                                                <Button disabled={list.order === 2}
+                                                        onClick={this.handleMoveUpList.bind(this, list)}>
+                                                    🡹
+                                                </Button>
+                                                <Button disabled={list.order === (lists.length - 1)}
+                                                        onClick={this.handleMoveDownList.bind(this, list)}>
+                                                    🡻
+                                                </Button>
+                                                <Button onClick={this.handleOpenAdjustList.bind(this, list)}>
+                                                    ✐
+                                                </Button>
+                                                <Button onClick={this.handleDeleteList.bind(this, list.id)}>
+                                                    ❌
+                                                </Button >
+                                                <Button disabled={!list.private}
+                                                    onClick={this.handleMakePublic.bind(this, list.id)}>
+                                                    <PublicIcon/>
+                                                </Button>
+
+                                            </>
+                                            }
+                                            {this.state.adjustVisible &&
+                                            <>
+                                                <Button variant="outlined"
+                                                        disabled={this.state.adjustListName === ''}
+                                                        onClick={(event) => {
+                                                            this.handleUpdateList()
+                                                        }}>
+                                                    confirm
+                                                </Button>
+                                                <Button variant="outlined"
+                                                        onClick={(event) => {
+                                                            this.handleAdjust()
+                                                        }}>
+                                                    cancel
+                                                </Button>
+                                            </>
+                                            }
+                                        </Typography>
+                                    </AccordionDetails>
+                                </Accordion>
+                                }
+                            </>
                         ))
-                    }
-                    {this.state.adjustVisible &&
-                    <>
-                        <InputLabel margin='dense'>
-                            Name
-                            <TextField id="name" variant="outlined"
-                                       margin='dense'
-                                       value={this.state.adjustListName}
-                                       onChange={(event) => {
-                                           this.handleTextList(event.target.value)
-                                       }}/>
-                        </InputLabel><br/><br/>
-                        <Button variant="outlined"
-                                disabled={this.state.adjustListName === ''}
-                                onClick={(event) => {
-                                    this.handleUpdateList()
-                                }}>
-                            confirm
-                        </Button>
-                        <Button variant="outlined"
-                                onClick={(event) => {
-                                    this.handleAdjust()
-                                }}>
-                            cancel
-                        </Button>
-                    </>
                     }
                 </List>
             </>
@@ -120,6 +182,8 @@ class ShowTodoList extends React.Component<IProps, IState> {
             name: list.name,
             order: list.order,
             active: list.active,
+            private: list.private,
+            user: list.user
         };
         const moveSpots: number = -1
         this.props.moveList(moveUp, moveSpots)
@@ -133,6 +197,8 @@ class ShowTodoList extends React.Component<IProps, IState> {
             name: list.name,
             order: list.order,
             active: list.active,
+            private: list.private,
+            user: list.user
         };
         const moveSpots: number = 1
         this.props.moveList(moveDown, moveSpots)
@@ -145,7 +211,9 @@ class ShowTodoList extends React.Component<IProps, IState> {
             id: list.id,
             name: list.name,
             order: list.order,
-            active: list.active
+            active: list.active,
+            private: list.private,
+            user: list.user
         };
         this.handleAdjust()
         this.setState({
@@ -164,6 +232,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
         this.props.deleteAllTodoList(listid)
         this.props.deleteList(listid)
     };
+
     private handleTextList(event: any) {
         this.setState({adjustListName: event})
     };
@@ -175,11 +244,18 @@ class ShowTodoList extends React.Component<IProps, IState> {
             id: this.state.currentModifiedList.id,
             name: this.state.adjustListName,
             order: this.state.currentModifiedList.order,
-            active: this.state.currentModifiedList.active
+            active: this.state.currentModifiedList.active,
+            private: this.state.currentModifiedList.private,
+            user: this.state.currentModifiedList.user
         };
         this.props.updateList(updateList)
         this.handleAdjust()
     };
+
+    private handleMakePublic(listid:string){
+        alert(listid)
+        this.props.setPublicList(listid)
+    }
 }
 
 export default compose<IProps, {}>

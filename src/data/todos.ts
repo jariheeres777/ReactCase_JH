@@ -16,6 +16,7 @@ const initialTodos: ITodo[] = [
         complete: false,
         order: 1,
         tags:[],
+        user:''
     },
     {
         id: 'second_todo',
@@ -26,6 +27,7 @@ const initialTodos: ITodo[] = [
         complete: false,
         order: 2,
         tags:['default','default2'],
+        user:''
     },
     {
         id: 'third_todo',
@@ -36,6 +38,7 @@ const initialTodos: ITodo[] = [
         complete: false,
         order: 3,
         tags:['default'],
+        user:''
     },
     {
         id: 'fourted_todo',
@@ -46,6 +49,7 @@ const initialTodos: ITodo[] = [
         complete: false,
         order: 4,
         tags:[],
+        user:''
     }
 ];
 export default initialTodos;

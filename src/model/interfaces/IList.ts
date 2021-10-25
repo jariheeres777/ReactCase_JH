@@ -5,4 +5,6 @@ export interface IList {
     order: number;
     default: boolean;
     active: boolean;
+    private:boolean;
+    user:string;
 }

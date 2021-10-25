@@ -33,7 +33,18 @@ class ShowTodoItem extends React.Component<IProps, IState> {
         } else {
             todosFilter = todos.filter((todo) => todo.title.includes(this.state.searched))
         }
-
+        const listNotPrivate = lists.filter((list) => !list.private)
+        const user = localStorage.getItem('user')
+        const listPrivate = lists.filter((list) => list.user === user)
+        let arrayOfNotPrivateLists: string[] = []
+        for (let i = 0; i < listNotPrivate.length; i++) {
+            arrayOfNotPrivateLists.push(listNotPrivate[i].id)
+        }
+        let arrayOfPrivateLists: string[] = []
+        for (let i = 0; i < listPrivate.length; i++) {
+            arrayOfPrivateLists.push(listPrivate[i].id)
+        }
+        const filterLists = [...arrayOfNotPrivateLists, ...arrayOfPrivateLists]
         const activeListId = lists.filter(list => list.active ? list.id : null)
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0');
@@ -65,7 +76,7 @@ class ShowTodoItem extends React.Component<IProps, IState> {
         const sortedIsOverdue = isOverdue.sort((a, b) => a.dueDate > b.dueDate ? 1 : -1)
         return (
             <>
-                {activeListId[0].id !== 'default_list_upcoming' &&
+                {activeListId[0].id !== 'default_list_upcoming' && activeListId[0].id !== 'default_my_list' &&
                 <List>
                     <Input
                         className='todoText'
@@ -76,6 +87,7 @@ class ShowTodoItem extends React.Component<IProps, IState> {
                             this.searched(event)
                         }}/>
                     {todosFilter
+                        .filter((todo) => filterLists.includes(todo.listId))
                         .filter((todo) => todo.listId === activeListId[0].id)
                         .filter((todo) => todo.parentTodoId === undefined)
                         .sort((a, b) => a.order > b.order ? 1 : -1)
@@ -100,7 +112,6 @@ class ShowTodoItem extends React.Component<IProps, IState> {
                 {activeListId[0].id === 'default_list_upcoming' &&
                 <List>
                     {sortedisNotOverdue
-                        //@ts-ignore
                         .map((todo) => (
                             <>{uniqueDuedateId.includes(todo.id) &&
                             < h2>
@@ -122,6 +133,20 @@ class ShowTodoItem extends React.Component<IProps, IState> {
                             </>
                         ))
                     }
+                </List>
+                }
+                {activeListId[0].id === `default_my_todo's` &&
+                <List>
+                    {todos
+                        .filter((todo) => todo.user === localStorage.getItem('user'))
+                        .map((todo) => (
+                            <>
+                                <h2>
+                                    My Todo's
+                                </h2>
+                                <ContentTodo todo={todo}/>
+                            </>
+                        ))}
                 </List>
                 }
             </>

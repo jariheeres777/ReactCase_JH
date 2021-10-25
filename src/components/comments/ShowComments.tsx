@@ -23,8 +23,8 @@ class ShowComments extends React.Component<IProps> {
                     <ListItemText primary={comment.date}/>
                 </div>
             </>
-        )
-    }
+        );
+    };
 }
 
 export default compose<IProps, Iouterprops>

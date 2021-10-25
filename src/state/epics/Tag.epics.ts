@@ -23,7 +23,6 @@ export const loadTags$: Epic<AnyAction, AnyAction, RootState> = (
                 return loadTagsSuccess(initialLists);
             }
             let tags = JSON.parse(localstoragestring)
-            console.log(tags)
             return loadTagsSuccess(tags);
         })
     );

@@ -56,7 +56,7 @@ interface IState {
     updateTag: boolean
     addComent: boolean
     commentText: string
-    parentComment:string
+    parentComment: string
 }
 
 class ContentTodo extends React.Component<IProps, IState> {
@@ -67,8 +67,9 @@ class ContentTodo extends React.Component<IProps, IState> {
         updateTag: false,
         addComent: false,
         commentText: '',
-        parentComment:''
+        parentComment: ''
     };
+
     render() {
         const {todos} = this.props
         const {todo} = this.props
@@ -100,10 +101,15 @@ class ContentTodo extends React.Component<IProps, IState> {
                                       onClick={this.handleCompleteTodo.bind(this, todo.id)}/>
                             {this.state.currentTodoAdjust !== todo.id &&
                             <>
-
                                 <div className='todoText'>
                                     <ListItemText primary={todo.title}/>
                                 </div>
+                                {todo.user !== undefined &&
+                                <div className='todoText'
+                                     style={{paddingLeft: '10px'}}>
+                                    <ListItemText primary={`made by:${todo.user}`}/>
+                                </div>
+                                }
                                 {todo.dueDate !== undefined && todo.completedOn === undefined &&
                                 <div className='todoDate'>
                                     <ListItemText primary={todo.dueDate}/>
@@ -114,7 +120,7 @@ class ContentTodo extends React.Component<IProps, IState> {
                                     <ListItemText primary={todo.completedOn}/>
                                 </div>
                                 }
-                                {activeListId[0].id !== 'default_list_upcoming' &&
+                                {activeListId[0].id !== 'default_list_upcoming' && activeListId[0].id !== `default_my_todo's` &&
                                 <>
                                     {todo.parentTodoId === undefined &&
                                     <IconButton
@@ -250,7 +256,8 @@ class ContentTodo extends React.Component<IProps, IState> {
                                         </div>
                                     ))
                                 }
-                            </><br/>
+                            </>
+                            <br/>
                             {!this.state.addComent &&
                             <IconButton
                                 onClick={() => {
@@ -325,6 +332,7 @@ class ContentTodo extends React.Component<IProps, IState> {
             completedOn: event.completedOn,
             order: event.order,
             tags: event.tags,
+            user: event.user
         }
         const number = -1
         this.props.moveTodo(newTodo, number)
@@ -342,6 +350,7 @@ class ContentTodo extends React.Component<IProps, IState> {
             completedOn: event.completedOn,
             order: event.order,
             tags: event.tags,
+            user: event.user
         }
         const number = 1
         this.props.moveTodo(newTodo, number)
@@ -383,6 +392,7 @@ class ContentTodo extends React.Component<IProps, IState> {
             completedOn: event.completedOn,
             order: event.order,
             tags: event.tags,
+            user: event.user
         };
         this.props.updateTodo(newTodo)
         this.setState({currentTodoAdjust: ''})
@@ -394,18 +404,18 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.toggleUpdate()
     };
 
-    public toggleAdd(comment:string) {
+    public toggleAdd(comment: string) {
         this.setState({
             addComent: !this.state.addComent,
             commentText: ''
         })
-        if(comment !== ''){
-        this.setState({parentComment:comment})
-        }else{
-            this.setState({parentComment:''})
+        if (comment !== '') {
+            this.setState({parentComment: comment})
+        } else {
+            this.setState({parentComment: ''})
         }
 
-    }
+    };
 
     public updateComment(todo: string) {
         let today = new Date();
@@ -413,23 +423,23 @@ class ContentTodo extends React.Component<IProps, IState> {
         let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         let yyyy = today.getFullYear();
         const date = dd + '/' + mm + '/' + yyyy;
-        console.log(todo)
-        console.log(this.state.commentText)
-        console.log(date)
-        let parent: undefined| string = this.state.parentComment
-        if(parent === ''){
+        let parent: undefined | string = this.state.parentComment
+        if (parent === '') {
             parent = undefined
         }
+        const loggedInUser = localStorage.getItem('user')
         const newComment: IComments = {
             id: uuid(),
             todoId: todo,
             parentCommentId: parent,
             comment: this.state.commentText,
             date: date,
+            //@ts-ignore
+            user: loggedInUser
         }
         this.props.createComment(newComment)
         this.toggleAdd('')
-    }
+    };
 
     public nameComment(event: any) {
         this.setState({commentText: event.target.value})

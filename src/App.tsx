@@ -6,6 +6,7 @@ import {configure} from './state/store';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Topbar from './components/ui/Topbar';
 import Main from './components/ui/Main';
+import LoginPage from "./components/login/LoginPage";
 
 
 class App extends React.PureComponent {
@@ -15,8 +16,17 @@ class App extends React.PureComponent {
                 <React.Fragment>
                     <CssBaseline/>
                     <Topbar/>
-                    <TodoList/>
-                    <Main/>
+                    {localStorage.getItem("user") !== null &&
+                    <>
+                        <TodoList/>
+                        <Main/>
+                    </>
+                    }
+                    {localStorage.getItem("user") === null &&
+                    <>
+                        <LoginPage/>
+                    </>
+                    }
                 </React.Fragment>
             </Provider>
         );

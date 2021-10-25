@@ -8,6 +8,7 @@ export const CREATE_LIST = '[LIST] create'
 export const UPDATE_LIST = '[LIST] update'
 export const MOVE_LIST = '[LIST] move up'
 export const SET_ACTIVE_LIST = '[LIST] active'
+export const SET_PUBLIC_LIST = '[LIST] public'
 
 export const loadLists = createAction(LOAD_LISTS);
 
@@ -27,4 +28,7 @@ export const moveList = createAction(MOVE_LIST, action =>
     (list: IList, number: number) => action({list, number}));
 
 export const setActiveList = createAction(SET_ACTIVE_LIST, action =>
+    (listId: string) => action({listId}));
+
+export const setPublicList = createAction(SET_PUBLIC_LIST, action =>
     (listId: string) => action({listId}));

@@ -22,7 +22,6 @@ export const loadLists$: Epic<AnyAction, AnyAction, RootState> = (
             return loadListsSuccess(initialLists);
         }
         let lists = JSON.parse(localstoragestring)
-        console.log(lists)
         return loadListsSuccess(lists);
     })
   );

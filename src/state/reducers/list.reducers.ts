@@ -78,6 +78,14 @@ const listReducer = (state = initialState, action: Actions) => {
                 ...state,
                 lists: activeList
             };
+        case ListActions.SET_PUBLIC_LIST:
+            const newPublicList = [...state.lists]
+            const indexPublicList = newPublicList.findIndex(list => list.id === action.payload.listId)
+            newPublicList[indexPublicList].private = false
+            return {
+                ...state,
+                lists: newPublicList
+            }
         default:
             return state;
     }

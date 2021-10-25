@@ -12,4 +12,5 @@ export interface ITodo {
     completedOn?: string;
     order: number;
     tags?: string[];
+    user:string;
 }
