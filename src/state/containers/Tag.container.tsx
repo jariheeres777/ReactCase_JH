@@ -24,7 +24,7 @@ export interface ITagActions {
 }
 
 function mapStateToProps(state: RootState) {
-    return {tags: state.tags.tags}
+    return {tags: state.tags.tags};
 }
 
 const mapDispatchToProps: ITagActions = {

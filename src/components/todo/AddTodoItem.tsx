@@ -78,38 +78,38 @@ class AddTodoItem extends React.Component<IProps, IState> {
     };
 
     private titleList(event: any) {
-        this.setState({title: event.target.value})
+        this.setState({title: event.target.value});
     };
 
     private descriptionList(event: any) {
-        this.setState({description: event.target.value})
+        this.setState({description: event.target.value});
     };
 
     private dateList(event: any) {
-        const rifdrg = event.target.value
+        const rifdrg = event.target.value;
         const date = rifdrg.toString().split("-").reverse().join("/");
-        this.setState({date: date})
+        this.setState({date: date});
     };
 
     private addList() {
         const {todos, lists} = this.props;
-        const filteredList = lists.filter(list => list.active ? list.id : null)
-        const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id)
+        const filteredList = lists.filter(list => list.active ? list.id : null);
+        const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id);
         let order;
         if(filterdTodos === []){
             order = 1
         }else{
-            order = filterdTodos.length +1
+            order = filterdTodos.length +1;
         }
-        let date
+        let date;
         if (this.state.date === '') {
-            date = undefined
+            date = undefined;
         } else {
-            date = this.state.date
+            date = this.state.date;
         }
-        const loggedInUser = localStorage.getItem('user')
+        const loggedInUser = localStorage.getItem('user');
         if(loggedInUser === null){
-            return
+            return;
         }
         const newTodo: ITodo = {
             id: uuid(),
@@ -124,8 +124,8 @@ class AddTodoItem extends React.Component<IProps, IState> {
             tags: [],
             user:loggedInUser
         };
-        this.props.createTodo(newTodo)
-        this.cancelList()
+        this.props.createTodo(newTodo);
+        this.cancelList();
     };
 
     private cancelList() {

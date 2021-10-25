@@ -146,7 +146,7 @@ const todoReducer = (state = initialState, action: Actions): ITodoState => {
             return {
                 ...state,
                 todos: deleteAllTagTodo
-            }
+            };
         case TodoActions.DELETE_ALL_TODO_LIST:{
             localStorage.setItem('todos', JSON.stringify(state.todos.filter((todo) => todo.listId !== action.payload.listid)));
             return {

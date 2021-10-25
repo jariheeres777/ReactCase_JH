@@ -4,11 +4,11 @@ import {IList} from "../../model/interfaces/IList";
 export const LOAD_LISTS = '[LIST] load';
 export const LOAD_LISTS_SUCCESS = '[LIST] load success'
 export const DELETE_LIST = '[LIST] delete';
-export const CREATE_LIST = '[LIST] create'
-export const UPDATE_LIST = '[LIST] update'
-export const MOVE_LIST = '[LIST] move up'
-export const SET_ACTIVE_LIST = '[LIST] active'
-export const SET_PUBLIC_LIST = '[LIST] public'
+export const CREATE_LIST = '[LIST] create';
+export const UPDATE_LIST = '[LIST] update';
+export const MOVE_LIST = '[LIST] move up';
+export const SET_ACTIVE_LIST = '[LIST] active';
+export const SET_PUBLIC_LIST = '[LIST] public';
 
 export const loadLists = createAction(LOAD_LISTS);
 

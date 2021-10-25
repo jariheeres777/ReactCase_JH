@@ -15,11 +15,11 @@ export interface ICommentState {
 export interface ICommentActions {
     loadComments(): void;
 
-    createComment(comment: IComments):void
+    createComment(comment: IComments):void;
 }
 
 function mapStateToProps(state: RootState) {
-    return {comments: state.comments.comments}
+    return {comments: state.comments.comments};
 }
 
 const mapDispatchToProps: ICommentActions = {

@@ -30,7 +30,7 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
     };
 
     render() {
-        const {tags} = this.props
+        const {tags} = this.props;
         if (tags.length === 0) {
             return null;
         }
@@ -117,31 +117,31 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
 
     public toggleAdjust() {
         this.setState(
-            {inupdate: !this.state.inupdate, inDelete: false, showSelected: true})
+            {inupdate: !this.state.inupdate, inDelete: false, showSelected: true});
     };
 
     public toggleDelete() {
-        this.setState({inupdate: false, inDelete: !this.state.inDelete, showSelected: true})
+        this.setState({inupdate: false, inDelete: !this.state.inDelete, showSelected: true});
     };
 
     public handleSelectedTag(tags: ITag[], event: any) {
-        const seletedTagId = tags.filter(tag => tag.name === event.target.value)
-        this.setState({tagId: seletedTagId[0].id})
+        const seletedTagId = tags.filter(tag => tag.name === event.target.value);
+        this.setState({tagId: seletedTagId[0].id});
     };
 
     public deletetag() {
-        this.props.deleteTagAllTodo(this.state.tagId)
-        this.props.deleteTag(this.state.tagId)
+        this.props.deleteTagAllTodo(this.state.tagId);
+        this.props.deleteTag(this.state.tagId);
         this.setState(
-            {inupdate: false, inDelete: false, showSelected: false})
+            {inupdate: false, inDelete: false, showSelected: false});
     };
 
     public handleSetTagName(event: any) {
-        this.setState({tagName: event.target.value})
+        this.setState({tagName: event.target.value});
     };
 
     public handleSetTagColor(event: any) {
-        this.setState({tagColor: event.target.value})
+        this.setState({tagColor: event.target.value});
     };
 
     private handleAddTag(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -151,14 +151,14 @@ class DeleteOrUpdateTag extends React.Component<IProps, IState> {
             name: this.state.tagName,
             color: this.state.tagColor
         };
-        this.props.updateTag(newTag)
+        this.props.updateTag(newTag);
         this.setState({
             tagName: '',
             tagColor: '#000000',
             inupdate: !this.state.inupdate,
             inDelete: false,
             showSelected: false
-        })
+        });
 
     };
 }

@@ -1,20 +1,20 @@
-import { createAction} from "typesafe-actions";
+import {createAction} from "typesafe-actions";
 import {ITodo} from '../../model/interfaces/ITodo'
 
 export const LOAD_TODOS = '[todo] load';
-export const LOAD_TODOS_SUCCESS = '[todo] load success'
-export const CREATE_TODO = '[todo] create'
-export const DELETE_TODO = '[todo] delete'
-export const MOVE_TODO = '[todo] move todo'
-export const UPDATE_TODO = '[todo] update todo'
-export const NEST_TODO = '[todo] nest in/out todo'
-export const COMPLETED_TODO = '[todo] complete todo'
-export const DELETE_TAG_TODO = '[todo] delete tag todo'
-export const ADD_TAG_TODO = '[todo] add tag todo'
-export const DELETE_TAG_ALL_TODO = '[todo] delete all tag todo'
-export const DELETE_ALL_TODO_LIST = '[todo] delete all todos from activelist'
+export const LOAD_TODOS_SUCCESS = '[todo] load success';
+export const CREATE_TODO = '[todo] create';
+export const DELETE_TODO = '[todo] delete';
+export const MOVE_TODO = '[todo] move todo';
+export const UPDATE_TODO = '[todo] update todo';
+export const NEST_TODO = '[todo] nest in/out todo';
+export const COMPLETED_TODO = '[todo] complete todo';
+export const DELETE_TAG_TODO = '[todo] delete tag todo';
+export const ADD_TAG_TODO = '[todo] add tag todo';
+export const DELETE_TAG_ALL_TODO = '[todo] delete all tag todo';
+export const DELETE_ALL_TODO_LIST = '[todo] delete all todos from activelist';
 
-export const loadTodos = createAction(LOAD_TODOS)
+export const loadTodos = createAction(LOAD_TODOS);
 
 export const loadTodosSucces = createAction(LOAD_TODOS_SUCCESS, action =>
     (todos: ITodo[]) => action({todos}));

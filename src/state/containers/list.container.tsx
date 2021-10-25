@@ -21,11 +21,11 @@ export interface IListActions {
 
     deleteList(listId: string): void;
 
-    addlist(list: IList): void,
+    addlist(list: IList): void;
 
-    updateList(list: IList): void
+    updateList(list: IList): void;
 
-    moveList(list: IList, number: number): void
+    moveList(list: IList, number: number): void;
 
     setActiveList(listId: string): void;
 

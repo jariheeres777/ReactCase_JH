@@ -85,7 +85,7 @@ const listReducer = (state = initialState, action: Actions) => {
             return {
                 ...state,
                 lists: newPublicList
-            }
+            };
         default:
             return state;
     }

@@ -14,7 +14,7 @@ const commentsReducer = (state = initialState, action: Actions) => {
             return {
                 ...state,
                 comments: action.payload.comments
-            }
+            };
         case CommentsAction.CREATE_COMMENT:
             const newCommentArray = [...state.comments, action.payload.comment]
             localStorage.setItem('comments', JSON.stringify(newCommentArray));
@@ -24,7 +24,7 @@ const commentsReducer = (state = initialState, action: Actions) => {
                     ...state.comments,
                     action.payload.comment
                 ]
-            }
+            };
         default:
             return state;
     }

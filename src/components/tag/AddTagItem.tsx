@@ -61,11 +61,11 @@ class AddTodoItem extends React.Component<IProps, IState> {
     };
 
     public handleSetTagName(event: any) {
-        this.setState({tagName: event.target.value})
+        this.setState({tagName: event.target.value});
     };
 
     public handleSetTagColor(event: any) {
-        this.setState({tagColor: event.target.value})
+        this.setState({tagColor: event.target.value});
     };
 
     private handleAddTag(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -75,11 +75,11 @@ class AddTodoItem extends React.Component<IProps, IState> {
             name: this.state.tagName,
             color: this.state.tagColor
         };
-        this.props.createTag(newTag)
+        this.props.createTag(newTag);
         this.setState({
             tagName: '',
             tagColor: '#000000'
-        })
+        });
     };
 }
 

@@ -54,20 +54,19 @@ class ShowTodoList extends React.Component<IProps, IState> {
     };
 
     render() {
-        const {lists} = this.props
-        const listNotPrivate = lists.filter((list) => !list.private)
-        const user = localStorage.getItem('user')
-        const listPrivate = lists.filter((list) => list.user === user)
-        let arrayOfNotPrivateLists: string[] = []
+        const {lists} = this.props;
+        const listNotPrivate = lists.filter((list) => !list.private);
+        const user = localStorage.getItem('user');
+        const listPrivate = lists.filter((list) => list.user === user);
+        let arrayOfNotPrivateLists: string[] = [];
         for (let i = 0; i < listNotPrivate.length; i++) {
-            arrayOfNotPrivateLists.push(listNotPrivate[i].id)
+            arrayOfNotPrivateLists.push(listNotPrivate[i].id);
         }
-        let arrayOfPrivateLists: string[] = []
+        let arrayOfPrivateLists: string[] = [];
         for (let i = 0; i < listPrivate.length; i++) {
-            arrayOfPrivateLists.push(listPrivate[i].id)
+            arrayOfPrivateLists.push(listPrivate[i].id);
         }
-        const filterLists = [...arrayOfNotPrivateLists, ...arrayOfPrivateLists]
-        console.log(filterLists)
+        const filterLists = [...arrayOfNotPrivateLists, ...arrayOfPrivateLists];
         return (
             <>
                 <ListItem className="list-item " button disabled>
@@ -129,9 +128,9 @@ class ShowTodoList extends React.Component<IProps, IState> {
                                                 </Button>
                                                 <Button onClick={this.handleDeleteList.bind(this, list.id)}>
                                                     ❌
-                                                </Button >
+                                                </Button>
                                                 <Button disabled={!list.private}
-                                                    onClick={this.handleMakePublic.bind(this, list.id)}>
+                                                        onClick={this.handleMakePublic.bind(this, list.id)}>
                                                     <PublicIcon/>
                                                 </Button>
 
@@ -167,11 +166,11 @@ class ShowTodoList extends React.Component<IProps, IState> {
     };
 
     private handleAdjust() {
-        this.setState({adjustVisible: !this.state.adjustVisible})
+        this.setState({adjustVisible: !this.state.adjustVisible});
     };
 
     private handleSetActiveList = (list: any, event: any) => {
-        this.props.setActiveList(list.id)
+        this.props.setActiveList(list.id);
     };
 
     private handleMoveUpList(list: IList) {
@@ -186,7 +185,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
             user: list.user
         };
         const moveSpots: number = -1
-        this.props.moveList(moveUp, moveSpots)
+        this.props.moveList(moveUp, moveSpots);
     };
 
     private handleMoveDownList(list: IList) {
@@ -201,7 +200,7 @@ class ShowTodoList extends React.Component<IProps, IState> {
             user: list.user
         };
         const moveSpots: number = 1
-        this.props.moveList(moveDown, moveSpots)
+        this.props.moveList(moveDown, moveSpots);
     };
 
     private handleOpenAdjustList(list: IList) {
@@ -215,26 +214,26 @@ class ShowTodoList extends React.Component<IProps, IState> {
             private: list.private,
             user: list.user
         };
-        this.handleAdjust()
+        this.handleAdjust();
         this.setState({
             currentModifiedList: listId,
             adjustListName: ''
-        })
+        });
     };
 
     private handleDeleteList(listid: string, event: any) {
-        event.stopPropagation()
-        const {lists} = this.props
-        const filterd = lists.filter(list => list.active)
+        event.stopPropagation();
+        const {lists} = this.props;
+        const filterd = lists.filter(list => list.active);
         if (listid === filterd[0].id) {
-            this.props.setActiveList('default_list')
+            this.props.setActiveList('default_list');
         }
-        this.props.deleteAllTodoList(listid)
-        this.props.deleteList(listid)
+        this.props.deleteAllTodoList(listid);
+        this.props.deleteList(listid);
     };
 
     private handleTextList(event: any) {
-        this.setState({adjustListName: event})
+        this.setState({adjustListName: event});
     };
 
     private handleUpdateList() {
@@ -248,14 +247,13 @@ class ShowTodoList extends React.Component<IProps, IState> {
             private: this.state.currentModifiedList.private,
             user: this.state.currentModifiedList.user
         };
-        this.props.updateList(updateList)
-        this.handleAdjust()
+        this.props.updateList(updateList);
+        this.handleAdjust();
     };
 
-    private handleMakePublic(listid:string){
-        alert(listid)
-        this.props.setPublicList(listid)
-    }
+    private handleMakePublic(listid: string) {
+        this.props.setPublicList(listid);
+    };
 }
 
 export default compose<IProps, {}>

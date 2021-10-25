@@ -7,7 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Topbar from './components/ui/Topbar';
 import Main from './components/ui/Main';
 import LoginPage from "./components/login/LoginPage";
-
+import LoginPageStyle from "./components/login/LoginPageStyle";
 
 class App extends React.PureComponent {
     public render() {
@@ -24,7 +24,9 @@ class App extends React.PureComponent {
                     }
                     {localStorage.getItem("user") === null &&
                     <>
-                        <LoginPage/>
+                        <LoginPageStyle>
+                            <LoginPage/>
+                        </LoginPageStyle>
                     </>
                     }
                 </React.Fragment>

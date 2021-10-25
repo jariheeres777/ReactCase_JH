@@ -74,7 +74,7 @@ class AddTodolist extends React.Component<IProps, IState> {
                 listName: ''
             }
         )
-        this.setState({addVisible: !this.state.addVisible})
+        this.setState({addVisible: !this.state.addVisible});
     };
 
     public handLeAddList(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -82,9 +82,8 @@ class AddTodolist extends React.Component<IProps, IState> {
         const {lists} = this.props;
         const listarrayorder = Math.max.apply(Math, lists.map(function (list) {
             return list.order;
-        }))
+        }));
         const loggedInUser = localStorage.getItem('user')
-        console.log(loggedInUser)
         const list: IList = {
             color: this.state.listColor,
             default: false,
@@ -96,16 +95,16 @@ class AddTodolist extends React.Component<IProps, IState> {
             // @ts-ignore
             user:loggedInUser
         };
-        this.props.addlist(list)
-        this.toggleAdd()
+        this.props.addlist(list);
+        this.toggleAdd();
     };
 
     public handListText(event: any) {
-        this.setState({listName: event.target.value})
+        this.setState({listName: event.target.value});
     };
 
     public handLeListColor(event: any) {
-        this.setState({listColor: event.target.value})
+        this.setState({listColor: event.target.value});
     };
 }
 

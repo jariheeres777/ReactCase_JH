@@ -17,8 +17,7 @@ class ShowComments extends React.Component<IProps> {
         const {comment} = this.props
         return (
             <>
-                <div className='todoDate'
-                     style={{margin: '10px'}}>
+                <div className='todoDate marginLeft'>
                     <ListItemText primary={comment.comment}/>
                     <ListItemText primary={comment.date}/>
                 </div>

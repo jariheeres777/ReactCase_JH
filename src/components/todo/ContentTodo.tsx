@@ -35,7 +35,7 @@ import {IComments} from "../../model/interfaces/IComments";
 import {v4 as uuid} from "uuid";
 
 interface Iouterprops {
-    todo: ITodo
+    todo: ITodo;
 }
 
 interface IProps extends ITodoState
@@ -50,13 +50,13 @@ interface IProps extends ITodoState
 }
 
 interface IState {
-    inUpdate: boolean
-    currentTodoAdjust: string
-    newTodoName: string
-    updateTag: boolean
-    addComent: boolean
-    commentText: string
-    parentComment: string
+    inUpdate: boolean;
+    currentTodoAdjust: string;
+    newTodoName: string;
+    updateTag: boolean;
+    addComent: boolean;
+    commentText: string;
+    parentComment: string;
 }
 
 class ContentTodo extends React.Component<IProps, IState> {
@@ -71,12 +71,12 @@ class ContentTodo extends React.Component<IProps, IState> {
     };
 
     render() {
-        const {todos} = this.props
-        const {todo} = this.props
-        const {tags} = this.props
-        const {comments} = this.props
-        const activeListId = lists.filter(list => list.active ? list.id : null)
-        const hasNestedId = todos.filter(todo => todo.parentTodoId !== undefined ? todo.parentTodoId : null).map(todo => todo.parentTodoId)
+        const {todos} = this.props;
+        const {todo} = this.props;
+        const {tags} = this.props;
+        const {comments} = this.props;
+        const activeListId = lists.filter(list => list.active ? list.id : null);
+        const hasNestedId = todos.filter(todo => todo.parentTodoId !== undefined ? todo.parentTodoId : null).map(todo => todo.parentTodoId);
         return (
             <>
                 <Accordion>
@@ -105,8 +105,7 @@ class ContentTodo extends React.Component<IProps, IState> {
                                     <ListItemText primary={todo.title}/>
                                 </div>
                                 {todo.user !== undefined &&
-                                <div className='todoText'
-                                     style={{paddingLeft: '10px'}}>
+                                <div className='todoText paddingLeft'>
                                     <ListItemText primary={`made by:${todo.user}`}/>
                                 </div>
                                 }
@@ -248,7 +247,7 @@ class ContentTodo extends React.Component<IProps, IState> {
                                                 .filter((comment) => comment.parentCommentId !== undefined)
                                                 .filter((comment) => comment.todoId === todo.id)
                                                 .map((comment) => (
-                                                    <div style={{paddingLeft: '60px'}}>
+                                                    <div className='paddingLeft90px'>
                                                         <ShowComments comment={comment}/>
                                                     </div>
                                                 ))
@@ -297,27 +296,27 @@ class ContentTodo extends React.Component<IProps, IState> {
         this.setState({
             inUpdate: !this.state.inUpdate,
             newTodoName: ''
-        })
+        });
     };
 
     public handleCompleteTodo(listid: string) {
-        this.props.completedTodo(listid)
+        this.props.completedTodo(listid);
     };
 
     public nestInto(event: any) {
-        const activeList = lists.filter(list => list.active ? list.id : null)
-        const activeTodos = todos.filter(todo => todo.listId === activeList[0].id)
-        const listNotnested = activeTodos.filter(todo => todo.parentTodoId === undefined ? todo.id : null)
-        const index = listNotnested.findIndex(todo => todo.id === event.id)
+        const activeList = lists.filter(list => list.active ? list.id : null);
+        const activeTodos = todos.filter(todo => todo.listId === activeList[0].id);
+        const listNotnested = activeTodos.filter(todo => todo.parentTodoId === undefined ? todo.id : null);
+        const index = listNotnested.findIndex(todo => todo.id === event.id);
         if (index < 1) {
             return
         }
-        const todoId = listNotnested[index - 1].id
-        this.props.nestTodo(todoId, event.id)
+        const todoId = listNotnested[index - 1].id;
+        this.props.nestTodo(todoId, event.id);
     };
 
     public nestOut(event: any) {
-        this.props.nestTodo('', event)
+        this.props.nestTodo('', event);
     };
 
     public moveDownTodo(event: any) {
@@ -334,8 +333,8 @@ class ContentTodo extends React.Component<IProps, IState> {
             tags: event.tags,
             user: event.user
         }
-        const number = -1
-        this.props.moveTodo(newTodo, number)
+        const number = -1;
+        this.props.moveTodo(newTodo, number);
     };
 
     public moveUpTodo(event: any) {
@@ -352,32 +351,32 @@ class ContentTodo extends React.Component<IProps, IState> {
             tags: event.tags,
             user: event.user
         }
-        const number = 1
-        this.props.moveTodo(newTodo, number)
+        const number = 1;
+        this.props.moveTodo(newTodo, number);
     };
 
     public inUpdateTodo(event: any) {
-        this.toggleUpdate()
-        this.setState({currentTodoAdjust: event})
+        this.toggleUpdate();
+        this.setState({currentTodoAdjust: event});
     };
 
     public deleteTodo(event: any) {
-        this.props.deleteTodo(event)
+        this.props.deleteTodo(event);
     };
 
     public toggleTag() {
-        this.setState({updateTag: !this.state.updateTag})
+        this.setState({updateTag: !this.state.updateTag});
     };
 
     public addTagTodo(todo: string, event: any) {
-        const {tags} = this.props
-        const tag = tags.filter(tag => tag.name === event.target.value ? tag.id : null)
-        this.props.addTagTodo(todo, tag[0].id)
-        this.toggleTag()
+        const {tags} = this.props;
+        const tag = tags.filter(tag => tag.name === event.target.value ? tag.id : null);
+        this.props.addTagTodo(todo, tag[0].id);
+        this.toggleTag();
     };
 
     public nameTodo(event: any) {
-        this.setState({newTodoName: event.target.value})
+        this.setState({newTodoName: event.target.value});
     };
 
     public updateTodo(event: any) {
@@ -394,14 +393,14 @@ class ContentTodo extends React.Component<IProps, IState> {
             tags: event.tags,
             user: event.user
         };
-        this.props.updateTodo(newTodo)
-        this.setState({currentTodoAdjust: ''})
-        this.toggleUpdate()
+        this.props.updateTodo(newTodo);
+        this.setState({currentTodoAdjust: ''});
+        this.toggleUpdate();
     };
 
     public cancelUpdateTodo() {
-        this.setState({currentTodoAdjust: ''})
-        this.toggleUpdate()
+        this.setState({currentTodoAdjust: ''});
+        this.toggleUpdate();
     };
 
     public toggleAdd(comment: string) {
@@ -410,9 +409,9 @@ class ContentTodo extends React.Component<IProps, IState> {
             commentText: ''
         })
         if (comment !== '') {
-            this.setState({parentComment: comment})
+            this.setState({parentComment: comment});
         } else {
-            this.setState({parentComment: ''})
+            this.setState({parentComment: ''});
         }
 
     };
@@ -422,10 +421,10 @@ class ContentTodo extends React.Component<IProps, IState> {
         let dd = String(today.getDate()).padStart(2, '0');
         let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         let yyyy = today.getFullYear();
-        const date = dd + '/' + mm + '/' + yyyy;
-        let parent: undefined | string = this.state.parentComment
+        const date = dd + '/' + mm + '/' + yyyy;;
+        let parent: undefined | string = this.state.parentComment;
         if (parent === '') {
-            parent = undefined
+            parent = undefined;
         }
         const loggedInUser = localStorage.getItem('user')
         const newComment: IComments = {
@@ -437,12 +436,12 @@ class ContentTodo extends React.Component<IProps, IState> {
             //@ts-ignore
             user: loggedInUser
         }
-        this.props.createComment(newComment)
-        this.toggleAdd('')
+        this.props.createComment(newComment);
+        this.toggleAdd('');
     };
 
     public nameComment(event: any) {
-        this.setState({commentText: event.target.value})
+        this.setState({commentText: event.target.value});
     };
 }
 

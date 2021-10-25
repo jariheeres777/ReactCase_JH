@@ -25,55 +25,56 @@ class ShowTodoItem extends React.Component<IProps, IState> {
     }
 
     render() {
-        const {todos} = this.props
-        const {lists} = this.props
+        const {todos} = this.props;
+        const {lists} = this.props;
         let todosFilter: ITodo[];
         if (this.state.searched === '') {
-            todosFilter = todos
+            todosFilter = todos;
         } else {
-            todosFilter = todos.filter((todo) => todo.title.includes(this.state.searched))
+            todosFilter = todos.filter((todo) => todo.title.includes(this.state.searched));
         }
-        const listNotPrivate = lists.filter((list) => !list.private)
-        const user = localStorage.getItem('user')
-        const listPrivate = lists.filter((list) => list.user === user)
-        let arrayOfNotPrivateLists: string[] = []
+        const listNotPrivate = lists.filter((list) => !list.private);
+        const user = localStorage.getItem('user');
+        const listPrivate = lists.filter((list) => list.user === user);
+        let arrayOfNotPrivateLists: string[] = [];
         for (let i = 0; i < listNotPrivate.length; i++) {
-            arrayOfNotPrivateLists.push(listNotPrivate[i].id)
+            arrayOfNotPrivateLists.push(listNotPrivate[i].id);
         }
-        let arrayOfPrivateLists: string[] = []
+        let arrayOfPrivateLists: string[] = [];
         for (let i = 0; i < listPrivate.length; i++) {
-            arrayOfPrivateLists.push(listPrivate[i].id)
+            arrayOfPrivateLists.push(listPrivate[i].id);
         }
-        const filterLists = [...arrayOfNotPrivateLists, ...arrayOfPrivateLists]
-        const activeListId = lists.filter(list => list.active ? list.id : null)
+        const filterLists = [...arrayOfNotPrivateLists, ...arrayOfPrivateLists];
+        const activeListId = lists.filter(list => list.active ? list.id : null);
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0');
         let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         let yyyy = today.getFullYear();
         const date = dd + '/' + mm + '/' + yyyy;
         //filters all the todo's with a duedate
-        const hashDuedate = todos.filter((todo) => todo.dueDate !== undefined).filter((todo) => !todo.complete)
+        const hashDuedate = todos.filter((todo) => todo.dueDate !== undefined).filter((todo) => !todo.complete);
         //@ts-ignore
         // filterd the todo's so there duedate is not in the past
-        const isNotOverdue = hashDuedate.filter((todo) => todo.dueDate >= date)
+        const isNotOverdue = hashDuedate.filter((todo) => todo.dueDate >= date);
         //@ts-ignore
         // sorted the todo's on date from lowest to highest
-        const sortedisNotOverdue = isNotOverdue.sort((a, b) => a.dueDate > b.dueDate ? 1 : -1)
-        let uniqueDuedateId: string[] = []
-        let distinct: string[] = []
-        for (let i = 0; i < sortedisNotOverdue.length; i++)
+        const sortedisNotOverdue = isNotOverdue.sort((a, b) => a.dueDate > b.dueDate ? 1 : -1);
+        let uniqueDuedateId: string[] = [];
+        let distinct: string[] = [];
+        for (let i = 0; i < sortedisNotOverdue.length; i++) {
             //@ts-ignore
             if (!distinct.includes(sortedisNotOverdue[i].dueDate)) {
                 //@ts-ignore
-                distinct.push(sortedisNotOverdue[i].dueDate)
-                uniqueDuedateId.push(sortedisNotOverdue[i].id)
+                distinct.push(sortedisNotOverdue[i].dueDate);
+                uniqueDuedateId.push(sortedisNotOverdue[i].id);
             }
+        }
         //@ts-ignore
         // filterd the todo's so there duedate is in the past
-        const isOverdue = hashDuedate.filter((todo) => todo.dueDate < date)
+        const isOverdue = hashDuedate.filter((todo) => todo.dueDate < date);
         //@ts-ignore
         // sorted the todo's on date from lowest to highest
-        const sortedIsOverdue = isOverdue.sort((a, b) => a.dueDate > b.dueDate ? 1 : -1)
+        const sortedIsOverdue = isOverdue.sort((a, b) => a.dueDate > b.dueDate ? 1 : -1);
         return (
             <>
                 {activeListId[0].id !== 'default_list_upcoming' && activeListId[0].id !== 'default_my_list' &&

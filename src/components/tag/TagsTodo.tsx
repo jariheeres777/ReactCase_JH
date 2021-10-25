@@ -7,8 +7,8 @@ import {ITag} from "../../model/interfaces/ITag";
 import {ITodo} from "../../model/interfaces/ITodo";
 
 interface Iouterprops {
-    tag: ITag
-    todo: ITodo
+    tag: ITag;
+    todo: ITodo;
 }
 
 interface IProps extends Iouterprops, ITodoState, ITodoActions, ITagState, ITagActions {
@@ -16,13 +16,13 @@ interface IProps extends Iouterprops, ITodoState, ITodoActions, ITagState, ITagA
 }
 
 interface IState {
-    inUpdate: boolean
+    inUpdate: boolean;
 }
 
 class tsxTagsTodo extends React.Component<IProps, IState> {
     render() {
-        const tag = this.props
-        const todo = this.props
+        const tag = this.props;
+        const todo = this.props;
         return (
             <>
                 <Chip
@@ -35,7 +35,7 @@ class tsxTagsTodo extends React.Component<IProps, IState> {
         );
     };
     public handleDeleteTag(todoid: string, tagid: string) {
-        this.props.deleteTagTodo(todoid, tagid)
+        this.props.deleteTagTodo(todoid, tagid);
     };
 }
 

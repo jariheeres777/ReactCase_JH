@@ -46,7 +46,7 @@ export interface ITodoActions {
 }
 
 function mapStateToProps(state: RootState) {
-    return {todos: state.todos.todos}
+    return {todos: state.todos.todos};
 }
 
 const mapDispatchToProps: ITodoActions = {

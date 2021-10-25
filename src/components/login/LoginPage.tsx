@@ -3,10 +3,10 @@ import {Button, Divider, InputLabel, TextField} from "@material-ui/core";
 import {useState} from "react";
 
 const LoginPage = () => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     return (
-        <div style={{display: 'grid', placeItems: 'center', paddingTop: '200px'}}>
+        <div className='loginpage'>
             <InputLabel margin='dense'>
                 username
                 <br/><br/>

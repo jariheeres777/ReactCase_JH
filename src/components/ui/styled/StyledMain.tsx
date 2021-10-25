@@ -30,6 +30,13 @@ const StyledMain = styled('main')(({theme}: WithTheme) => ({
         width: '20%',
         display: 'inline-block'
     },
+    '.marginLeft': {
+        margin: '10px'
+    },'.paddingLeft10px':{
+        paddingLeft: '10px'
+    },'.paddingLeft90px':{
+        paddingLeft: '10px'
+    }
 }));
 
 export default compose<WithTheme, {}>(

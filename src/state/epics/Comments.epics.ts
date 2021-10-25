@@ -13,15 +13,15 @@ export const loadComments$: Epic<AnyAction, AnyAction, RootState> = (
     action$.pipe(
         filter(isActionOf(loadComments)),
         map((action: AnyAction) => {
-            let localstoragestring = localStorage.getItem('comments')
+            let localstoragestring = localStorage.getItem('comments');
             if (localstoragestring === null) {
                 localStorage.setItem('comments', JSON.stringify(initialComments));
             }
-            localstoragestring = localStorage.getItem('comments')
+            localstoragestring = localStorage.getItem('comments');
             if (localstoragestring === null) {
                 return loadCommentsSuccess(initialComments);
             }
-            let comments = JSON.parse(localstoragestring)
+            let comments = JSON.parse(localstoragestring);
 
             return loadCommentsSuccess(comments);
         })
