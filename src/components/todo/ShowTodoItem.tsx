@@ -4,12 +4,12 @@ import {
     Input,
 } from "@material-ui/core";
 import React from "react";
-import {compose} from "recompose";
-import {ITodoState, ITodoActions, withTodos} from "../../state/containers/Todo.container";
-import {IListActions, IListState, withLists} from "../../state/containers/list.container";
+import { compose } from "recompose";
+import { ITodoState, ITodoActions, withTodos } from "../../state/containers/Todo.container";
+import { IListActions, IListState, withLists } from "../../state/containers/list.container";
 import ContentTodo from "./ContentTodo";
-import {ITagActions, ITagState} from "../../state/containers/Tag.container";
-import {ITodo} from "../../model/interfaces/ITodo";
+import { ITagActions, ITagState } from "../../state/containers/Tag.container";
+import { ITodo } from "../../model/interfaces/ITodo";
 
 interface IProps extends ITodoState, ITodoActions, IListState, IListActions, ITagState, ITagActions {
 
@@ -25,8 +25,8 @@ class ShowTodoItem extends React.Component<IProps, IState> {
     }
 
     render() {
-        const {todos} = this.props;
-        const {lists} = this.props;
+        const { todos } = this.props;
+        const { lists } = this.props;
         let todosFilter: ITodo[];
         if (this.state.searched === '') {
             todosFilter = todos;
@@ -78,87 +78,84 @@ class ShowTodoItem extends React.Component<IProps, IState> {
         return (
             <>
                 {activeListId[0].id !== 'default_list_upcoming' && activeListId[0].id !== 'default_my_list' &&
-                <List>
-                    <Input
-                        className='todoText'
-                        margin='dense'
-                        placeholder="search "
-                        value={this.state.searched}
-                        onChange={(event) => {
-                            this.searched(event)
-                        }}/>
-                    {todosFilter
-                        .filter((todo) => filterLists.includes(todo.listId))
-                        .filter((todo) => todo.listId === activeListId[0].id)
-                        .filter((todo) => todo.parentTodoId === undefined)
-                        .sort((a, b) => a.order > b.order ? 1 : -1)
-                        .map((todo) => (
-                            <>
-                                <ContentTodo todo={todo}/>
-                                {todos
-                                    .filter((todo2) => todo2.parentTodoId === todo.id)
-                                    .sort((a, b) => a.order > b.order ? 1 : -1)
-                                    .map((todo) => (
-                                        <>
-                                            <ContentTodo todo={todo}/>
-                                        </>
-                                    ))
-                                }
-                            </>
-                        ))
-                    }
-                    <Divider/><br/>
-                </List>
+                    <List>
+                        <Input
+                            className='todoText'
+                            margin='dense'
+                            placeholder="search "
+                            value={this.state.searched}
+                            onChange={(event) => {
+                                this.searched(event)
+                            }} />
+                        {todosFilter
+                            .filter((todo) => filterLists.includes(todo.listId))
+                            .filter((todo) => todo.listId === activeListId[0].id)
+                            .filter((todo) => todo.parentTodoId === undefined)
+                            .sort((a, b) => a.order > b.order ? 1 : -1)
+                            .map((todo) => (
+                                <>
+                                    <ContentTodo todo={todo} />
+                                    {todos
+                                        .filter((todo2) => todo2.parentTodoId === todo.id)
+                                        .sort((a, b) => a.order > b.order ? 1 : -1)
+                                        .map((todo) => (
+                                            <>
+                                                <ContentTodo todo={todo} />
+                                            </>
+                                        ))
+                                    }
+                                </>
+                            ))
+                        }
+                        <Divider /><br />
+                    </List>
                 }
                 {activeListId[0].id === 'default_list_upcoming' &&
-                <List>
-                    {sortedisNotOverdue
-                        .map((todo) => (
-                            <>{uniqueDuedateId.includes(todo.id) &&
-                            < h2>
-                                {todo.dueDate}
-                            </h2>
-                            }
-                                <ContentTodo todo={todo}/>
-                            </>
-                        ))
-                    }
-                    <h2>
-                        overdue
-                    </h2>
-                    <Divider/><br/>
-                    {sortedIsOverdue
-                        .map((todo) => (
-                            <>
-                                <ContentTodo todo={todo}/>
-                            </>
-                        ))
-                    }
-                </List>
+                    <List>
+                        {sortedisNotOverdue
+                            .map((todo) => (
+                                <>{uniqueDuedateId.includes(todo.id) &&
+                                    < h2>
+                                        {todo.dueDate}
+                                    </h2>
+                                }
+                                    <ContentTodo todo={todo} />
+                                </>
+                            ))
+                        }
+                        <h2>
+                            overdue
+                        </h2>
+                        <Divider /><br />
+                        {sortedIsOverdue
+                            .map((todo) => (
+                                <>
+                                    <ContentTodo todo={todo} />
+                                </>
+                            ))
+                        }
+                    </List>
                 }
                 {activeListId[0].id === `default_my_todo's` &&
-                <List>
-                    {todos
-                        .filter((todo) => todo.user === localStorage.getItem('user'))
-                        .map((todo) => (
-                            <>
-                                <h2>
-                                    My Todo's
-                                </h2>
-                                <ContentTodo todo={todo}/>
-                            </>
-                        ))}
-                </List>
+                    <List>
+                        {todos
+                            .filter((todo) => todo.user === localStorage.getItem('user'))
+                            .map((todo) => (
+                                <>
+                                    <ContentTodo todo={todo} />
+                                </>
+                            ))}
+                    </List>
                 }
             </>
         );
     };
 
     public searched(event: any) {
-        this.setState({searched: event.target.value})
+        this.setState({ searched: event.target.value })
     }
 }
 
 export default compose<IProps, {}>
-(withTodos(), withLists())
-(ShowTodoItem);
+    (withTodos(), withLists())
+    (ShowTodoItem);

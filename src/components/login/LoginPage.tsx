@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Button, Divider, InputLabel, TextField} from "@material-ui/core";
-import {useState} from "react";
+import { Button, Divider, InputLabel, TextField } from "@material-ui/core";
+import { useState } from "react";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('');
@@ -9,32 +9,33 @@ const LoginPage = () => {
         <div className='loginpage'>
             <InputLabel margin='dense'>
                 username
-                <br/><br/>
+                <br /><br />
                 <TextField id="name" variant="outlined"
-                           margin='dense'
-                           value={username}
-                           onChange={(event) => setUsername(event.target.value)}/>
+                    margin='dense'
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)} />
             </InputLabel>
-            <br/><br/>
+            <br /><br />
             <InputLabel margin='dense'>
                 password
-                <br/><br/>
-                <TextField id="name" variant="outlined"
-                           margin='dense'
-                           value={password}
-                           onChange={(event) => setPassword(event.target.value)}/>
+                <br /><br />
+                <TextField id="password" variant="outlined"
+                    type="password"
+                    margin='dense'
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)} />
             </InputLabel>
-            <br/><br/>
+            <br /><br />
             <Button disabled={username === ''}
-                    onClick={() => {
-                        localStorage.setItem('user', username)
-                        // eslint-disable-next-line no-restricted-globals
-                        location.reload();
-                    }}>
+                onClick={() => {
+                    localStorage.setItem('user', username)
+                    // eslint-disable-next-line no-restricted-globals
+                    location.reload();
+                }}>
                 confirm
             </Button>
-            <br/>
-            <Divider/>
+            <br />
+            <Divider />
             <Button>
                 cancel
             </Button>

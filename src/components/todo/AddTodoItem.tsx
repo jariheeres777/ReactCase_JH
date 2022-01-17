@@ -1,11 +1,11 @@
 import React from 'react';
-import {compose} from "recompose";
-import {ITodoActions, ITodoState, withTodos} from "../../state/containers/Todo.container";
-import {Button, Input} from "@material-ui/core";
-import {v4 as uuid} from 'uuid';
-import {ITodo} from '../../model/interfaces/ITodo'
-import {Priority} from '../../model/enums/priority';
-import {IListActions, IListState, withLists} from "../../state/containers/list.container";
+import { compose } from "recompose";
+import { ITodoActions, ITodoState, withTodos } from "../../state/containers/Todo.container";
+import { Button, Input } from "@material-ui/core";
+import { v4 as uuid } from 'uuid';
+import { ITodo } from '../../model/interfaces/ITodo'
+import { Priority } from '../../model/enums/priority';
+import { IListActions, IListState, withLists } from "../../state/containers/list.container";
 
 interface IProps extends ITodoState, ITodoActions, IListState, IListActions {
 
@@ -34,10 +34,10 @@ class AddTodoItem extends React.Component<IProps, IState> {
                         value={this.state.title}
                         onChange={(event) => {
                             this.titleList(event)
-                        }}/>
+                        }} />
                 </>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <>
                     <Input
                         className='todoText'
@@ -48,28 +48,27 @@ class AddTodoItem extends React.Component<IProps, IState> {
                         value={this.state.description}
                         onChange={(event) => {
                             this.descriptionList(event)
-                        }}/>
+                        }} />
                 </>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <Input type="Date"
-                       placeholder="dd-mm-yyyy"
-                       value={this.state.date}
-                       onChange={(event) => {
-                           this.dateList(event)
-                       }}/>
-                <br/>
-                <br/>
+                    placeholder="dd-mm-yyyy"
+                    onChange={(event) => {
+                        this.dateList(event)
+                    }} />
+                <br />
+                <br />
                 <>
                     <Button variant="outlined"
-                            disabled={this.state.title === '' || this.state.description === ''}
-                            onClick={() => {
-                                this.addList()
-                            }}>
+                        disabled={this.state.title === '' || this.state.description === ''}
+                        onClick={() => {
+                            this.addList()
+                        }}>
                         confirm
                     </Button>
                     <Button variant="outlined"
-                            onClick={this.cancelList}>
+                        onClick={this.cancelList}>
                         cancel
                     </Button>
                 </>
@@ -78,28 +77,29 @@ class AddTodoItem extends React.Component<IProps, IState> {
     };
 
     private titleList(event: any) {
-        this.setState({title: event.target.value});
+        this.setState({ title: event.target.value });
     };
 
     private descriptionList(event: any) {
-        this.setState({description: event.target.value});
+        this.setState({ description: event.target.value });
     };
 
     private dateList(event: any) {
         const rifdrg = event.target.value;
         const date = rifdrg.toString().split("-").reverse().join("/");
-        this.setState({date: date});
+        console.log(date)
+        this.setState({ date: date });
     };
 
     private addList() {
-        const {todos, lists} = this.props;
+        const { todos, lists } = this.props;
         const filteredList = lists.filter(list => list.active ? list.id : null);
         const filterdTodos = todos.filter(todo => todo.listId === filteredList[0].id);
         let order;
-        if(filterdTodos === []){
+        if (filterdTodos === []) {
             order = 1
-        }else{
-            order = filterdTodos.length +1;
+        } else {
+            order = filterdTodos.length + 1;
         }
         let date;
         if (this.state.date === '') {
@@ -108,7 +108,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
             date = this.state.date;
         }
         const loggedInUser = localStorage.getItem('user');
-        if(loggedInUser === null){
+        if (loggedInUser === null) {
             return;
         }
         const newTodo: ITodo = {
@@ -122,7 +122,7 @@ class AddTodoItem extends React.Component<IProps, IState> {
             completedOn: undefined,
             order: order,
             tags: [],
-            user:loggedInUser
+            user: loggedInUser
         };
         this.props.createTodo(newTodo);
         this.cancelList();
@@ -130,14 +130,14 @@ class AddTodoItem extends React.Component<IProps, IState> {
 
     private cancelList() {
         this.setState({
-                date: '',
-                title: '',
-                description: ''
-            }
+            date: '',
+            title: '',
+            description: ''
+        }
         );
     };
 }
 
 export default compose<IProps, {}>
-(withTodos(), withLists())
-(AddTodoItem);
+    (withTodos(), withLists())
+    (AddTodoItem);

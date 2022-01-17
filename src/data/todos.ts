@@ -1,5 +1,5 @@
-import {ITodo} from "../model/interfaces/ITodo";
-import {Priority} from "../model/enums/priority";
+import { ITodo } from "../model/interfaces/ITodo";
+import { Priority } from "../model/enums/priority";
 
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, '0');
@@ -15,8 +15,9 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 1,
-        tags:[],
-        user:''
+        tags: [],
+        user: '',
+        parentTodoId: undefined
     },
     {
         id: 'second_todo',
@@ -26,8 +27,9 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 2,
-        tags:['default','default2'],
-        user:''
+        tags: ['default', 'default2'],
+        user: '',
+        parentTodoId: 'first_todo'
     },
     {
         id: 'third_todo',
@@ -37,8 +39,9 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 3,
-        tags:['default'],
-        user:''
+        tags: ['default'],
+        user: '',
+        parentTodoId: undefined
     },
     {
         id: 'fourted_todo',
@@ -48,8 +51,9 @@ const initialTodos: ITodo[] = [
         priority: Priority.Normal,
         complete: false,
         order: 4,
-        tags:[],
-        user:''
+        tags: [],
+        user: '',
+        parentTodoId: undefined
     }
 ];
 export default initialTodos;
